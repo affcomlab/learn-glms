@@ -3,7 +3,7 @@
     "path": "C:/GitHub/learn-glms/_quarto.yml",
     "project_path": "_quarto.yml",
     "type": "yaml",
-    "hash": "1188925554",
+    "hash": "220232831",
     "contents": "",
     "dirty": false,
     "created": 1719847512945.0,
@@ -12,15 +12,15 @@
     "properties": {
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "14,0",
+        "cursorPosition": "1,12",
         "scrollLine": "0"
     },
     "folds": "",
-    "lastKnownWriteTime": 1719847560,
+    "lastKnownWriteTime": 1719848702,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1719847560201,
+    "last_content_update": 1719848702959,
     "read_only": false,
     "read_only_alternatives": []
 }

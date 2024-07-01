@@ -3,8 +3,19 @@ project:
 
 book:
   title: "Introduction to Generalized Linear Modeling"
-  author: "Aaron Matthew Simmons & Jeffrey M. Girard"
-  date: "7/1/2024"
+  reader-mode: true
+  page-footer: 
+    left: |
+      Introduction to Generalized Linear Modeling was written by
+      Aaron Matthew Simmons and Jeffrey M. Girard.
+    right: |
+      This book was built with <a href="https://quarto.org/">Quarto</a>.
+  cover-image: "cover.jpg"
+  favicon: "cover.jpg"
+  site-url: https://affcomlab.github.io/learn-glms/
+  repo-url: https://www.github.com/affcomlab/learn-glms/
+  repo-branch: main
+  repo-actions: [issue]
   chapters:
     - index.qmd
     - intro.qmd
@@ -16,8 +27,8 @@ bibliography: references.bib
 format:
   html:
     theme: cosmo
-  pdf:
-    documentclass: scrreprt
+    code-link: true
+    author-meta: "Aaron Matthew Simmons and Jeffrey M. Girard"
 
 
 
