@@ -14,8 +14,8 @@ book:
       Aaron Matthew Simmons and Jeffrey M. Girard.
     right: |
       This book was built with <a href="https://quarto.org/">Quarto</a>.
-  cover-image: "cover.jpg"
-  favicon: "cover.jpg"
+  cover-image: "cover.png"
+  favicon: "cover.png"
   site-url: https://affcomlab.github.io/learn-glms/
   repo-url: https://www.github.com/affcomlab/learn-glms/
   repo-branch: main
