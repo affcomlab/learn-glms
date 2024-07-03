@@ -1,0 +1,64 @@
+# Linear models
+
+```{r}
+# Setup
+
+## Load packages
+library(tidyverse)
+library(easystats)
+library(ggeffects)
+
+## Read data from file
+polysim <- read_csv("polysim.csv")
+polysim
+
+## Plot x-y1 relationship
+ggplot(data = polysim, mapping = aes(x = x, y = y1)) + geom_point()
+
+# ==============================================================================
+
+# LM for a linear relationship example
+
+## Fit linear model
+fit1 <- lm(
+  formula = y1 ~ x,
+  data = polysim
+)
+model_parameters(fit1) |> print_md()
+predict_response(fit1, terms = "x") |> plot(show_data = TRUE)
+
+## Check linearity assumption
+check_model(fit1, check = "linearity") # good enough
+
+# ==============================================================================
+
+# LM with raw polynomials example
+
+## Fit raw polynomial model
+fit1b <- lm(
+  formula = y1 ~ x + I(x^2),
+  data = polysim
+)
+model_parameters(fit1b) |> print_md() # both are nonsignificant
+predict_response(fit1b, terms = "x") |> plot(show_data = TRUE) # unchanged
+
+## Check linearity and collinearity assumptions
+check_model(fit1b, check = "linearity") # still acceptable
+check_collinearity(fit1b) # problematically high
+
+# ==============================================================================
+
+# LM with orthogonal polynomials example
+
+## Fit orthogonal polynomial model
+fit1c <- lm(
+  formula = y1 ~ poly(x, degree = 2),
+  data = polysim
+)
+model_parameters(fit1c) |> print_md() # first degree is significant
+predict_response(fit1c, terms = "x") |> plot(show_data = TRUE) # unchanged
+
+## Check linearity assumption
+check_model(fit1c, check = "linearity") # still acceptable
+```
+

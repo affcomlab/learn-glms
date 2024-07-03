@@ -22,8 +22,10 @@ book:
   chapters:
     - index.qmd
     - intro.qmd
+    - linear-models.qmd
     - summary.qmd
     - references.qmd
+    
 
 bibliography: references.bib
 

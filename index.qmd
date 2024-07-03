@@ -7,3 +7,8 @@ To learn more about Quarto books visit <https://quarto.org/docs/books>.
 ```{r}
 1 + 1
 ```
+
+This goal of this <i> R bookdown </i> is to create a set of open-source online modules to broaden the range of statistical models taught in graduate psychology programs beyond the standard models of ANOVA and multiple regression. These modules will act as a foundation for students to harness the flexibility of Generalized Linear Models (GLMs) across many common situations in applied research. We contend that the inherent issue that plagues adoption of GLMs in psychology stems from traditional teaching of GLMs which has not stressed how the importance of the shape and nature of the outcome distributions affects the choice of link functions.
+
+
+
