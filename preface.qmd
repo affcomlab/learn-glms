@@ -1,0 +1,5 @@
+---
+title: "preface"
+---
+
+This is the preface to address an introduction for why this is needed, to whom it is written for, the packages we wil use, and to list the glm books that we refer to. 
