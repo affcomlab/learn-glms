@@ -19,5 +19,8 @@
   },
   "preface.qmd": {
     "preface.html": "ece2e78c"
+  },
+  "regression-review.qmd": {
+    "regression-review.html": "aa36ef9b"
   }
 }

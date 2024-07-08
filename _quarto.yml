@@ -22,8 +22,8 @@ book:
   repo-actions: [issue]
   chapters:
     - index.qmd
-    - preface.qmd
     - intro.qmd
+    - regression-review.qmd
     - linear-models.qmd
     - summary.qmd
     - references.qmd
