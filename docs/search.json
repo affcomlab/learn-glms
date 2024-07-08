@@ -4,20 +4,14 @@
     "href": "index.html",
     "title": "Introduction to Generalized Linear Modeling",
     "section": "",
-    "text": "Preface\nThis is a Quarto book.\nTo learn more about Quarto books visit https://quarto.org/docs/books.\n\n1 + 1\n\n[1] 2\n\n\nThis goal of this  R bookdown  is to create a set of open-source online modules to broaden the range of statistical models taught in graduate psychology programs beyond the standard models of ANOVA and multiple regression. These modules will act as a foundation for students to harness the flexibility of Generalized Linear Models (GLMs) across many common situations in applied research. We contend that the inherent issue that plagues adoption of GLMs in psychology stems from traditional teaching of GLMs which has not stressed how the importance of the shape and nature of the outcome distributions affects the choice of link functions.",
-    "crumbs": [
-      "Preface"
-    ]
+    "text": "Preface\nThis is a Quarto book.\nTo learn more about Quarto books visit https://quarto.org/docs/books.\n\n1 + 1\n\n[1] 2\n\n\nThis goal of this  R bookdown  is to create a set of open-source online modules to broaden the range of statistical models taught in graduate psychology programs beyond the standard models of ANOVA and multiple regression. These modules will act as a foundation for students to harness the flexibility of Generalized Linear Models (GLMs) across many common situations in applied research. We contend that the inherent issue that plagues adoption of GLMs in psychology stems from traditional teaching of GLMs which has not stressed how the importance of the shape and nature of the outcome distributions affects the choice of link functions."
   },
   {
     "objectID": "intro.html",
     "href": "intro.html",
-    "title": "\n1  Introduction\n",
+    "title": "2  Introduction",
     "section": "",
-    "text": "This is a book created from markdown and executable code.\nSee Knuth (1984) for additional discussion of literate programming.\n\n1 + 1\n\n[1] 2\n\n\n\n\n\n\nKnuth, Donald E. 1984. “Literate Programming.” Comput. J. 27 (2): 97–111. https://doi.org/10.1093/comjnl/27.2.97.",
-    "crumbs": [
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction</span>"
-    ]
+    "text": "This is a book created from markdown and executable code.\nSee Knuth (1984) for additional discussion of literate programming.\nTEST TEST TEST\n\n1 + 1\n\n[1] 2\n\n\n\n\n\n\nKnuth, Donald E. 1984. “Literate Programming.” Comput. J. 27 (2): 97–111. https://doi.org/10.1093/comjnl/27.2.97."
   },
   {
     "objectID": "linear-models.html",

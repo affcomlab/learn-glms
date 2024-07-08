@@ -1,12 +1,4 @@
-<<<<<<< Updated upstream
-C:/Users/j553g371/Documents/learn-glms/.gitignore="98512558"
-C:/Users/j553g371/Documents/learn-glms/chapter-1-intro.qmd="792361CD"
-C:/Users/j553g371/Documents/learn-glms/index.qmd="3BAC79C3"
-C:/Users/j553g371/Documents/learn-glms/intro.qmd="1FF5A826"
-C:/Users/j553g371/Documents/learn-glms/summary.qmd="0C8865DB"
-=======
 /Users/a061s835/Documents/GitHub/learn-glms/_quarto.yml="9F3754ED"
-/Users/a061s835/Documents/GitHub/learn-glms/ch1-linear-models.qmd="E695F427"
 /Users/a061s835/Documents/GitHub/learn-glms/index.qmd="E8768981"
 /Users/a061s835/Documents/GitHub/learn-glms/intro.qmd="CE3EA25D"
 /Users/a061s835/Documents/GitHub/learn-glms/linear-models.qmd="D5CE2F55"
@@ -14,4 +6,3 @@ C:/Users/j553g371/Documents/learn-glms/summary.qmd="0C8865DB"
 /Users/a061s835/Documents/GitHub/learn-glms/references.bib="E4ED08DE"
 /Users/a061s835/Documents/GitHub/learn-glms/renv.lock="4BB41821"
 /Users/a061s835/Documents/GitHub/learn-glms/summary.qmd="AEF2D307"
->>>>>>> Stashed changes
