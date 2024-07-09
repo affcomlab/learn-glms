@@ -20,6 +20,8 @@ book:
   repo-url: https://www.github.com/affcomlab/learn-glms/
   repo-branch: main
   repo-actions: [issue]
+  navbar: 
+    pinned: true
   chapters:
     - index.qmd
     - intro.qmd
