@@ -21,8 +21,6 @@ book:
   repo-actions: [issue]
   navbar:
     pinned: true
-  sidebar:
-    pinned: true
   chapters:
     - index.qmd
     - intro.qmd
