@@ -4,28 +4,21 @@
     "href": "index.html",
     "title": "Introduction to Generalized Linear Modeling",
     "section": "",
-    "text": "Preface\nThis is a Quarto book.\nTo learn more about Quarto books visit https://quarto.org/docs/books.\n\n1 + 1\n\n[1] 2\n\n\nThis goal of this  R bookdown  is to create a set of open-source online modules to broaden the range of statistical models taught in graduate psychology programs beyond the standard models of ANOVA and multiple regression. These modules will act as a foundation for students to harness the flexibility of Generalized Linear Models (GLMs) across many common situations in applied research. We contend that the inherent issue that plagues adoption of GLMs in psychology stems from traditional teaching of GLMs which has not stressed how the importance of the shape and nature of the outcome distributions affects the choice of link functions."
+    "text": "Welcome\nWelcome to  learn-glms.com . This goal of this website is to create a set of open-source online modules to broaden the range of statistical models taught in graduate psychology programs beyond the standard models of ANOVA and multiple regression. These modules will act as a foundation for students to harness the flexibility of Generalized Linear Models (GLMs) across many common situations in applied research. We contend that the inherent issue that plagues adoption of GLMs in psychology stems from traditional teaching of GLMs which has not stressed how the importance of the shape and nature of the outcome distributions affects the choice of link functions.\n\n\nAbout the Authors\nAaron Matthew Simmons is a PhD student in the Brain, Behavior, and Quantitative Science program at the University of Kansas and a core member of Dr. Jeffrey Girard’s research lab. His research interests focus on Bayesian statistics, latent variable modeling, scale development, and how new modeling frameworks can be leveraged to study a wide range of cognitive and behavioral phenomena.\nDr. Jeffrey Girard is a recognized expert in quantitative methods and directs both the Brain, Behavior, and Quantitative Science doctoral program at the University of Kansas and the Kansas Data Science Consortium (a state-wide collaboration of data science educators funded as part of a large NSF EPSCoR grant). He has extensive experience teaching graduate-level statistics at the University of Kansas and is one of the three co-founders (and primary instructors) of the Statistics, Methods, and Research Training (SMaRT) Workshops limited liability company, which teaches quantitative workshops to hundreds of trainee and professional researchers each year. Most relevant to this project are his expertise in generalized linear (mixed) modeling, frequentist and Bayesian estimation, the R programming language, the Quarto scientific and technical publishing system, the Git version control system, and the GitHub Pages web-hosting platform.\n\n\nFunding\nThese materials were made possible by funding from the APS Fund for Teaching and Public Understanding of Psychological Science. You can read more about the fund [here] (https://www.psychologicalscience.org/members/teaching/fund)."
   },
   {
-    "objectID": "intro.html",
-    "href": "intro.html",
+    "objectID": "intro.html#overview",
+    "href": "intro.html#overview",
     "title": "1  Introduction",
+    "section": "1.1 Overview",
+    "text": "1.1 Overview"
+  },
+  {
+    "objectID": "regression-review.html",
+    "href": "regression-review.html",
+    "title": "2  RegressionReview",
     "section": "",
-    "text": "This is a book created from markdown and executable code.\nSee Knuth (1984) for additional discussion of literate programming.\nTEST TEST TEST\n\n1 + 1\n\n[1] 2\n\n\n\n\n\n\nKnuth, Donald E. 1984. “Literate Programming.” Comput. J. 27 (2): 97–111. https://doi.org/10.1093/comjnl/27.2.97."
-  },
-  {
-    "objectID": "regression-review.html#assumptions-about-the-formula",
-    "href": "regression-review.html#assumptions-about-the-formula",
-    "title": "2  RegressionReview",
-    "section": "2.1 Assumptions about the Formula",
-    "text": "2.1 Assumptions about the Formula\n\nCorrect Functional Form\nPerfectly Measured Preditors\nNo Collinearity/Multicollinearity"
-  },
-  {
-    "objectID": "regression-review.html#assumptions-about-the-residuals",
-    "href": "regression-review.html#assumptions-about-the-residuals",
-    "title": "2  RegressionReview",
-    "section": "2.2 Assumptions about the Residuals",
-    "text": "2.2 Assumptions about the Residuals\n\nConstant Error Variance\nIndepedence of Residuals\nNormality of Residuals"
+    "text": "Before jumping into generalized linear models (GLMs), it is important to recap important foundations of general linear models, such as linear regression. The key is to realize that generalized linear models attempt to perform model fitting when assumptions of linear regression no longer hold or are unreasonable.\n\n1 + 1\n\n[1] 2\n\n\nThe six assumptions of general linear models can be divided into two general areas.\n\n3 Assumptions about the Formula\n\nCorrect Functional Form\nPerfectly Measured Preditors\nNo Collinearity/Multicollinearity\n\n\n\n4 Assumptions about the Residuals\n\nConstant Error Variance\nIndepedence of Residuals\nNormality of Residuals"
   },
   {
     "objectID": "linear-models.html",
@@ -40,12 +33,5 @@
     "title": "4  Summary",
     "section": "",
     "text": "In summary, this book has no content whatsoever.\n\n1 + 1\n\n[1] 2"
-  },
-  {
-    "objectID": "references.html",
-    "href": "references.html",
-    "title": "References",
-    "section": "",
-    "text": "Knuth, Donald E. 1984. “Literate Programming.” Comput.\nJ. 27 (2): 97–111. https://doi.org/10.1093/comjnl/27.2.97."
   }
 ]

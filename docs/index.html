@@ -21,40 +21,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
@@ -109,7 +75,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">Preface</a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">Welcome</a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -145,7 +111,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Preface</span></a>
+ <span class="menu-text">Welcome</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -188,7 +154,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#preface" id="toc-preface" class="nav-link active" data-scroll-target="#preface">Preface</a></li>
+  <li><a href="#welcome" id="toc-welcome" class="nav-link active" data-scroll-target="#welcome">Welcome</a></li>
+  <li><a href="#about-the-authors" id="toc-about-the-authors" class="nav-link" data-scroll-target="#about-the-authors">About the Authors</a></li>
+  <li><a href="#funding" id="toc-funding" class="nav-link" data-scroll-target="#funding">Funding</a></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://www.github.com/affcomlab/learn-glms/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
@@ -213,17 +181,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="preface" class="level1 unnumbered">
-<h1 class="unnumbered">Preface</h1><p><img src="cover.png" title="Introduction to Generalized Linear Modeling" class="quarto-cover-image img-fluid"></p>
-<p>This is a Quarto book.</p>
-<p>To learn more about Quarto books visit <a href="https://quarto.org/docs/books" class="uri">https://quarto.org/docs/books</a>.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">+</span> <span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 2</code></pre>
-</div>
-</div>
-<p>This goal of this <i> R bookdown </i> is to create a set of open-source online modules to broaden the range of statistical models taught in graduate psychology programs beyond the standard models of ANOVA and multiple regression. These modules will act as a foundation for students to harness the flexibility of Generalized Linear Models (GLMs) across many common situations in applied research. We contend that the inherent issue that plagues adoption of GLMs in psychology stems from traditional teaching of GLMs which has not stressed how the importance of the shape and nature of the outcome distributions affects the choice of link functions.</p>
+<section id="welcome" class="level1 unnumbered">
+<h1 class="unnumbered">Welcome</h1><p><img src="cover.png" title="Introduction to Generalized Linear Modeling" class="quarto-cover-image img-fluid"></p>
+<p>Welcome to <b> learn-glms.com </b>. This goal of this website is to create a set of open-source online modules to broaden the range of statistical models taught in graduate psychology programs beyond the standard models of ANOVA and multiple regression. These modules will act as a foundation for students to harness the flexibility of Generalized Linear Models (GLMs) across many common situations in applied research. We contend that the inherent issue that plagues adoption of GLMs in psychology stems from traditional teaching of GLMs which has not stressed how the importance of the shape and nature of the outcome distributions affects the choice of link functions.</p>
+</section>
+<section id="about-the-authors" class="level1 unnumbered">
+<h1 class="unnumbered">About the Authors</h1>
+<p>Aaron Matthew Simmons is a PhD student in the Brain, Behavior, and Quantitative Science program at the University of Kansas and a core member of Dr.&nbsp;Jeffrey Girard’s research lab. His research interests focus on Bayesian statistics, latent variable modeling, scale development, and how new modeling frameworks can be leveraged to study a wide range of cognitive and behavioral phenomena.</p>
+<p>Dr.&nbsp;Jeffrey Girard is a recognized expert in quantitative methods and directs both the Brain, Behavior, and Quantitative Science doctoral program at the University of Kansas and the Kansas Data Science Consortium (a state-wide collaboration of data science educators funded as part of a large NSF EPSCoR grant). He has extensive experience teaching graduate-level statistics at the University of Kansas and is one of the three co-founders (and primary instructors) of the Statistics, Methods, and Research Training (SMaRT) Workshops limited liability company, which teaches quantitative workshops to hundreds of trainee and professional researchers each year. Most relevant to this project are his expertise in generalized linear (mixed) modeling, frequentist and Bayesian estimation, the R programming language, the Quarto scientific and technical publishing system, the Git version control system, and the GitHub Pages web-hosting platform.</p>
+</section>
+<section id="funding" class="level1 unnumbered">
+<h1 class="unnumbered">Funding</h1>
+<p>These materials were made possible by funding from the APS Fund for Teaching and Public Understanding of Psychological Science. You can read more about the fund [here] (https://www.psychologicalscience.org/members/teaching/fund).</p>
 
 
 </section>

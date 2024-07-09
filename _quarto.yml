@@ -37,5 +37,21 @@ format:
     code-link: true
     author-meta: "Aaron Matthew Simmons and Jeffrey M. Girard"
 
+website:
+  sidebar:
+    style: "docked"
+    search: true
+    contents:
+      - text: "Preface"
+        href: index.qmd
+      - section: "Introduction"
+        href: intro.qmd
+        contents:
+          - regression-review.qmd
+          - linear-models.qmd
+      - section: "Generalized Linear Models"
+        contents:
+          - summary.qmd
+      - references.qmd
 
 

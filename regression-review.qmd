@@ -2,7 +2,7 @@
 title: "RegressionReview"
 ---
 
-Before jumping into generalized linear models (GLMs), it is important to recap important foundations of general linear models, such as linear and multiple regression. The key is to realize that generalized linear models attempt to perform model fitting when assumptions of linear regression no longer hold or are unreasonable. 
+Before jumping into generalized linear models (GLMs), it is important to recap important foundations of general linear models, such as linear regression. The key is to realize that generalized linear models attempt to perform model fitting when assumptions of linear regression no longer hold or are unreasonable. 
 
 ```{r}
 1 + 1
@@ -10,13 +10,13 @@ Before jumping into generalized linear models (GLMs), it is important to recap i
 
 The six assumptions of general linear models can be divided into two general areas. 
 
-## Assumptions about the Formula
+# Assumptions about the Formula
 
   - Correct Functional Form
   - Perfectly Measured Preditors
   - No Collinearity/Multicollinearity 
 
-## Assumptions about the Residuals
+# Assumptions about the Residuals
 
   - Constant Error Variance
   - Indepedence of Residuals
