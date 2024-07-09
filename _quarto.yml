@@ -7,7 +7,6 @@ execute:
 
 book:
   title: "Introduction to Generalized Linear Modeling"
-  reader-mode: true
   page-footer: 
     left: |
       Introduction to Generalized Linear Modeling was written by
