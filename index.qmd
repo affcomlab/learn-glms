@@ -10,7 +10,7 @@ This goal of this website is to create a set of open-source online modules to br
 
 # Funding {.unnumbered} 
 
-These materials were made possible by funding from the APS Fund for Teaching and Public Understanding of Psychological Science. You can read more about the fund [here] (https://www.psychologicalscience.org/members/teaching/fund)
+These materials were made possible by funding from the APS Fund for Teaching and Public Understanding of Psychological Science. You can read more about the fund [here](https://www.psychologicalscience.org/members/teaching/fund)
 
 # This is a Quarto book.
 
