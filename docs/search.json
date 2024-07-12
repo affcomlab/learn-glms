@@ -54,5 +54,33 @@
     "title": "Appendix A — Appendix",
     "section": "",
     "text": "You can download the data and worksheets here."
+  },
+  {
+    "objectID": "intro.html#overview",
+    "href": "intro.html#overview",
+    "title": "1  Introduction",
+    "section": "1.1 Overview",
+    "text": "1.1 Overview\nThese materials focus on conceptual foundations of generalized linear modeling (GLMs), specifying them, and interpreting the results. Topics include __________."
+  },
+  {
+    "objectID": "intro.html#goals",
+    "href": "intro.html#goals",
+    "title": "1  Introduction",
+    "section": "1.2 Goals",
+    "text": "1.2 Goals"
+  },
+  {
+    "objectID": "intro.html#prequisites",
+    "href": "intro.html#prequisites",
+    "title": "1  Introduction",
+    "section": "1.3 Prequisites",
+    "text": "1.3 Prequisites\nReaders should be comfortable with multiple linear regression, including building regression models, interpreting regression output, and testing for and interpreting regression coefficients including interactions. The first module can be used to test for preparedness. We recommend UCLA’s Statistical Methods and Data Analytics resources and online seminars for a more in-depth review: https://stats.oarc.ucla.edu/other/mult-pkg/seminars/\nOur modules will utilize the  glm  function in the stats base R package, or the glmmTMB package, for fitting GLMs. We refer readers to the glmmTMB package documentation for further information."
+  },
+  {
+    "objectID": "intro.html#materials",
+    "href": "intro.html#materials",
+    "title": "1  Introduction",
+    "section": "1.4 Materials",
+    "text": "1.4 Materials\nAll materials are available for download in the appendix. The following are available for download:\n\nData: the data used in each chapter\nR Script: an R script of the code used in each chapter\nWorksheet: a worksheet with questions that follows a similar structure to each chapter, but without answers provided\n\nWe recommend that people self-studying download the data and R script and following along with the code and output interpretations in each chapter. Instructors can benefit from downloading the data, code, and worksheets for use in a lab portion in their classes."
   }
 ]

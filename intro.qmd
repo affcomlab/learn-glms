@@ -1,11 +1,23 @@
 # Introduction
 
-This is a book created from markdown and executable code.
+## Overview
 
-See @knuth84 for additional discussion of literate programming.
+These materials focus on conceptual foundations of generalized linear modeling (GLMs), specifying them, and interpreting the results. Topics include __________.
 
-TEST TEST TEST
+## Goals
 
-```{r}
-1 + 1
-```
+## Prequisites 
+
+Readers should be comfortable with multiple linear regression, including building regression models, interpreting regression output, and testing for and interpreting regression coefficients including interactions. The first module can be used to test for preparedness. We recommend UCLA’s Statistical Methods and Data Analytics resources and online seminars for a more in-depth review: https://stats.oarc.ucla.edu/other/mult-pkg/seminars/
+
+Our modules will utilize the <i> glm </i> function in the `stats` base R package, or the `glmmTMB` package, for fitting GLMs. We refer readers to the [`glmmTMB` package documentation](https://cran.r-project.org/web/packages/glmmTMB/glmmTMB.pdf) for further information. 
+
+## Materials
+
+All materials are available for download in the appendix. The following are available for download:
+
+  - Data: the data used in each chapter
+  - R Script: an R script of the code used in each chapter
+  - Worksheet: a worksheet with questions that follows a similar structure to each chapter, but without answers provided
+
+We recommend that people self-studying download the data and R script and following along with the code and output interpretations in each chapter. Instructors can benefit from downloading the data, code, and worksheets for use in a lab portion in their classes.
