@@ -1,23 +1,141 @@
 ---
-title: "RegressionReview"
+title: "Regression Recap"
+format: html
 ---
 
-Before jumping into generalized linear models (GLMs), it is important to recap important foundations of general linear models, such as linear and multiple regression. The key is to realize that generalized linear models attempt to perform model fitting when assumptions of linear regression no longer hold or are unreasonable. 
+Before jumping into generalized linear models (GLMs), we will recap important foundations of general linear models, such as simple and multiple regression. The key is that generalized linear models are useful when assumptions of general linear models no longer hold or are unreasonable.
 
-```{r}
-1 + 1
+## Data Demonstration
+
+In this data demo, we will first review loading <i>R</i> packages and data, then simple and multiple linear regression.
+
+The data for this chapter is toy data about academic performance after obtaining a Ph.D. including salary information. It is composed of both continuous and categorical variables.
+
+-   Data: <a href="./yearspub.csv" download> yearspub.csv </a>
+
+| Variable    | Description                     |     Values | Measurement |
+|-------------|:--------------------------------|-----------:|:-----------:|
+| `yrs_since` | Years since obtaining Ph.D.     |    Integer |    Scale    |
+| `n_cites`   | Number of Academic Citations    |    Integer |    Scale    |
+| `salary`    | Current Salary Figures          |    Integer |    Scale    |
+| `n_pubs`    | Number of Academic Publications |    Integer |    Scale    |
+| `sex`       | Male or Female                  | Characters |   Nominal   |
+
+### Loading the Packages and Reading in Data
+
+In <i>R</i>, packages must be installed before using them. Once installed, then they can be activated in session with the `library()` command.
+
+```{r, warning = FALSE, message=FALSE}
+## Load packages
+library(tidyverse)
+library(easystats)
+library(ggeffects)
+
+## Read in data from file
+yearspubs <- read_csv("yearspubs.csv")
+
 ```
 
-The six assumptions of general linear models can be divided into two general areas. 
+### Prepare Data / Exploratory Data Analysis
+
+It is always a good first step to plot data prior to fitting any model. Here, we consider the relationship between `years_since_phd` and `salary`. Notice that, for the most part, we can see a linear relationship such that salary tends to increase with the number of additional years after obtaining a Ph.D.
+
+```{r}
+## Explore salary-seniority relationship
+ggplot(data = yearspubs, mapping = aes(x = years_since_phd, y = salary)) + 
+  geom_point()
+```
+
+When we move to the multiple regression section, it is advantageous to recode the `sex` variable into a factor (i.e., as a categorical variable). We can make use of the `factor()` function for this purpose. 
+
+```{r}
+yearspubs$sex <- factor(yearspubs$sex, c("female","male"))
+```
+
+### Simple Regression Example
+
+Now, we will fit a simple linear regression that regresses `salary` on `years_since_phd` using the `lm()` function, and consider the results output.
+
+```{r}
+
+## Fit linear model and print parameters
+fit <- lm(
+  formula = salary ~ years_since_phd,
+  data = yearspubs
+)
+model_parameters(fit) |> print_md()
+
+```
+
+This simple regression line is defined by the formula:
+
+$$ y_{\hat{i}} = \beta_0 + \beta_1 x $$
+
+
+#### Parameter Table
+
+From the results output, we can assess each parameter:
+
+-   The `intercept` ($\beta_0$) is the estimated salary for a professor with zero years since PhD: \$45113.71, 95% CI: \[\$40114.89, 50112.53\]. This is significantly different from zero (<i>p</i> \< 0.001).
+
+-   The coefficient for `years_since_phd` ($\beta_1$) is \$1400.94, 95% CI: \[\$783.12, \$2018.77\]. Therefore, for every additional year of since PhD was associated with an increase of \$783.12 to \$2018.77. This zero-order effect (since it is the only predictor variable) is significantly different from zero (<i>p</i> \< 0.001) at \$1400.94.
+
+#### Effect Sizes
+
+By standardizing the data and then refitting the data, we can calculate the effect size of the `years_since_phd`.
+
+```{r}
+## Calculate effect sizes by standardizing
+standardize_parameters(fit) |> print_md()
+
+```
+
+Using Cohen's <i>D</i> guidelines, d = 0.51 which is a medium sized effect.
+
+#### Model Performance
+
+One purpose of model fitting is to demonstrate accurate <i>predictions</i> -- given a new X, can we reasonably predict a new Y? (This is slightly opposed to <i>inference</i>, which is how well these models explain the data).
+
+Three popular metrics of model fit performance in service of prediction are adjusted R\^2, AIC, and BIC.
+
+```{r}
+## Calculate model performance indices
+model_performance(fit) |> print_md()
+
+```
+
+When comparing models, a higher adjusted R\^2 is a better fit, and a lower AIC/BIC is a better fit. Here, we aren't comparing two competing models, but it is easy to obtain these metrics with our packages.
+
+#### Ploting Model Predictions
+
+Lastly, the model predictions are easy to plot with `predict_response`. The grey bands show our uncertainty along the best fit line, and you can incorporate data into the plot as well with `show_data = TRUE`. These plots visualize the parameter estimates we assessed earlier in the parameter tables.
+
+```{r}
+## Plot model-based predictions
+predict_response(fit, terms = "years_since_phd") |> plot()
+predict_response(fit, terms = "years_since_phd") |> plot(show_data = TRUE)
+```
+
+### Multiple Regression Example 
+
+Now, we will fit a multiple linear regression that regresses `salary` and `sex` on `years_since_phd` using the `lm()` function, and consider the results output.
+
+This multiple regression is defined by the formula:
+
+$$ y_{\hat{i}} = \beta_0 + \beta_1 x_1 + \beta_2 x_2 $$
+
+# Assumptions
+
+The six assumptions of general linear models can be divided into two general areas.
 
 ## Assumptions about the Formula
 
-  - Correct Functional Form
-  - Perfectly Measured Preditors
-  - No Collinearity/Multicollinearity 
+-   Correct Functional Form
+-   Perfectly Measured Preditors
+-   No Collinearity/Multicollinearity
 
 ## Assumptions about the Residuals
 
-  - Constant Error Variance
-  - Indepedence of Residuals
-  - Normality of Residuals 
+-   Constant Error Variance
+-   Indepedence of Residuals
+-   Normality of Residuals

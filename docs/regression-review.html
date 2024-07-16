@@ -8,7 +8,7 @@
 
 <meta name="author" content="Aaron Matthew Simmons and Jeffrey M. Girard">
 
-<title>Introduction to Generalized Linear Modeling - 2&nbsp; RegressionReview</title>
+<title>Introduction to Generalized Linear Modeling - 2&nbsp; Regression Recap</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -97,6 +97,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 </head>
 
@@ -122,7 +124,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./regression-review.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">RegressionReview</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./regression-review.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Regression Recap</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -157,7 +159,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./regression-review.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">RegressionReview</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Regression Recap</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -205,8 +207,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#assumptions-about-the-formula" id="toc-assumptions-about-the-formula" class="nav-link active" data-scroll-target="#assumptions-about-the-formula"><span class="header-section-number">2.1</span> Assumptions about the Formula</a></li>
-  <li><a href="#assumptions-about-the-residuals" id="toc-assumptions-about-the-residuals" class="nav-link" data-scroll-target="#assumptions-about-the-residuals"><span class="header-section-number">2.2</span> Assumptions about the Residuals</a></li>
+  <li><a href="#data-demonstration" id="toc-data-demonstration" class="nav-link active" data-scroll-target="#data-demonstration"><span class="header-section-number">2.1</span> Data Demonstration</a>
+  <ul class="collapse">
+  <li><a href="#loading-the-packages-and-reading-in-data" id="toc-loading-the-packages-and-reading-in-data" class="nav-link" data-scroll-target="#loading-the-packages-and-reading-in-data"><span class="header-section-number">2.1.1</span> Loading the Packages and Reading in Data</a></li>
+  <li><a href="#prepare-data-exploratory-data-analysis" id="toc-prepare-data-exploratory-data-analysis" class="nav-link" data-scroll-target="#prepare-data-exploratory-data-analysis"><span class="header-section-number">2.1.2</span> Prepare Data / Exploratory Data Analysis</a></li>
+  <li><a href="#simple-regression-example" id="toc-simple-regression-example" class="nav-link" data-scroll-target="#simple-regression-example"><span class="header-section-number">2.1.3</span> Simple Regression Example</a></li>
+  <li><a href="#multiple-regression-example" id="toc-multiple-regression-example" class="nav-link" data-scroll-target="#multiple-regression-example"><span class="header-section-number">2.1.4</span> Multiple Regression Example</a></li>
+  </ul></li>
+  <li><a href="#assumptions" id="toc-assumptions" class="nav-link" data-scroll-target="#assumptions"><span class="header-section-number">3</span> Assumptions</a>
+  <ul class="collapse">
+  <li><a href="#assumptions-about-the-formula" id="toc-assumptions-about-the-formula" class="nav-link" data-scroll-target="#assumptions-about-the-formula"><span class="header-section-number">3.1</span> Assumptions about the Formula</a></li>
+  <li><a href="#assumptions-about-the-residuals" id="toc-assumptions-about-the-residuals" class="nav-link" data-scroll-target="#assumptions-about-the-residuals"><span class="header-section-number">3.2</span> Assumptions about the Residuals</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://www.github.com/affcomlab/learn-glms/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
@@ -215,7 +227,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">RegressionReview</span></h1>
+<h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Regression Recap</span></h1>
 </div>
 
 
@@ -230,24 +242,262 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
-<p>Before jumping into generalized linear models (GLMs), it is important to recap important foundations of general linear models, such as linear and multiple regression. The key is to realize that generalized linear models attempt to perform model fitting when assumptions of linear regression no longer hold or are unreasonable.</p>
+<p>Before jumping into generalized linear models (GLMs), we will recap important foundations of general linear models, such as simple and multiple regression. The key is that generalized linear models are useful when assumptions of general linear models no longer hold or are unreasonable.</p>
+<section id="data-demonstration" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="data-demonstration"><span class="header-section-number">2.1</span> Data Demonstration</h2>
+<p>In this data demo, we will first review loading <i>R</i> packages and data, then simple and multiple linear regression.</p>
+<p>The data for this chapter is toy data about academic performance after obtaining a Ph.D.&nbsp;including salary information. It is composed of both continuous and categorical variables.</p>
+<ul>
+<li>Data: <a href="./yearspub.csv" download=""> yearspub.csv </a></li>
+</ul>
+<table class="table">
+<colgroup>
+<col style="width: 18%">
+<col style="width: 46%">
+<col style="width: 16%">
+<col style="width: 18%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Variable</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: right;">Values</th>
+<th style="text-align: center;">Measurement</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>yrs_since</code></td>
+<td style="text-align: left;">Years since obtaining Ph.D.</td>
+<td style="text-align: right;">Integer</td>
+<td style="text-align: center;">Scale</td>
+</tr>
+<tr class="even">
+<td><code>n_cites</code></td>
+<td style="text-align: left;">Number of Academic Citations</td>
+<td style="text-align: right;">Integer</td>
+<td style="text-align: center;">Scale</td>
+</tr>
+<tr class="odd">
+<td><code>salary</code></td>
+<td style="text-align: left;">Current Salary Figures</td>
+<td style="text-align: right;">Integer</td>
+<td style="text-align: center;">Scale</td>
+</tr>
+<tr class="even">
+<td><code>n_pubs</code></td>
+<td style="text-align: left;">Number of Academic Publications</td>
+<td style="text-align: right;">Integer</td>
+<td style="text-align: center;">Scale</td>
+</tr>
+<tr class="odd">
+<td><code>sex</code></td>
+<td style="text-align: left;">Male or Female</td>
+<td style="text-align: right;">Characters</td>
+<td style="text-align: center;">Nominal</td>
+</tr>
+</tbody>
+</table>
+<section id="loading-the-packages-and-reading-in-data" class="level3" data-number="2.1.1">
+<h3 data-number="2.1.1" class="anchored" data-anchor-id="loading-the-packages-and-reading-in-data"><span class="header-section-number">2.1.1</span> Loading the Packages and Reading in Data</h3>
+<p>In <i>R</i>, packages must be installed before using them. Once installed, then they can be activated in session with the <code>library()</code> command.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">+</span> <span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 2</code></pre>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Load packages</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(easystats)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggeffects)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="do">## Read in data from file</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>yearspubs <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"yearspubs.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="prepare-data-exploratory-data-analysis" class="level3" data-number="2.1.2">
+<h3 data-number="2.1.2" class="anchored" data-anchor-id="prepare-data-exploratory-data-analysis"><span class="header-section-number">2.1.2</span> Prepare Data / Exploratory Data Analysis</h3>
+<p>It is always a good first step to plot data prior to fitting any model. Here, we consider the relationship between <code>years_since_phd</code> and <code>salary</code>. Notice that, for the most part, we can see a linear relationship such that salary tends to increase with the number of additional years after obtaining a Ph.D.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Explore salary-seniority relationship</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> yearspubs, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> years_since_phd, <span class="at">y =</span> salary)) <span class="sc">+</span> </span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="regression-review_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
+<p>When we move to the multiple regression section, it is advantageous to recode the <code>sex</code> variable into a factor (i.e., as a categorical variable). We can make use of the <code>factor()</code> function for this purpose.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>yearspubs<span class="sc">$</span>sex <span class="ot">&lt;-</span> <span class="fu">factor</span>(yearspubs<span class="sc">$</span>sex, <span class="fu">c</span>(<span class="st">"female"</span>,<span class="st">"male"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="simple-regression-example" class="level3" data-number="2.1.3">
+<h3 data-number="2.1.3" class="anchored" data-anchor-id="simple-regression-example"><span class="header-section-number">2.1.3</span> Simple Regression Example</h3>
+<p>Now, we will fit a simple linear regression that regresses <code>salary</code> on <code>years_since_phd</code> using the <code>lm()</code> function, and consider the results output.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Fit linear model and print parameters</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> salary <span class="sc">~</span> years_since_phd,</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> yearspubs</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 21%">
+<col style="width: 17%">
+<col style="width: 12%">
+<col style="width: 29%">
+<col style="width: 9%">
+<col style="width: 10%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Parameter</th>
+<th style="text-align: center;">Coefficient</th>
+<th style="text-align: center;">SE</th>
+<th style="text-align: center;">95% CI</th>
+<th style="text-align: center;">t(60)</th>
+<th style="text-align: center;">p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: center;">45625.47</td>
+<td style="text-align: center;">2473.12</td>
+<td style="text-align: center;">(40678.49, 50572.46)</td>
+<td style="text-align: center;">18.45</td>
+<td style="text-align: center;">&lt; .001</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">years since phd</td>
+<td style="text-align: center;">1400.94</td>
+<td style="text-align: center;">308.87</td>
+<td style="text-align: center;">(783.12, 2018.77)</td>
+<td style="text-align: center;">4.54</td>
+<td style="text-align: center;">&lt; .001</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>This simple regression line is defined by the formula:</p>
+<p><span class="math display">\[ y_{\hat{i}} = \beta_0 + \beta_1 x \]</span></p>
+<section id="parameter-table" class="level4" data-number="2.1.3.1">
+<h4 data-number="2.1.3.1" class="anchored" data-anchor-id="parameter-table"><span class="header-section-number">2.1.3.1</span> Parameter Table</h4>
+<p>From the results output, we can assess each parameter:</p>
+<ul>
+<li><p>The <code>intercept</code> (<span class="math inline">\(\beta_0\)</span>) is the estimated salary for a professor with zero years since PhD: $45113.71, 95% CI: [$40114.89, 50112.53]. This is significantly different from zero (<i>p</i> &lt; 0.001).</p></li>
+<li><p>The coefficient for <code>years_since_phd</code> (<span class="math inline">\(\beta_1\)</span>) is $1400.94, 95% CI: [$783.12, $2018.77]. Therefore, for every additional year of since PhD was associated with an increase of $783.12 to $2018.77. This zero-order effect (since it is the only predictor variable) is significantly different from zero (<i>p</i> &lt; 0.001) at $1400.94.</p></li>
+</ul>
+</section>
+<section id="effect-sizes" class="level4" data-number="2.1.3.2">
+<h4 data-number="2.1.3.2" class="anchored" data-anchor-id="effect-sizes"><span class="header-section-number">2.1.3.2</span> Effect Sizes</h4>
+<p>By standardizing the data and then refitting the data, we can calculate the effect size of the <code>years_since_phd</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Calculate effect sizes by standardizing</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">standardize_parameters</span>(fit) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<caption># Standardization method: refit</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Parameter</th>
+<th style="text-align: right;">Std. Coef.</th>
+<th style="text-align: left;">95% CI</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">2.30e-16</td>
+<td style="text-align: left;">[-0.22, 0.22]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">years_since_phd</td>
+<td style="text-align: right;">0.51</td>
+<td style="text-align: left;">[ 0.28, 0.73]</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Using Cohen’s <i>D</i> guidelines, d = 0.51 which is a medium sized effect.</p>
+</section>
+<section id="model-performance" class="level4" data-number="2.1.3.3">
+<h4 data-number="2.1.3.3" class="anchored" data-anchor-id="model-performance"><span class="header-section-number">2.1.3.3</span> Model Performance</h4>
+<p>One purpose of model fitting is to demonstrate accurate <i>predictions</i> – given a new X, can we reasonably predict a new Y? (This is slightly opposed to <i>inference</i>, which is how well these models explain the data).</p>
+<p>Three popular metrics of model fit performance in service of prediction are adjusted R^2, AIC, and BIC.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Calculate model performance indices</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">model_performance</span>(fit) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<caption>Indices of model performance</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">AIC</th>
+<th style="text-align: center;">AICc</th>
+<th style="text-align: center;">BIC</th>
+<th style="text-align: center;">R2</th>
+<th style="text-align: center;">R2 (adj.)</th>
+<th style="text-align: center;">RMSE</th>
+<th style="text-align: center;">Sigma</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">1325.90</td>
+<td style="text-align: center;">1326.31</td>
+<td style="text-align: center;">1332.28</td>
+<td style="text-align: center;">0.26</td>
+<td style="text-align: center;">0.24</td>
+<td style="text-align: center;">10151.69</td>
+<td style="text-align: center;">10319.50</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>When comparing models, a higher adjusted R^2 is a better fit, and a lower AIC/BIC is a better fit. Here, we aren’t comparing two competing models, but it is easy to obtain these metrics with our packages.</p>
+</section>
+<section id="ploting-model-predictions" class="level4" data-number="2.1.3.4">
+<h4 data-number="2.1.3.4" class="anchored" data-anchor-id="ploting-model-predictions"><span class="header-section-number">2.1.3.4</span> Ploting Model Predictions</h4>
+<p>Lastly, the model predictions are easy to plot with <code>predict_response</code>. The grey bands show our uncertainty along the best fit line, and you can incorporate data into the plot as well with <code>show_data = TRUE</code>. These plots visualize the parameter estimates we assessed earlier in the parameter tables.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Plot model-based predictions</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">predict_response</span>(fit, <span class="at">terms =</span> <span class="st">"years_since_phd"</span>) <span class="sc">|&gt;</span> <span class="fu">plot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="regression-review_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict_response</span>(fit, <span class="at">terms =</span> <span class="st">"years_since_phd"</span>) <span class="sc">|&gt;</span> <span class="fu">plot</span>(<span class="at">show_data =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Data points may overlap. Use the `jitter` argument to add some amount of
+  random variation to the location of data points and avoid overplotting.</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="regression-review_files/figure-html/unnamed-chunk-7-2.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+</section>
+<section id="multiple-regression-example" class="level3" data-number="2.1.4">
+<h3 data-number="2.1.4" class="anchored" data-anchor-id="multiple-regression-example"><span class="header-section-number">2.1.4</span> Multiple Regression Example</h3>
+<p>Now, we will fit a multiple linear regression that regresses <code>salary</code> and <code>sex</code> on <code>years_since_phd</code> using the <code>lm()</code> function, and consider the results output.</p>
+<p>This multiple regression is defined by the formula:</p>
+<p><span class="math display">\[ y_{\hat{i}} = \beta_0 + \beta_1 x_1 + \beta_2 x_2 \]</span></p>
+</section>
+</section>
+<section id="assumptions" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Assumptions</h1>
 <p>The six assumptions of general linear models can be divided into two general areas.</p>
-<section id="assumptions-about-the-formula" class="level2" data-number="2.1">
-<h2 data-number="2.1" class="anchored" data-anchor-id="assumptions-about-the-formula"><span class="header-section-number">2.1</span> Assumptions about the Formula</h2>
+<section id="assumptions-about-the-formula" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="assumptions-about-the-formula"><span class="header-section-number">3.1</span> Assumptions about the Formula</h2>
 <ul>
 <li>Correct Functional Form</li>
 <li>Perfectly Measured Preditors</li>
 <li>No Collinearity/Multicollinearity</li>
 </ul>
 </section>
-<section id="assumptions-about-the-residuals" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="assumptions-about-the-residuals"><span class="header-section-number">2.2</span> Assumptions about the Residuals</h2>
+<section id="assumptions-about-the-residuals" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="assumptions-about-the-residuals"><span class="header-section-number">3.2</span> Assumptions about the Residuals</h2>
 <ul>
 <li>Constant Error Variance</li>
 <li>Indepedence of Residuals</li>
@@ -255,6 +505,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

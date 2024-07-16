@@ -10,7 +10,20 @@ These materials focus on conceptual foundations of generalized linear modeling (
 
 Readers should be comfortable with multiple linear regression, including building regression models, interpreting regression output, and testing for and interpreting regression coefficients including interactions. The first module can be used to test for preparedness. We recommend UCLA’s Statistical Methods and Data Analytics resources and online seminars for a more in-depth review: https://stats.oarc.ucla.edu/other/mult-pkg/seminars/
 
-Our modules will utilize the <i> glm </i> function in the `stats` base R package, or the `glmmTMB` package, for fitting GLMs. We refer readers to the [`glmmTMB` package documentation](https://cran.r-project.org/web/packages/glmmTMB/glmmTMB.pdf) for further information. 
+In addition, readers should also be comfortable with foundational concepts in statistics like sampling distributions, Null Hypothesis Significance Testing (NHST), and p-values. 
+
+## <i> R </i>  Packages
+
+These modules will use a variety of <i> R </i> packages which can be installed through the <i> R </i> CRAN network. We encourage readers to become familiar with the syntax of these packages through documentations pages, which we also supply here. We appreciate these packages because they help to visualization and clarity to model outputs.
+
+  - `easystats`: An R framework for easy statistical modeling, visualization, and reporting. [`easystats` package documentation](https://cran.r-project.org/web/packages/easystats/easystats.pdf)
+  
+  - `tidyverse`: A collection of <i> R </i> packages designed for data science. [`tidyverse` package documentation](https://cran.r-project.org/web/packages/tidyverse/tidyverse.pdf)
+  
+  - `ggeffects`: Estimated Marginal Means and Adjusted Predictions from Regression Models. [`ggeffects` package documentation](https://cran.r-project.org/web/packages/ggeffects/ggeffects.pdf)
+  
+For GLM model fitting, modules will utilize the <i> glm </i> function in the `stats` base R package, or the `glmmTMB` package, for fitting GLMs. We refer readers to the [`glmmTMB` package documentation](https://cran.r-project.org/web/packages/glmmTMB/glmmTMB.pdf) for further information. 
+
 
 ## Materials
 
