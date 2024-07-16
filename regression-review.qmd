@@ -118,11 +118,51 @@ predict_response(fit, terms = "years_since_phd") |> plot(show_data = TRUE)
 
 ### Multiple Regression Example 
 
-Now, we will fit a multiple linear regression that regresses `salary` and `sex` on `years_since_phd` using the `lm()` function, and consider the results output.
+Now, we will fit a multiple linear regression that regresses `salary` and `sex` on `years_since_phd` using the `lm()` function, and consider the results/output.
+
+```{r}
+## Fit linear model and print parameters
+fit2 <- lm(
+  formula = salary ~ years_since_phd + sex,
+  data = yearspubs
+)
+model_parameters(fit2) |> print_md()
+
+```
 
 This multiple regression is defined by the formula:
 
 $$ y_{\hat{i}} = \beta_0 + \beta_1 x_1 + \beta_2 x_2 $$
+
+#### Estimating Means
+
+Recall that prior to fitting the multiple regression, we changed `sex` into a categorical variable using the `factor()` function. This is an example of <i>dummy coding</i>. Therefore, once we fit the multiple regression we were able to separate response values based on different factor levels.
+
+In the case of `sex`, we have a binary categorical variable, so we can obtain average values of `salary` at each level of sex while also accounting for (i.e. controlling for) the (partial) effect of `years_since_phd`. 
+
+We will use the `estimate_means()` function to accomplish this. 
+
+```{r}
+gmeans <- estimate_means(fit2, by = "sex")
+gmeans |> print_md()
+
+```
+
+We can also create a plot to visualize the means. 
+```{r}
+plot(gmeans)
+```
+
+We can now more easily see that, across all `years_since_phd` values, male academics earn on average <i>more</i> salary than women academics. However, as the plot shows, there is variability within each factor level. 
+
+To see if this apparent difference of average salary between male and female academics is statistically significant, we can perform a <i>contrast</i>. 
+
+```{r}
+contrasts <- estimate_contrasts(fit2, contrast = "sex")
+contrasts |> print_md()
+```
+
+Therefore, there is no statistically significant difference in means across `years_since_phd` between male and female academics, <i>p</i> = 0.130
 
 # Assumptions
 

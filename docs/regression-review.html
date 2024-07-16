@@ -480,9 +480,154 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="multiple-regression-example" class="level3" data-number="2.1.4">
 <h3 data-number="2.1.4" class="anchored" data-anchor-id="multiple-regression-example"><span class="header-section-number">2.1.4</span> Multiple Regression Example</h3>
-<p>Now, we will fit a multiple linear regression that regresses <code>salary</code> and <code>sex</code> on <code>years_since_phd</code> using the <code>lm()</code> function, and consider the results output.</p>
+<p>Now, we will fit a multiple linear regression that regresses <code>salary</code> and <code>sex</code> on <code>years_since_phd</code> using the <code>lm()</code> function, and consider the results/output.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Fit linear model and print parameters</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>fit2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> salary <span class="sc">~</span> years_since_phd <span class="sc">+</span> sex,</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> yearspubs</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit2) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 21%">
+<col style="width: 17%">
+<col style="width: 12%">
+<col style="width: 29%">
+<col style="width: 9%">
+<col style="width: 10%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Parameter</th>
+<th style="text-align: center;">Coefficient</th>
+<th style="text-align: center;">SE</th>
+<th style="text-align: center;">95% CI</th>
+<th style="text-align: center;">t(59)</th>
+<th style="text-align: center;">p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: center;">43989.01</td>
+<td style="text-align: center;">2667.12</td>
+<td style="text-align: center;">(38652.12, 49325.91)</td>
+<td style="text-align: center;">16.49</td>
+<td style="text-align: center;">&lt; .001</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">years since phd</td>
+<td style="text-align: center;">1300.30</td>
+<td style="text-align: center;">312.36</td>
+<td style="text-align: center;">(675.28, 1925.32)</td>
+<td style="text-align: center;">4.16</td>
+<td style="text-align: center;">&lt; .001</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">sex (male)</td>
+<td style="text-align: center;">4109.49</td>
+<td style="text-align: center;">2673.09</td>
+<td style="text-align: center;">(-1239.35, 9458.34)</td>
+<td style="text-align: center;">1.54</td>
+<td style="text-align: center;">0.130</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>This multiple regression is defined by the formula:</p>
 <p><span class="math display">\[ y_{\hat{i}} = \beta_0 + \beta_1 x_1 + \beta_2 x_2 \]</span></p>
+<section id="estimating-means" class="level4" data-number="2.1.4.1">
+<h4 data-number="2.1.4.1" class="anchored" data-anchor-id="estimating-means"><span class="header-section-number">2.1.4.1</span> Estimating Means</h4>
+<p>Recall that prior to fitting the multiple regression, we changed <code>sex</code> into a categorical variable using the <code>factor()</code> function. This is an example of <i>dummy coding</i>. Therefore, once we fit the multiple regression we were able to separate response values based on different factor levels.</p>
+<p>In the case of <code>sex</code>, we have a binary categorical variable, so we can obtain average values of <code>salary</code> at each level of sex while also accounting for (i.e.&nbsp;controlling for) the (partial) effect of <code>years_since_phd</code>.</p>
+<p>We will use the <code>estimate_means()</code> function to accomplish this.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>gmeans <span class="ot">&lt;-</span> <span class="fu">estimate_means</span>(fit2, <span class="at">by =</span> <span class="st">"sex"</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>gmeans <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<caption>Estimated Marginal Means</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">sex</th>
+<th style="text-align: left;">Mean</th>
+<th style="text-align: left;">SE</th>
+<th style="text-align: left;">95% CI</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">female</td>
+<td style="text-align: left;">52818.46</td>
+<td style="text-align: left;">1989.11</td>
+<td style="text-align: left;">(48838.27, 56798.66)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">male</td>
+<td style="text-align: left;">56927.96</td>
+<td style="text-align: left;">1742.00</td>
+<td style="text-align: left;">(53442.23, 60413.69)</td>
+</tr>
+</tbody>
+</table>
+<p>Marginal means estimated at sex</p>
+</div>
+</div>
+<p>We can also create a plot to visualize the means.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(gmeans)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="regression-review_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>We can now more easily see that, across all <code>years_since_phd</code> values, male academics earn on average <i>more</i> salary than women academics. However, as the plot shows, there is variability within each factor level.</p>
+<p>To see if this apparent difference of average salary between male and female academics is statistically significant, we can perform a <i>contrast</i>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>contrasts <span class="ot">&lt;-</span> <span class="fu">estimate_contrasts</span>(fit2, <span class="at">contrast =</span> <span class="st">"sex"</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>contrasts <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<caption>Marginal Contrasts Analysis</caption>
+<colgroup>
+<col style="width: 10%">
+<col style="width: 10%">
+<col style="width: 16%">
+<col style="width: 30%">
+<col style="width: 12%">
+<col style="width: 9%">
+<col style="width: 9%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Level1</th>
+<th style="text-align: right;">Level2</th>
+<th style="text-align: right;">Difference</th>
+<th style="text-align: left;">95% CI</th>
+<th style="text-align: left;">SE</th>
+<th style="text-align: left;">t(59)</th>
+<th style="text-align: left;">p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">female</td>
+<td style="text-align: right;">male</td>
+<td style="text-align: right;">-4109.49</td>
+<td style="text-align: left;">(-9458.34, 1239.35)</td>
+<td style="text-align: left;">2673.09</td>
+<td style="text-align: left;">-1.54</td>
+<td style="text-align: left;">0.130</td>
+</tr>
+</tbody>
+</table>
+<p>Marginal contrasts estimated at sex p-value adjustment method: Holm (1979)</p>
+</div>
+</div>
+<p>Therefore, there is no statistically significant difference in means across <code>years_since_phd</code> between male and female academics, <i>p</i> = 0.130</p>
+</section>
 </section>
 </section>
 <section id="assumptions" class="level1" data-number="3">
