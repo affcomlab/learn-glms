@@ -15,7 +15,7 @@ The data for this chapter is toy data about academic performance after obtaining
 
 | Variable    | Description                     |     Values | Measurement |
 |-------------|:--------------------------------|-----------:|:-----------:|
-| `yrs_since` | Years since obtaining Ph.D.     |    Integer |    Scale    |
+| `yrs_since_phd` | Years since obtaining Ph.D.     |    Integer |    Scale    |
 | `n_cites`   | Number of Academic Citations    |    Integer |    Scale    |
 | `salary`    | Current Salary Figures          |    Integer |    Scale    |
 | `n_pubs`    | Number of Academic Publications |    Integer |    Scale    |
@@ -94,7 +94,7 @@ Using Cohen's <i>D</i> guidelines, d = 0.51 which is a medium sized effect.
 
 #### Model Performance
 
-One purpose of model fitting is to demonstrate accurate <i>predictions</i> -- given a new X, can we reasonably predict a new Y? (This is slightly opposed to <i>inference</i>, which is how well these models explain the data).
+One purpose of model fitting is to demonstrate accurate <i>predictions</i> -- given a new X, can we reasonably predict a new Y? (This is different to <i>inference</i>, which is how well these models explain the data).
 
 Three popular metrics of model fit performance in service of prediction are adjusted R\^2, AIC, and BIC.
 
@@ -120,6 +120,7 @@ predict_response(fit, terms = "years_since_phd") |> plot(show_data = TRUE)
 
 Now, we will fit a multiple linear regression that regresses `salary` and `sex` on `years_since_phd` using the `lm()` function, and consider the results/output.
 
+ 
 ```{r}
 ## Fit linear model and print parameters
 fit2 <- lm(
@@ -133,6 +134,11 @@ model_parameters(fit2) |> print_md()
 This multiple regression is defined by the formula:
 
 $$ y_{\hat{i}} = \beta_0 + \beta_1 x_1 + \beta_2 x_2 $$
+Multiple regression, therefore, allows us the ability to control the relationship of multiple predictors on the outcome variable. Statistically "controlling" for a predictors is when the shared variance between predictors is accounted for/removed so that the unique effect of any one predictor variable on the outcome variable is estimated. We then can ask the following questions:
+
+  - What is the relationship between $x_1$ and $y$ if we hold $x2$ at a constant value? e.g., What is the salary difference between prof A (woman, 10 years) and prof B (woman, 11 years)? 
+  
+  - If we already know $x2$, how much does learning about $x1$ change our prediction of $y$? e.g. how much does learning that prof C is male change our prediction of their salary if we already knew they have 15 years of seniority?
 
 #### Estimating Means
 
@@ -162,20 +168,72 @@ contrasts <- estimate_contrasts(fit2, contrast = "sex")
 contrasts |> print_md()
 ```
 
-Therefore, there is no statistically significant difference in means across `years_since_phd` between male and female academics, <i>p</i> = 0.130
+Therefore, there is not a statistically significant difference in means across `years_since_phd` between male and female academics, <i>p</i> = 0.130
+
+#### Moderation
+
+Moderation, also known as interactions, asks us to consider the extent to which the effect of one predictor <b> depends on </b> the value on another predictor. It is up to the investigator, guided by theory and previous research, to consider if including interaction terms are relevant for the research question.  
+
+Again, with moderation we include interaction terms like so: 
+
+$$ y_{\hat{i}} = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_1 x_2$$
+-   $beta_3$ is the slope of the interaction term (the product of two or more predictors)
+
+We can now fit our new model with the interaction term: 
+
+```{r}
+## Fit linear model and print parameters
+# the * (asterisk) is short form for including the interation term
+fit3 <- lm(
+  formula = salary ~ years_since_phd * sex,
+  data = yearspubs
+)
+model_parameters(fit3) |> print_md()
+```
+In this example, the `years_since_phd` by `sex` interaction term was not significant (p = 0.762). 
+
+We can visualize the interaction by making a marginal effects, or "spotlight", plot. 
+
+```{r}
+plot(ggpredict(
+  model = fit3,
+  terms = c("years_since_phd",
+            "sex")
+))
+```
+Note that in this multiple regression / moderation model that each level of `sex` has a different slope. We can estimate these slopes, or the "simple" effect of `years_since_phd` on salary for each level of `sex`, with `estimate_slopes()`. The term "simple" is a result of adding the interaction term in the model. 
+
+```{r}
+estimate_slopes(fit3, trend = "years_since_phd", by = "sex")
+```
+
+  - In this moderation model, the simple slope of the `years_since_phd` was significantly different from zero for men at \$1349.17, but not for women (p = 0.113). 
 
 # Assumptions
 
 The six assumptions of general linear models can be divided into two general areas.
 
-## Assumptions about the Formula
+<u>Assumptions about the Formula</u>
 
 -   Correct Functional Form
 -   Perfectly Measured Preditors
 -   No Collinearity/Multicollinearity
 
-## Assumptions about the Residuals
+<u> Assumptions about the Residuals</u>
 
 -   Constant Error Variance
--   Indepedence of Residuals
+-   Independence of Residuals
 -   Normality of Residuals
+
+When we utilize GLMs, we are trying to do better than assume that each of these six assumption of general linear models holds. One way to test some of these assumptions visually is to use the `check_model()` function. As an example will apply these checks on the multiple regression model without the interaction term.
+
+```{r}
+check_model(fit2)
+```
+
+As you can see, this is an easy way to check for assumptions. Given this model, the assumptions seem to fit well. But in the future GLM models, these assumptions will no longer be reasonable. 
+
+
+# Conclusion
+
+In this recap, we fit simple and multiple regression models with interaction terms. This is great starting point for learning about GLMs. In the future modules, we will take our understanding and interpretations of general linear models into GLMs and learn when GLMs are most appropriate, especially when assumptions do not hold.  

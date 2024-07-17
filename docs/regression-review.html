@@ -214,11 +214,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#simple-regression-example" id="toc-simple-regression-example" class="nav-link" data-scroll-target="#simple-regression-example"><span class="header-section-number">2.1.3</span> Simple Regression Example</a></li>
   <li><a href="#multiple-regression-example" id="toc-multiple-regression-example" class="nav-link" data-scroll-target="#multiple-regression-example"><span class="header-section-number">2.1.4</span> Multiple Regression Example</a></li>
   </ul></li>
-  <li><a href="#assumptions" id="toc-assumptions" class="nav-link" data-scroll-target="#assumptions"><span class="header-section-number">3</span> Assumptions</a>
-  <ul class="collapse">
-  <li><a href="#assumptions-about-the-formula" id="toc-assumptions-about-the-formula" class="nav-link" data-scroll-target="#assumptions-about-the-formula"><span class="header-section-number">3.1</span> Assumptions about the Formula</a></li>
-  <li><a href="#assumptions-about-the-residuals" id="toc-assumptions-about-the-residuals" class="nav-link" data-scroll-target="#assumptions-about-the-residuals"><span class="header-section-number">3.2</span> Assumptions about the Residuals</a></li>
-  </ul></li>
+  <li><a href="#assumptions" id="toc-assumptions" class="nav-link" data-scroll-target="#assumptions"><span class="header-section-number">3</span> Assumptions</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion"><span class="header-section-number">4</span> Conclusion</a></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://www.github.com/affcomlab/learn-glms/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
@@ -267,7 +264,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td><code>yrs_since</code></td>
+<td><code>yrs_since_phd</code></td>
 <td style="text-align: left;">Years since obtaining Ph.D.</td>
 <td style="text-align: right;">Integer</td>
 <td style="text-align: center;">Scale</td>
@@ -423,7 +420,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="model-performance" class="level4" data-number="2.1.3.3">
 <h4 data-number="2.1.3.3" class="anchored" data-anchor-id="model-performance"><span class="header-section-number">2.1.3.3</span> Model Performance</h4>
-<p>One purpose of model fitting is to demonstrate accurate <i>predictions</i> – given a new X, can we reasonably predict a new Y? (This is slightly opposed to <i>inference</i>, which is how well these models explain the data).</p>
+<p>One purpose of model fitting is to demonstrate accurate <i>predictions</i> – given a new X, can we reasonably predict a new Y? (This is different to <i>inference</i>, which is how well these models explain the data).</p>
 <p>Three popular metrics of model fit performance in service of prediction are adjusted R^2, AIC, and BIC.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Calculate model performance indices</span></span>
@@ -538,7 +535,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>This multiple regression is defined by the formula:</p>
-<p><span class="math display">\[ y_{\hat{i}} = \beta_0 + \beta_1 x_1 + \beta_2 x_2 \]</span></p>
+<p><span class="math display">\[ y_{\hat{i}} = \beta_0 + \beta_1 x_1 + \beta_2 x_2 \]</span> Multiple regression, therefore, allows us the ability to control the relationship of multiple predictors on the outcome variable. Statistically “controlling” for a predictors is when the shared variance between predictors is accounted for/removed so that the unique effect of any one predictor variable on the outcome variable is estimated. We then can ask the following questions:</p>
+<ul>
+<li><p>What is the relationship between <span class="math inline">\(x_1\)</span> and <span class="math inline">\(y\)</span> if we hold <span class="math inline">\(x2\)</span> at a constant value? e.g., What is the salary difference between prof A (woman, 10 years) and prof B (woman, 11 years)?</p></li>
+<li><p>If we already know <span class="math inline">\(x2\)</span>, how much does learning about <span class="math inline">\(x1\)</span> change our prediction of <span class="math inline">\(y\)</span>? e.g.&nbsp;how much does learning that prof C is male change our prediction of their salary if we already knew they have 15 years of seniority?</p></li>
+</ul>
 <section id="estimating-means" class="level4" data-number="2.1.4.1">
 <h4 data-number="2.1.4.1" class="anchored" data-anchor-id="estimating-means"><span class="header-section-number">2.1.4.1</span> Estimating Means</h4>
 <p>Recall that prior to fitting the multiple regression, we changed <code>sex</code> into a categorical variable using the <code>factor()</code> function. This is an example of <i>dummy coding</i>. Therefore, once we fit the multiple regression we were able to separate response values based on different factor levels.</p>
@@ -626,31 +627,139 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Marginal contrasts estimated at sex p-value adjustment method: Holm (1979)</p>
 </div>
 </div>
-<p>Therefore, there is no statistically significant difference in means across <code>years_since_phd</code> between male and female academics, <i>p</i> = 0.130</p>
+<p>Therefore, there is not a statistically significant difference in means across <code>years_since_phd</code> between male and female academics, <i>p</i> = 0.130</p>
+</section>
+<section id="moderation" class="level4" data-number="2.1.4.2">
+<h4 data-number="2.1.4.2" class="anchored" data-anchor-id="moderation"><span class="header-section-number">2.1.4.2</span> Moderation</h4>
+<p>Moderation, also known as interactions, asks us to consider the extent to which the effect of one predictor <b> depends on </b> the value on another predictor. It is up to the investigator, guided by theory and previous research, to consider if including interaction terms are relevant for the research question.</p>
+<p>Again, with moderation we include interaction terms like so:</p>
+<p><span class="math display">\[ y_{\hat{i}} = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_1 x_2\]</span> - <span class="math inline">\(beta_3\)</span> is the slope of the interaction term (the product of two or more predictors)</p>
+<p>We can now fit our new model with the interaction term:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Fit linear model and print parameters</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co"># the * (asterisk) is short form for including the interation term</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>fit3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> salary <span class="sc">~</span> years_since_phd <span class="sc">*</span> sex,</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> yearspubs</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit3) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 32%">
+<col style="width: 14%">
+<col style="width: 10%">
+<col style="width: 25%">
+<col style="width: 7%">
+<col style="width: 9%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Parameter</th>
+<th style="text-align: center;">Coefficient</th>
+<th style="text-align: center;">SE</th>
+<th style="text-align: center;">95% CI</th>
+<th style="text-align: center;">t(58)</th>
+<th style="text-align: center;">p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: center;">45072.28</td>
+<td style="text-align: center;">4462.64</td>
+<td style="text-align: center;">(36139.34, 54005.22)</td>
+<td style="text-align: center;">10.10</td>
+<td style="text-align: center;">&lt; .001</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">years since phd</td>
+<td style="text-align: center;">1112.81</td>
+<td style="text-align: center;">692.27</td>
+<td style="text-align: center;">(-272.92, 2498.54)</td>
+<td style="text-align: center;">1.61</td>
+<td style="text-align: center;">0.113</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">sex (male)</td>
+<td style="text-align: center;">2656.21</td>
+<td style="text-align: center;">5486.15</td>
+<td style="text-align: center;">(-8325.51, 13637.92)</td>
+<td style="text-align: center;">0.48</td>
+<td style="text-align: center;">0.630</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">years since phd × sex (male)</td>
+<td style="text-align: center;">236.36</td>
+<td style="text-align: center;">777.28</td>
+<td style="text-align: center;">(-1319.53, 1792.25)</td>
+<td style="text-align: center;">0.30</td>
+<td style="text-align: center;">0.762</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>In this example, the <code>years_since_phd</code> by <code>sex</code> interaction term was not significant (p = 0.762).</p>
+<p>We can visualize the interaction by making a marginal effects, or “spotlight”, plot.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">ggpredict</span>(</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">model =</span> fit3,</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">terms =</span> <span class="fu">c</span>(<span class="st">"years_since_phd"</span>,</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>            <span class="st">"sex"</span>)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="regression-review_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Note that in this multiple regression / moderation model that each level of <code>sex</code> has a different slope. We can estimate these slopes, or the “simple” effect of <code>years_since_phd</code> on salary for each level of <code>sex</code>, with <code>estimate_slopes()</code>. The term “simple” is a result of adding the interaction term in the model.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">estimate_slopes</span>(fit3, <span class="at">trend =</span> <span class="st">"years_since_phd"</span>, <span class="at">by =</span> <span class="st">"sex"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Estimated Marginal Effects
+
+sex    | Coefficient |     SE |             95% CI | t(58) |      p
+-------------------------------------------------------------------
+female |     1112.81 | 692.27 | [-272.92, 2498.54] |  1.61 | 0.113 
+male   |     1349.17 | 353.44 | [ 641.69, 2056.65] |  3.82 | &lt; .001
+Marginal effects estimated for years_since_phd</code></pre>
+</div>
+</div>
+<ul>
+<li>In this moderation model, the simple slope of the <code>years_since_phd</code> was significantly different from zero for men at $1349.17, but not for women (p = 0.113).</li>
+</ul>
 </section>
 </section>
 </section>
 <section id="assumptions" class="level1" data-number="3">
 <h1 data-number="3"><span class="header-section-number">3</span> Assumptions</h1>
 <p>The six assumptions of general linear models can be divided into two general areas.</p>
-<section id="assumptions-about-the-formula" class="level2" data-number="3.1">
-<h2 data-number="3.1" class="anchored" data-anchor-id="assumptions-about-the-formula"><span class="header-section-number">3.1</span> Assumptions about the Formula</h2>
+<p><u>Assumptions about the Formula</u></p>
 <ul>
 <li>Correct Functional Form</li>
 <li>Perfectly Measured Preditors</li>
 <li>No Collinearity/Multicollinearity</li>
 </ul>
-</section>
-<section id="assumptions-about-the-residuals" class="level2" data-number="3.2">
-<h2 data-number="3.2" class="anchored" data-anchor-id="assumptions-about-the-residuals"><span class="header-section-number">3.2</span> Assumptions about the Residuals</h2>
+<p><u> Assumptions about the Residuals</u></p>
 <ul>
 <li>Constant Error Variance</li>
-<li>Indepedence of Residuals</li>
+<li>Independence of Residuals</li>
 <li>Normality of Residuals</li>
 </ul>
-
-
+<p>When we utilize GLMs, we are trying to do better than assume that each of these six assumption of general linear models holds. One way to test some of these assumptions visually is to use the <code>check_model()</code> function. As an example will apply these checks on the multiple regression model without the interaction term.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_model</span>(fit2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="regression-review_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>As you can see, this is an easy way to check for assumptions. Given this model, the assumptions seem to fit well. But in the future GLM models, these assumptions will no longer be reasonable.</p>
 </section>
+<section id="conclusion" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Conclusion</h1>
+<p>In this recap, we fit simple and multiple regression models with interaction terms. This is great starting point for learning about GLMs. In the future modules, we will take our understanding and interpretations of general linear models into GLMs and learn when GLMs are most appropriate, especially when assumptions do not hold.</p>
+
+
 </section>
 
 </main> <!-- /main -->

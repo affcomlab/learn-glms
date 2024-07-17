@@ -25,6 +25,13 @@ These modules will use a variety of <i> R </i> packages which can be installed t
 For GLM model fitting, modules will utilize the <i> glm </i> function in the `stats` base R package, or the `glmmTMB` package, for fitting GLMs. We refer readers to the [`glmmTMB` package documentation](https://cran.r-project.org/web/packages/glmmTMB/glmmTMB.pdf) for further information. 
 
 
+## Textbook and Website Resources
+
+We recommend the following textbooks and websites for more in-depth readings of GLMs. We also extend our thanks for these resources as they have helped us create our modules.
+
+  - Faraway, J.J., (2016). <i> Extending the linear model with R: Generalized linear, mixed effects and nonparametric regression models </i> (2nd ed.). CRC Press. 
+  
+
 ## Materials
 
 All materials are available for download in the appendix. The following are available for download:
