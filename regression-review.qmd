@@ -54,18 +54,25 @@ yearspubs$sex <- factor(yearspubs$sex, c("female","male"))
 
 ### Simple Regression Example
 
-Now, we will fit a simple linear regression that regresses `salary` on `years_since_phd` using the `lm()` function, and consider the results output.
+Now, we will fit a simple linear regression that regresses `salary` on `years_since_phd` using the `lm()` function, and consider the results output. We will then print a summary table of the model results using the `model_parameters()` function from the easystats package.
 
 ```{r}
+#| collapse: true
 
 ## Fit linear model and print parameters
 fit <- lm(
   formula = salary ~ years_since_phd,
   data = yearspubs
 )
-model_parameters(fit) |> print_md()
-
+model_parameters(fit)
 ```
+
+By default, this prints in code format as above. However, for the rest of the book, we will be using a prettier format called markdown format, as such.
+
+```{r}
+model_parameters(fit) |> print_md()
+```
+
 
 This simple regression line is defined by the formula:
 
@@ -170,7 +177,7 @@ contrasts |> print_md()
 
 Therefore, there is not a statistically significant difference in means across `years_since_phd` between male and female academics, <i>p</i> = 0.130
 
-#### Moderation
+### Moderation
 
 Moderation, also known as interactions, asks us to consider the extent to which the effect of one predictor <b> depends on </b> the value on another predictor. It is up to the investigator, guided by theory and previous research, to consider if including interaction terms are relevant for the research question.  
 

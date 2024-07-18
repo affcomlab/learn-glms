@@ -1,14 +1,11 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
-
+<meta name="generator" content="quarto-1.5.54">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-
 <meta name="author" content="Aaron Matthew Simmons and Jeffrey M. Girard">
-
-<title>Introduction to Generalized Linear Modeling - 2&nbsp; Regression Recap</title>
+<title>2&nbsp; Regression Recap – Introduction to Generalized Linear Modeling</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,7 +20,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -34,7 +31,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -57,7 +54,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }
 </style>
 
-
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
@@ -75,14 +71,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
-<script id="quarto-search-options" type="application/json">{
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
   "panel-placement": "end",
   "type": "overlay",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -91,60 +92,65 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script>
-
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
+}</script><script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 </head>
-
 <body class="nav-sidebar floating nav-fixed">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg navbar-dark ">
-      <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container">
+  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg " data-bs-theme="dark"><div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="./index.html">
     <span class="navbar-title">Introduction to Generalized Linear Modeling</span>
     </a>
   </div>
-        <div class="quarto-navbar-tools ms-auto">
-    <a href="https://www.github.com/affcomlab/learn-glms/" rel="" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+        <div class="quarto-navbar-tools tools-end">
+    <a href="https://www.github.com/affcomlab/learn-glms/" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
 </div>
           <div id="quarto-search" class="" title="Search"></div>
       </div> <!-- /container-fluid -->
-    </nav>
-  <nav class="quarto-secondary-nav">
-    <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    </nav><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./regression-review.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Regression Recap</span></a></li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-      </a>
-      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
-        <i class="bi bi-search"></i>
-      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./regression-review.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Regression Recap</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
     </div>
-  </nav>
-</header>
-<!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
-        <div class="mt-2 flex-shrink-0 align-items-center">
-        <div class="sidebar-search">
-        <div id="quarto-search" class="" title="Search"></div>
-        </div>
-        </div>
-    <div class="sidebar-menu-container"> 
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
-        <li class="sidebar-item">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Welcome</span></a>
@@ -182,49 +188,48 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
  <span class="menu-text">Appendices</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./appendix.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Appendix</span></span></a>
   </div>
 </li>
       </ul>
-  </li>
+</li>
     </ul>
-    </div>
-</nav>
-<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+</div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">Table of contents</h2>
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#data-demonstration" id="toc-data-demonstration" class="nav-link active" data-scroll-target="#data-demonstration"><span class="header-section-number">2.1</span> Data Demonstration</a>
+<li>
+<a href="#data-demonstration" id="toc-data-demonstration" class="nav-link active" data-scroll-target="#data-demonstration"><span class="header-section-number">2.1</span> Data Demonstration</a>
   <ul class="collapse">
-  <li><a href="#loading-the-packages-and-reading-in-data" id="toc-loading-the-packages-and-reading-in-data" class="nav-link" data-scroll-target="#loading-the-packages-and-reading-in-data"><span class="header-section-number">2.1.1</span> Loading the Packages and Reading in Data</a></li>
+<li><a href="#loading-the-packages-and-reading-in-data" id="toc-loading-the-packages-and-reading-in-data" class="nav-link" data-scroll-target="#loading-the-packages-and-reading-in-data"><span class="header-section-number">2.1.1</span> Loading the Packages and Reading in Data</a></li>
   <li><a href="#prepare-data-exploratory-data-analysis" id="toc-prepare-data-exploratory-data-analysis" class="nav-link" data-scroll-target="#prepare-data-exploratory-data-analysis"><span class="header-section-number">2.1.2</span> Prepare Data / Exploratory Data Analysis</a></li>
   <li><a href="#simple-regression-example" id="toc-simple-regression-example" class="nav-link" data-scroll-target="#simple-regression-example"><span class="header-section-number">2.1.3</span> Simple Regression Example</a></li>
   <li><a href="#multiple-regression-example" id="toc-multiple-regression-example" class="nav-link" data-scroll-target="#multiple-regression-example"><span class="header-section-number">2.1.4</span> Multiple Regression Example</a></li>
-  </ul></li>
+  <li><a href="#moderation" id="toc-moderation" class="nav-link" data-scroll-target="#moderation"><span class="header-section-number">2.1.5</span> Moderation</a></li>
+  </ul>
+</li>
   <li><a href="#assumptions" id="toc-assumptions" class="nav-link" data-scroll-target="#assumptions"><span class="header-section-number">3</span> Assumptions</a></li>
   <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion"><span class="header-section-number">4</span> Conclusion</a></li>
-  </ul>
-<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://www.github.com/affcomlab/learn-glms/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+  </ul><div class="toc-actions"><ul><li><a href="https://www.github.com/affcomlab/learn-glms/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Regression Recap</span></h1>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<h1 class="title">
+<span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Regression Recap</span>
+</h1>
 </div>
 
 
@@ -237,31 +242,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
-</header>
 
-<p>Before jumping into generalized linear models (GLMs), we will recap important foundations of general linear models, such as simple and multiple regression. The key is that generalized linear models are useful when assumptions of general linear models no longer hold or are unreasonable.</p>
-<section id="data-demonstration" class="level2" data-number="2.1">
-<h2 data-number="2.1" class="anchored" data-anchor-id="data-demonstration"><span class="header-section-number">2.1</span> Data Demonstration</h2>
+</header><p>Before jumping into generalized linear models (GLMs), we will recap important foundations of general linear models, such as simple and multiple regression. The key is that generalized linear models are useful when assumptions of general linear models no longer hold or are unreasonable.</p>
+<section id="data-demonstration" class="level2" data-number="2.1"><h2 data-number="2.1" class="anchored" data-anchor-id="data-demonstration">
+<span class="header-section-number">2.1</span> Data Demonstration</h2>
 <p>In this data demo, we will first review loading <i>R</i> packages and data, then simple and multiple linear regression.</p>
 <p>The data for this chapter is toy data about academic performance after obtaining a Ph.D.&nbsp;including salary information. It is composed of both continuous and categorical variables.</p>
 <ul>
-<li>Data: <a href="./yearspub.csv" download=""> yearspub.csv </a></li>
+<li>Data: <a href="./yearspub.csv" download=""> yearspub.csv </a>
+</li>
 </ul>
-<table class="table">
+<table class="caption-top table">
 <colgroup>
 <col style="width: 18%">
 <col style="width: 46%">
 <col style="width: 16%">
 <col style="width: 18%">
 </colgroup>
-<thead>
-<tr class="header">
+<thead><tr class="header">
 <th>Variable</th>
 <th style="text-align: left;">Description</th>
 <th style="text-align: right;">Values</th>
 <th style="text-align: center;">Measurement</th>
-</tr>
-</thead>
+</tr></thead>
 <tbody>
 <tr class="odd">
 <td><code>yrs_since_phd</code></td>
@@ -295,47 +298,59 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 </tbody>
 </table>
-<section id="loading-the-packages-and-reading-in-data" class="level3" data-number="2.1.1">
-<h3 data-number="2.1.1" class="anchored" data-anchor-id="loading-the-packages-and-reading-in-data"><span class="header-section-number">2.1.1</span> Loading the Packages and Reading in Data</h3>
-<p>In <i>R</i>, packages must be installed before using them. Once installed, then they can be activated in session with the <code>library()</code> command.</p>
+<section id="loading-the-packages-and-reading-in-data" class="level3" data-number="2.1.1"><h3 data-number="2.1.1" class="anchored" data-anchor-id="loading-the-packages-and-reading-in-data">
+<span class="header-section-number">2.1.1</span> Loading the Packages and Reading in Data</h3>
+<p>In <i>R</i>, packages must be installed before using them. Once installed, then they can be activated in session with the <code><a href="https://rdrr.io/r/base/library.html">library()</a></code> command.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Load packages</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(easystats)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggeffects)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="do">## Read in data from file</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>yearspubs <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"yearspubs.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## Load packages</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://easystats.github.io/easystats/">easystats</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://strengejacke.github.io/ggeffects/">ggeffects</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Read in data from file</span></span>
+<span><span class="va">yearspubs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="st">"yearspubs.csv"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</section>
-<section id="prepare-data-exploratory-data-analysis" class="level3" data-number="2.1.2">
-<h3 data-number="2.1.2" class="anchored" data-anchor-id="prepare-data-exploratory-data-analysis"><span class="header-section-number">2.1.2</span> Prepare Data / Exploratory Data Analysis</h3>
+</section><section id="prepare-data-exploratory-data-analysis" class="level3" data-number="2.1.2"><h3 data-number="2.1.2" class="anchored" data-anchor-id="prepare-data-exploratory-data-analysis">
+<span class="header-section-number">2.1.2</span> Prepare Data / Exploratory Data Analysis</h3>
 <p>It is always a good first step to plot data prior to fitting any model. Here, we consider the relationship between <code>years_since_phd</code> and <code>salary</code>. Notice that, for the most part, we can see a linear relationship such that salary tends to increase with the number of additional years after obtaining a Ph.D.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Explore salary-seniority relationship</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> yearspubs, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> years_since_phd, <span class="at">y =</span> salary)) <span class="sc">+</span> </span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## Explore salary-seniority relationship</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">yearspubs</span>, mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">years_since_phd</span>, y <span class="op">=</span> <span class="va">salary</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="regression-review_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure"><p><img src="regression-review_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
 </div>
 </div>
-<p>When we move to the multiple regression section, it is advantageous to recode the <code>sex</code> variable into a factor (i.e., as a categorical variable). We can make use of the <code>factor()</code> function for this purpose.</p>
+</div>
+<p>When we move to the multiple regression section, it is advantageous to recode the <code>sex</code> variable into a factor (i.e., as a categorical variable). We can make use of the <code><a href="https://rdrr.io/r/base/factor.html">factor()</a></code> function for this purpose.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>yearspubs<span class="sc">$</span>sex <span class="ot">&lt;-</span> <span class="fu">factor</span>(yearspubs<span class="sc">$</span>sex, <span class="fu">c</span>(<span class="st">"female"</span>,<span class="st">"male"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">yearspubs</span><span class="op">$</span><span class="va">sex</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">yearspubs</span><span class="op">$</span><span class="va">sex</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"female"</span>,<span class="st">"male"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</section>
-<section id="simple-regression-example" class="level3" data-number="2.1.3">
-<h3 data-number="2.1.3" class="anchored" data-anchor-id="simple-regression-example"><span class="header-section-number">2.1.3</span> Simple Regression Example</h3>
-<p>Now, we will fit a simple linear regression that regresses <code>salary</code> on <code>years_since_phd</code> using the <code>lm()</code> function, and consider the results output.</p>
+</section><section id="simple-regression-example" class="level3" data-number="2.1.3"><h3 data-number="2.1.3" class="anchored" data-anchor-id="simple-regression-example">
+<span class="header-section-number">2.1.3</span> Simple Regression Example</h3>
+<p>Now, we will fit a simple linear regression that regresses <code>salary</code> on <code>years_since_phd</code> using the <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code> function, and consider the results output. We will then print a summary table of the model results using the <code>model_parameters()</code> function from the easystats package.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Fit linear model and print parameters</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> salary <span class="sc">~</span> years_since_phd,</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> yearspubs</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## Fit linear model and print parameters</span></span>
+<span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span></span>
+<span>  formula <span class="op">=</span> <span class="va">salary</span> <span class="op">~</span> <span class="va">years_since_phd</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">yearspubs</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu">model_parameters</span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span>
+<span><span class="co">## Parameter       | Coefficient |      SE |               95% CI | t(60) |      p</span></span>
+<span><span class="co">## -------------------------------------------------------------------------------</span></span>
+<span><span class="co">## (Intercept)     |    45625.47 | 2473.12 | [40678.49, 50572.46] | 18.45 | &lt; .001</span></span>
+<span><span class="co">## years since phd |     1400.94 |  308.87 | [  783.12,  2018.77] |  4.54 | &lt; .001</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Uncertainty intervals (equal-tailed) and p-values (two-tailed) computed</span></span>
+<span><span class="co">##   using a Wald t-distribution approximation.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>By default, this prints in code format as above. However, for the rest of the book, we will be using a prettier format called markdown format, as such.</p>
+<div class="cell">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">model_parameters</span><span class="op">(</span><span class="va">fit</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://easystats.github.io/insight/reference/display.html">print_md</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <colgroup>
 <col style="width: 21%">
 <col style="width: 17%">
@@ -344,16 +359,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <col style="width: 9%">
 <col style="width: 10%">
 </colgroup>
-<thead>
-<tr class="header">
+<thead><tr class="header">
 <th style="text-align: left;">Parameter</th>
 <th style="text-align: center;">Coefficient</th>
 <th style="text-align: center;">SE</th>
 <th style="text-align: center;">95% CI</th>
 <th style="text-align: center;">t(60)</th>
 <th style="text-align: center;">p</th>
-</tr>
-</thead>
+</tr></thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">(Intercept)</td>
@@ -377,34 +390,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>This simple regression line is defined by the formula:</p>
 <p><span class="math display">\[ y_{\hat{i}} = \beta_0 + \beta_1 x \]</span></p>
-<section id="parameter-table" class="level4" data-number="2.1.3.1">
-<h4 data-number="2.1.3.1" class="anchored" data-anchor-id="parameter-table"><span class="header-section-number">2.1.3.1</span> Parameter Table</h4>
+<section id="parameter-table" class="level4" data-number="2.1.3.1"><h4 data-number="2.1.3.1" class="anchored" data-anchor-id="parameter-table">
+<span class="header-section-number">2.1.3.1</span> Parameter Table</h4>
 <p>From the results output, we can assess each parameter:</p>
 <ul>
 <li><p>The <code>intercept</code> (<span class="math inline">\(\beta_0\)</span>) is the estimated salary for a professor with zero years since PhD: $45113.71, 95% CI: [$40114.89, 50112.53]. This is significantly different from zero (<i>p</i> &lt; 0.001).</p></li>
 <li><p>The coefficient for <code>years_since_phd</code> (<span class="math inline">\(\beta_1\)</span>) is $1400.94, 95% CI: [$783.12, $2018.77]. Therefore, for every additional year of since PhD was associated with an increase of $783.12 to $2018.77. This zero-order effect (since it is the only predictor variable) is significantly different from zero (<i>p</i> &lt; 0.001) at $1400.94.</p></li>
-</ul>
-</section>
-<section id="effect-sizes" class="level4" data-number="2.1.3.2">
-<h4 data-number="2.1.3.2" class="anchored" data-anchor-id="effect-sizes"><span class="header-section-number">2.1.3.2</span> Effect Sizes</h4>
+</ul></section><section id="effect-sizes" class="level4" data-number="2.1.3.2"><h4 data-number="2.1.3.2" class="anchored" data-anchor-id="effect-sizes">
+<span class="header-section-number">2.1.3.2</span> Effect Sizes</h4>
 <p>By standardizing the data and then refitting the data, we can calculate the effect size of the <code>years_since_phd</code>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Calculate effect sizes by standardizing</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">standardize_parameters</span>(fit) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## Calculate effect sizes by standardizing</span></span>
+<span><span class="fu">standardize_parameters</span><span class="op">(</span><span class="va">fit</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://easystats.github.io/insight/reference/display.html">print_md</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <caption># Standardization method: refit</caption>
-<thead>
-<tr class="header">
+<thead><tr class="header">
 <th style="text-align: left;">Parameter</th>
 <th style="text-align: right;">Std. Coef.</th>
 <th style="text-align: left;">95% CI</th>
-</tr>
-</thead>
+</tr></thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">2.30e-16</td>
+<td style="text-align: right;">2.11e-16</td>
 <td style="text-align: left;">[-0.22, 0.22]</td>
 </tr>
 <tr class="even">
@@ -417,19 +426,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Using Cohen’s <i>D</i> guidelines, d = 0.51 which is a medium sized effect.</p>
-</section>
-<section id="model-performance" class="level4" data-number="2.1.3.3">
-<h4 data-number="2.1.3.3" class="anchored" data-anchor-id="model-performance"><span class="header-section-number">2.1.3.3</span> Model Performance</h4>
+</section><section id="model-performance" class="level4" data-number="2.1.3.3"><h4 data-number="2.1.3.3" class="anchored" data-anchor-id="model-performance">
+<span class="header-section-number">2.1.3.3</span> Model Performance</h4>
 <p>One purpose of model fitting is to demonstrate accurate <i>predictions</i> – given a new X, can we reasonably predict a new Y? (This is different to <i>inference</i>, which is how well these models explain the data).</p>
 <p>Three popular metrics of model fit performance in service of prediction are adjusted R^2, AIC, and BIC.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Calculate model performance indices</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">model_performance</span>(fit) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## Calculate model performance indices</span></span>
+<span><span class="fu">model_performance</span><span class="op">(</span><span class="va">fit</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://easystats.github.io/insight/reference/display.html">print_md</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <caption>Indices of model performance</caption>
-<thead>
-<tr class="header">
+<thead><tr class="header">
 <th style="text-align: left;">AIC</th>
 <th style="text-align: center;">AICc</th>
 <th style="text-align: center;">BIC</th>
@@ -437,10 +444,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <th style="text-align: center;">R2 (adj.)</th>
 <th style="text-align: center;">RMSE</th>
 <th style="text-align: center;">Sigma</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
+</tr></thead>
+<tbody><tr class="odd">
 <td style="text-align: left;">1325.90</td>
 <td style="text-align: center;">1326.31</td>
 <td style="text-align: center;">1332.28</td>
@@ -448,45 +453,47 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td style="text-align: center;">0.24</td>
 <td style="text-align: center;">10151.69</td>
 <td style="text-align: center;">10319.50</td>
-</tr>
-</tbody>
+</tr></tbody>
 </table>
 </div>
 </div>
 <p>When comparing models, a higher adjusted R^2 is a better fit, and a lower AIC/BIC is a better fit. Here, we aren’t comparing two competing models, but it is easy to obtain these metrics with our packages.</p>
-</section>
-<section id="ploting-model-predictions" class="level4" data-number="2.1.3.4">
-<h4 data-number="2.1.3.4" class="anchored" data-anchor-id="ploting-model-predictions"><span class="header-section-number">2.1.3.4</span> Ploting Model Predictions</h4>
+</section><section id="ploting-model-predictions" class="level4" data-number="2.1.3.4"><h4 data-number="2.1.3.4" class="anchored" data-anchor-id="ploting-model-predictions">
+<span class="header-section-number">2.1.3.4</span> Ploting Model Predictions</h4>
 <p>Lastly, the model predictions are easy to plot with <code>predict_response</code>. The grey bands show our uncertainty along the best fit line, and you can incorporate data into the plot as well with <code>show_data = TRUE</code>. These plots visualize the parameter estimates we assessed earlier in the parameter tables.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Plot model-based predictions</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">predict_response</span>(fit, <span class="at">terms =</span> <span class="st">"years_since_phd"</span>) <span class="sc">|&gt;</span> <span class="fu">plot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## Plot model-based predictions</span></span>
+<span><span class="fu"><a href="https://strengejacke.github.io/ggeffects/reference/predict_response.html">predict_response</a></span><span class="op">(</span><span class="va">fit</span>, terms <span class="op">=</span> <span class="st">"years_since_phd"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="regression-review_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure"><p><img src="regression-review_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
 </div>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict_response</span>(fit, <span class="at">terms =</span> <span class="st">"years_since_phd"</span>) <span class="sc">|&gt;</span> <span class="fu">plot</span>(<span class="at">show_data =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://strengejacke.github.io/ggeffects/reference/predict_response.html">predict_response</a></span><span class="op">(</span><span class="va">fit</span>, terms <span class="op">=</span> <span class="st">"years_since_phd"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span>show_data <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Data points may overlap. Use the `jitter` argument to add some amount of
   random variation to the location of data points and avoid overplotting.</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="regression-review_files/figure-html/unnamed-chunk-7-2.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure"><p><img src="regression-review_files/figure-html/unnamed-chunk-8-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
 </div>
 </div>
-</section>
-</section>
-<section id="multiple-regression-example" class="level3" data-number="2.1.4">
-<h3 data-number="2.1.4" class="anchored" data-anchor-id="multiple-regression-example"><span class="header-section-number">2.1.4</span> Multiple Regression Example</h3>
-<p>Now, we will fit a multiple linear regression that regresses <code>salary</code> and <code>sex</code> on <code>years_since_phd</code> using the <code>lm()</code> function, and consider the results/output.</p>
+</div>
+</section></section><section id="multiple-regression-example" class="level3" data-number="2.1.4"><h3 data-number="2.1.4" class="anchored" data-anchor-id="multiple-regression-example">
+<span class="header-section-number">2.1.4</span> Multiple Regression Example</h3>
+<p>Now, we will fit a multiple linear regression that regresses <code>salary</code> and <code>sex</code> on <code>years_since_phd</code> using the <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code> function, and consider the results/output.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Fit linear model and print parameters</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>fit2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> salary <span class="sc">~</span> years_since_phd <span class="sc">+</span> sex,</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> yearspubs</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit2) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## Fit linear model and print parameters</span></span>
+<span><span class="va">fit2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span></span>
+<span>  formula <span class="op">=</span> <span class="va">salary</span> <span class="op">~</span> <span class="va">years_since_phd</span> <span class="op">+</span> <span class="va">sex</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">yearspubs</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu">model_parameters</span><span class="op">(</span><span class="va">fit2</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://easystats.github.io/insight/reference/display.html">print_md</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <colgroup>
 <col style="width: 21%">
 <col style="width: 17%">
@@ -495,16 +502,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <col style="width: 9%">
 <col style="width: 10%">
 </colgroup>
-<thead>
-<tr class="header">
+<thead><tr class="header">
 <th style="text-align: left;">Parameter</th>
 <th style="text-align: center;">Coefficient</th>
 <th style="text-align: center;">SE</th>
 <th style="text-align: center;">95% CI</th>
 <th style="text-align: center;">t(59)</th>
 <th style="text-align: center;">p</th>
-</tr>
-</thead>
+</tr></thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">(Intercept)</td>
@@ -540,25 +545,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>What is the relationship between <span class="math inline">\(x_1\)</span> and <span class="math inline">\(y\)</span> if we hold <span class="math inline">\(x2\)</span> at a constant value? e.g., What is the salary difference between prof A (woman, 10 years) and prof B (woman, 11 years)?</p></li>
 <li><p>If we already know <span class="math inline">\(x2\)</span>, how much does learning about <span class="math inline">\(x1\)</span> change our prediction of <span class="math inline">\(y\)</span>? e.g.&nbsp;how much does learning that prof C is male change our prediction of their salary if we already knew they have 15 years of seniority?</p></li>
 </ul>
-<section id="estimating-means" class="level4" data-number="2.1.4.1">
-<h4 data-number="2.1.4.1" class="anchored" data-anchor-id="estimating-means"><span class="header-section-number">2.1.4.1</span> Estimating Means</h4>
-<p>Recall that prior to fitting the multiple regression, we changed <code>sex</code> into a categorical variable using the <code>factor()</code> function. This is an example of <i>dummy coding</i>. Therefore, once we fit the multiple regression we were able to separate response values based on different factor levels.</p>
+<section id="estimating-means" class="level4" data-number="2.1.4.1"><h4 data-number="2.1.4.1" class="anchored" data-anchor-id="estimating-means">
+<span class="header-section-number">2.1.4.1</span> Estimating Means</h4>
+<p>Recall that prior to fitting the multiple regression, we changed <code>sex</code> into a categorical variable using the <code><a href="https://rdrr.io/r/base/factor.html">factor()</a></code> function. This is an example of <i>dummy coding</i>. Therefore, once we fit the multiple regression we were able to separate response values based on different factor levels.</p>
 <p>In the case of <code>sex</code>, we have a binary categorical variable, so we can obtain average values of <code>salary</code> at each level of sex while also accounting for (i.e.&nbsp;controlling for) the (partial) effect of <code>years_since_phd</code>.</p>
 <p>We will use the <code>estimate_means()</code> function to accomplish this.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>gmeans <span class="ot">&lt;-</span> <span class="fu">estimate_means</span>(fit2, <span class="at">by =</span> <span class="st">"sex"</span>)</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>gmeans <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">gmeans</span> <span class="op">&lt;-</span> <span class="fu">estimate_means</span><span class="op">(</span><span class="va">fit2</span>, by <span class="op">=</span> <span class="st">"sex"</span><span class="op">)</span></span>
+<span><span class="va">gmeans</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://easystats.github.io/insight/reference/display.html">print_md</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <caption>Estimated Marginal Means</caption>
-<thead>
-<tr class="header">
+<thead><tr class="header">
 <th style="text-align: left;">sex</th>
 <th style="text-align: left;">Mean</th>
 <th style="text-align: left;">SE</th>
 <th style="text-align: left;">95% CI</th>
-</tr>
-</thead>
+</tr></thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">female</td>
@@ -579,18 +582,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>We can also create a plot to visualize the means.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(gmeans)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">gmeans</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="regression-review_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure"><p><img src="regression-review_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>We can now more easily see that, across all <code>years_since_phd</code> values, male academics earn on average <i>more</i> salary than women academics. However, as the plot shows, there is variability within each factor level.</p>
 <p>To see if this apparent difference of average salary between male and female academics is statistically significant, we can perform a <i>contrast</i>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>contrasts <span class="ot">&lt;-</span> <span class="fu">estimate_contrasts</span>(fit2, <span class="at">contrast =</span> <span class="st">"sex"</span>)</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>contrasts <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">contrasts</span> <span class="op">&lt;-</span> <span class="fu">estimate_contrasts</span><span class="op">(</span><span class="va">fit2</span>, contrast <span class="op">=</span> <span class="st">"sex"</span><span class="op">)</span></span>
+<span><span class="va">contrasts</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://easystats.github.io/insight/reference/display.html">print_md</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <caption>Marginal Contrasts Analysis</caption>
 <colgroup>
 <col style="width: 10%">
@@ -601,8 +607,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <col style="width: 9%">
 <col style="width: 9%">
 </colgroup>
-<thead>
-<tr class="header">
+<thead><tr class="header">
 <th style="text-align: left;">Level1</th>
 <th style="text-align: right;">Level2</th>
 <th style="text-align: right;">Difference</th>
@@ -610,10 +615,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <th style="text-align: left;">SE</th>
 <th style="text-align: left;">t(59)</th>
 <th style="text-align: left;">p</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
+</tr></thead>
+<tbody><tr class="odd">
 <td style="text-align: left;">female</td>
 <td style="text-align: right;">male</td>
 <td style="text-align: right;">-4109.49</td>
@@ -621,30 +624,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td style="text-align: left;">2673.09</td>
 <td style="text-align: left;">-1.54</td>
 <td style="text-align: left;">0.130</td>
-</tr>
-</tbody>
+</tr></tbody>
 </table>
 <p>Marginal contrasts estimated at sex p-value adjustment method: Holm (1979)</p>
 </div>
 </div>
 <p>Therefore, there is not a statistically significant difference in means across <code>years_since_phd</code> between male and female academics, <i>p</i> = 0.130</p>
-</section>
-<section id="moderation" class="level4" data-number="2.1.4.2">
-<h4 data-number="2.1.4.2" class="anchored" data-anchor-id="moderation"><span class="header-section-number">2.1.4.2</span> Moderation</h4>
+</section></section><section id="moderation" class="level3" data-number="2.1.5"><h3 data-number="2.1.5" class="anchored" data-anchor-id="moderation">
+<span class="header-section-number">2.1.5</span> Moderation</h3>
 <p>Moderation, also known as interactions, asks us to consider the extent to which the effect of one predictor <b> depends on </b> the value on another predictor. It is up to the investigator, guided by theory and previous research, to consider if including interaction terms are relevant for the research question.</p>
 <p>Again, with moderation we include interaction terms like so:</p>
 <p><span class="math display">\[ y_{\hat{i}} = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_1 x_2\]</span> - <span class="math inline">\(beta_3\)</span> is the slope of the interaction term (the product of two or more predictors)</p>
 <p>We can now fit our new model with the interaction term:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Fit linear model and print parameters</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co"># the * (asterisk) is short form for including the interation term</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>fit3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> salary <span class="sc">~</span> years_since_phd <span class="sc">*</span> sex,</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> yearspubs</span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit3) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## Fit linear model and print parameters</span></span>
+<span><span class="co"># the * (asterisk) is short form for including the interation term</span></span>
+<span><span class="va">fit3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span></span>
+<span>  formula <span class="op">=</span> <span class="va">salary</span> <span class="op">~</span> <span class="va">years_since_phd</span> <span class="op">*</span> <span class="va">sex</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">yearspubs</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu">model_parameters</span><span class="op">(</span><span class="va">fit3</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://easystats.github.io/insight/reference/display.html">print_md</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <colgroup>
 <col style="width: 32%">
 <col style="width: 14%">
@@ -653,16 +654,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <col style="width: 7%">
 <col style="width: 9%">
 </colgroup>
-<thead>
-<tr class="header">
+<thead><tr class="header">
 <th style="text-align: left;">Parameter</th>
 <th style="text-align: center;">Coefficient</th>
 <th style="text-align: center;">SE</th>
 <th style="text-align: center;">95% CI</th>
 <th style="text-align: center;">t(58)</th>
 <th style="text-align: center;">p</th>
-</tr>
-</thead>
+</tr></thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">(Intercept)</td>
@@ -703,18 +702,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>In this example, the <code>years_since_phd</code> by <code>sex</code> interaction term was not significant (p = 0.762).</p>
 <p>We can visualize the interaction by making a marginal effects, or “spotlight”, plot.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">ggpredict</span>(</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">model =</span> fit3,</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">terms =</span> <span class="fu">c</span>(<span class="st">"years_since_phd"</span>,</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>            <span class="st">"sex"</span>)</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://strengejacke.github.io/ggeffects/reference/ggpredict.html">ggpredict</a></span><span class="op">(</span></span>
+<span>  model <span class="op">=</span> <span class="va">fit3</span>,</span>
+<span>  terms <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"years_since_phd"</span>,</span>
+<span>            <span class="st">"sex"</span><span class="op">)</span></span>
+<span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="regression-review_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure"><p><img src="regression-review_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Note that in this multiple regression / moderation model that each level of <code>sex</code> has a different slope. We can estimate these slopes, or the “simple” effect of <code>years_since_phd</code> on salary for each level of <code>sex</code>, with <code>estimate_slopes()</code>. The term “simple” is a result of adding the interaction term in the model.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">estimate_slopes</span>(fit3, <span class="at">trend =</span> <span class="st">"years_since_phd"</span>, <span class="at">by =</span> <span class="st">"sex"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">estimate_slopes</span><span class="op">(</span><span class="va">fit3</span>, trend <span class="op">=</span> <span class="st">"years_since_phd"</span>, by <span class="op">=</span> <span class="st">"sex"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Estimated Marginal Effects
 
@@ -727,12 +729,8 @@ Marginal effects estimated for years_since_phd</code></pre>
 </div>
 <ul>
 <li>In this moderation model, the simple slope of the <code>years_since_phd</code> was significantly different from zero for men at $1349.17, but not for women (p = 0.113).</li>
-</ul>
-</section>
-</section>
-</section>
-<section id="assumptions" class="level1" data-number="3">
-<h1 data-number="3"><span class="header-section-number">3</span> Assumptions</h1>
+</ul></section></section><section id="assumptions" class="level1" data-number="3"><h1 data-number="3">
+<span class="header-section-number">3</span> Assumptions</h1>
 <p>The six assumptions of general linear models can be divided into two general areas.</p>
 <p><u>Assumptions about the Formula</u></p>
 <ul>
@@ -748,22 +746,21 @@ Marginal effects estimated for years_since_phd</code></pre>
 </ul>
 <p>When we utilize GLMs, we are trying to do better than assume that each of these six assumption of general linear models holds. One way to test some of these assumptions visually is to use the <code>check_model()</code> function. As an example will apply these checks on the multiple regression model without the interaction term.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_model</span>(fit2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">check_model</span><span class="op">(</span><span class="va">fit2</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="regression-review_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure"><p><img src="regression-review_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>As you can see, this is an easy way to check for assumptions. Given this model, the assumptions seem to fit well. But in the future GLM models, these assumptions will no longer be reasonable.</p>
-</section>
-<section id="conclusion" class="level1" data-number="4">
-<h1 data-number="4"><span class="header-section-number">4</span> Conclusion</h1>
+</section><section id="conclusion" class="level1" data-number="4"><h1 data-number="4">
+<span class="header-section-number">4</span> Conclusion</h1>
 <p>In this recap, we fit simple and multiple regression models with interaction terms. This is great starting point for learning about GLMs. In the future modules, we will take our understanding and interpretations of general linear models into GLMs and learn when GLMs are most appropriate, especially when assumptions do not hold.</p>
 
 
-</section>
-
-</main> <!-- /main -->
-<script id="quarto-html-after-body" type="application/javascript">
+</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -798,18 +795,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -841,11 +827,50 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
-  function tippyHover(el, contentFn) {
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/affcomlab\.github\.io\/learn-glms\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -855,8 +880,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -868,7 +902,130 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -912,6 +1069,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -937,6 +1095,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -995,30 +1179,30 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 });
-</script>
-<nav class="page-navigation">
-  <div class="nav-page nav-page-previous">
-      <a href="./intro.html" class="pagination-link">
+</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
+      <a href="./intro.html" class="pagination-link" aria-label="Introduction">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./linear-models.html" class="pagination-link">
+      <a href="./linear-models.html" class="pagination-link" aria-label="Linear models">
         <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Linear models</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
 </div> <!-- /content -->
-<footer class="footer">
-  <div class="nav-footer">
-    <div class="nav-footer-left">Introduction to Generalized Linear Modeling was written by Aaron Matthew Simmons and Jeffrey M. Girard.</div>   
+<footer class="footer"><div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Introduction to Generalized Linear Modeling was written by Aaron Matthew Simmons and Jeffrey M. Girard.</p>
+</div>   
     <div class="nav-footer-center">
       &nbsp;
-    </div>
-    <div class="nav-footer-right">This book was built with <a href="https://quarto.org/">Quarto</a>.</div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://www.github.com/affcomlab/learn-glms/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>This book was built with <a href="https://quarto.org/">Quarto</a>.</p>
+</div>
   </div>
 </footer>
-
 
 
 </body></html>
