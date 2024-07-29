@@ -21,9 +21,13 @@ The data for this chapter is toy data about academic performance after obtaining
 | `n_pubs`    | Number of Academic Publications |    Integer |    Scale    |
 | `sex`       | Male or Female                  | Characters |   Nominal   |
 
-### Loading the Packages and Reading in Data
+## Loading the Packages and Reading in Data
 
 In <i>R</i>, packages must be installed before using them. Once installed, then they can be activated in session with the `library()` command.
+
+:::{.callout-note}
+One way of installing new <i>R</i> packages is to use the `install.packages()` [command](https://www.rdocumentation.org/packages/utils/versions/3.6.2/topics/install.packages)
+:::
 
 ```{r, warning = FALSE, message=FALSE}
 ## Load packages
@@ -35,10 +39,44 @@ library(ggeffects)
 yearspubs <- read_csv("yearspubs.csv")
 
 ```
+:::{.callout-note}
+`read_csv()` comes from the `tidyverse` package. As used here, by default it assumes that the file <i>yearspubs.csv</i> is in the same folder directory as the <i>R</i> analysis file.
+:::
 
-### Prepare Data / Exploratory Data Analysis
+:::{.callout-note}
+Each package we load provides functionality:
 
-It is always a good first step to plot data prior to fitting any model. Here, we consider the relationship between `years_since_phd` and `salary`. Notice that, for the most part, we can see a linear relationship such that salary tends to increase with the number of additional years after obtaining a Ph.D.
+  - `easystats`: For making table outputs from the models. [`easystats` package documentation](https://cran.r-project.org/web/packages/easystats/easystats.pdf)
+  
+  - `tidyverse`: Provides a suite of easier to use analysis commands. [`tidyverse` package documentation](https://cran.r-project.org/web/packages/tidyverse/tidyverse.pdf)
+  
+  - `ggeffects`: Provides plotting and visualizations of the models. [`ggeffects` package documentation](https://cran.r-project.org/web/packages/ggeffects/ggeffects.pdf)
+  
+:::
+
+## Prepare Data / Exploratory Data Analysis
+
+It is always a good first step to plot data prior to fitting any model. 
+
+First, let's consider the distributions, as histograms, of `years_since_phd` and `salary` using the `ggplot()` function[^1]. 
+
+[^1]: ggplot() also from the `tidyverse` package. 
+
+```{r}
+ggplot(data=yearspubs, aes(years_since_phd)) + 
+  geom_histogram()
+```
+
+Notice that `years_since_phd` appears somewhat positively skewed (to the right tail). 
+
+```{r}
+ggplot(data=yearspubs, aes(salary)) + 
+  geom_histogram()
+```
+
+In contrast to `years_since_phd`, notice that `salary` is more normally distributed.
+
+Now, we consider the relationship between `years_since_phd` and `salary` using a scatterplot. Notice that, for the most part, we can see a linear relationship such that salary tends to increase with the number of additional years after obtaining a Ph.D.
 
 ```{r}
 ## Explore salary-seniority relationship
@@ -49,10 +87,14 @@ ggplot(data = yearspubs, mapping = aes(x = years_since_phd, y = salary)) +
 When we move to the multiple regression section, it is advantageous to recode the `sex` variable into a factor (i.e., as a categorical variable). We can make use of the `factor()` function for this purpose. 
 
 ```{r}
-yearspubs$sex <- factor(yearspubs$sex, c("female","male"))
+yearspubs$sex <- factor(yearspubs$sex, levels =  c("female","male"))
 ```
 
-### Simple Regression Example
+:::{.callout-note}
+When we use fucntions, like `factor()`, we have explicitly written out the input arguments, such as <i>levels</i>, in order to show exactly what information the function is processing. 
+:::
+
+# Simple Regression Example
 
 Now, we will fit a simple linear regression that regresses `salary` on `years_since_phd` using the `lm()` function, and consider the results output. We will then print a summary table of the model results using the `model_parameters()` function from the easystats package.
 
@@ -67,7 +109,15 @@ fit <- lm(
 model_parameters(fit)
 ```
 
-By default, this prints in code format as above. However, for the rest of the book, we will be using a prettier format called markdown format, as such.
+::: {.callout-tip title="lm() syntax"}
+When using the `lm()` function, we are telling <i>R</i> to fit a model of the form:
+
+  - outcome = intercept + predictor. 
+
+In this case, `salary` is the outcome variable, and `years_since_phd` is the predictor variable. The intercept is, by default, implicitly calculated in the model. 
+:::
+
+By default, this prints in code format as above. However, for the rest of the book, we will be using a prettier format called <i>markdown</i> format, as such.
 
 ```{r}
 model_parameters(fit) |> print_md()
@@ -79,7 +129,7 @@ This simple regression line is defined by the formula:
 $$ y_{\hat{i}} = \beta_0 + \beta_1 x $$
 
 
-#### Parameter Table
+## Parameter Table
 
 From the results output, we can assess each parameter:
 
@@ -87,19 +137,24 @@ From the results output, we can assess each parameter:
 
 -   The coefficient for `years_since_phd` ($\beta_1$) is \$1400.94, 95% CI: \[\$783.12, \$2018.77\]. Therefore, for every additional year of since PhD was associated with an increase of \$783.12 to \$2018.77. This zero-order effect (since it is the only predictor variable) is significantly different from zero (<i>p</i> \< 0.001) at \$1400.94.
 
-#### Effect Sizes
+## Effect Sizes
 
 By standardizing the data and then refitting the data, we can calculate the effect size of the `years_since_phd`.
 
 ```{r}
 ## Calculate effect sizes by standardizing
-standardize_parameters(fit) |> print_md()
+#standardize_parameters(fit) |> print_md()
+model_parameters(fit) |> print_md()
 
 ```
 
 Using Cohen's <i>D</i> guidelines, d = 0.51 which is a medium sized effect.
 
-#### Model Performance
+We can also used this standardized model to make the following statement:
+
+  - For every one SD increase in `years_since_phd`, we would expect a 0.51 increase in `salary`, $\beta_1$ = 0.51, 95% CI: [0.28, 0.73], <i>p</i><0.001. 
+
+## Model Performance
 
 One purpose of model fitting is to demonstrate accurate <i>predictions</i> -- given a new X, can we reasonably predict a new Y? (This is different to <i>inference</i>, which is how well these models explain the data).
 
@@ -113,7 +168,7 @@ model_performance(fit) |> print_md()
 
 When comparing models, a higher adjusted R\^2 is a better fit, and a lower AIC/BIC is a better fit. Here, we aren't comparing two competing models, but it is easy to obtain these metrics with our packages.
 
-#### Ploting Model Predictions
+## Ploting Model Predictions
 
 Lastly, the model predictions are easy to plot with `predict_response`. The grey bands show our uncertainty along the best fit line, and you can incorporate data into the plot as well with `show_data = TRUE`. These plots visualize the parameter estimates we assessed earlier in the parameter tables.
 
@@ -123,9 +178,64 @@ predict_response(fit, terms = "years_since_phd") |> plot()
 predict_response(fit, terms = "years_since_phd") |> plot(show_data = TRUE)
 ```
 
-### Multiple Regression Example 
+# Multiple Regression Examples
 
-Now, we will fit a multiple linear regression that regresses `salary` and `sex` on `years_since_phd` using the `lm()` function, and consider the results/output.
+Multiple regression allows us to control for the effects of multiple predictors on the outcome. We will divide our recap across different multiple regression scenarios.
+
+## Two Continuous Predictors 
+
+First, we will fit a multiple linear regression with `salary` as the outcome variable and `years_since_phd` and `n_cites` as the predictor variables. 
+
+Let's proceed like before when we introduce a new variable and plot the distribution for `n_pubs`as a histogram.
+
+
+```{r}
+ggplot(data = yearspubs, aes(n_pubs)) +
+  geom_histogram()
+```
+
+Here's how we can use the `lm()` function to fit a multiple regression with `salary` as the outcome variable and `years_since_phd` and `n_pubs` as the predictor variables.
+
+```{r}
+## Fit linear model and print parameters
+fit2 <- lm(
+  formula = salary ~ years_since_phd + n_pubs,
+  data = yearspubs
+)
+model_parameters(fit2) |> print_md()
+```
+
+
+This multiple regression is defined by the formula:
+
+$$ y_{\hat{i}} = \beta_0 + \beta_1 x_1 + \beta_2 x_2 $$
+Multiple regression, therefore, allows us the ability to control the relationship of multiple predictors on the outcome variable. Statistically "controlling" for a predictors is when the shared variance between predictors is accounted for/removed so that the unique effect of any one predictor variable on the outcome variable is estimated. We then can ask the following questions:
+
+  - What is the relationship between $x_1$ and $y$ if we hold $x2$ at a constant value? e.g., What is the salary difference between prof A (woman, 10 years) and prof B (woman, 11 years)? 
+  
+  - If we already know $x2$, how much does learning about $x1$ change our prediction of $y$? e.g. how much does learning that prof C is male change our prediction of their salary if we already knew they have 15 years of seniority?
+  
+### Parameter Table and Interpretation 
+
+From the parameter table above, we can make the following statements: 
+
+  - The intercept is the estimated `salary` for a professor with zero years since PhD and zero publications: $45113.71, 95% CI: [40114.89,50112.53]. 
+
+  - The <i>partial</i> effect of `n_pubs` was not significantly different from zero at \$151.18. When controlling for `years_since_PhD`, each additional publication was associated with an additional −\$95.98 to \$398.34.
+  
+  - The partial effect of `years_since_phd` was significantly different from zero at \$1075.21. Thus, when controlling for `n_pubs`, each additional year since PhD was associated with an additional \$261.30 to \$1889.11.
+
+::: {.callout-tip title="Partial Effects vs. Zero-Order Effects"}
+When we use multiple regression, the $beta$ predictor parameters are called <b>"partial"</b> (i.e., unique) effects since the model is controlling for each predictors' influence on the outcome variable. 
+
+In contrast, with simple linear regression that has only one predictor, that predictor's effect is called a <b>"zero-order"</b> (i.e., total) effect. 
+:::
+  
+## One Dummy Coded Predictor 
+
+## One Continuous and One Dummy Coded Predictor 
+
+Now, we will fit a multiple linear regression with `salary` as the outcome variable and with `years_since_phd` and `sex` as the predictor variable.
 
  
 ```{r}
@@ -138,16 +248,7 @@ model_parameters(fit2) |> print_md()
 
 ```
 
-This multiple regression is defined by the formula:
-
-$$ y_{\hat{i}} = \beta_0 + \beta_1 x_1 + \beta_2 x_2 $$
-Multiple regression, therefore, allows us the ability to control the relationship of multiple predictors on the outcome variable. Statistically "controlling" for a predictors is when the shared variance between predictors is accounted for/removed so that the unique effect of any one predictor variable on the outcome variable is estimated. We then can ask the following questions:
-
-  - What is the relationship between $x_1$ and $y$ if we hold $x2$ at a constant value? e.g., What is the salary difference between prof A (woman, 10 years) and prof B (woman, 11 years)? 
-  
-  - If we already know $x2$, how much does learning about $x1$ change our prediction of $y$? e.g. how much does learning that prof C is male change our prediction of their salary if we already knew they have 15 years of seniority?
-
-#### Estimating Means
+## Estimating Means
 
 Recall that prior to fitting the multiple regression, we changed `sex` into a categorical variable using the `factor()` function. This is an example of <i>dummy coding</i>. Therefore, once we fit the multiple regression we were able to separate response values based on different factor levels.
 
@@ -177,7 +278,7 @@ contrasts |> print_md()
 
 Therefore, there is not a statistically significant difference in means across `years_since_phd` between male and female academics, <i>p</i> = 0.130
 
-### Moderation
+## Moderation
 
 Moderation, also known as interactions, asks us to consider the extent to which the effect of one predictor <b> depends on </b> the value on another predictor. It is up to the investigator, guided by theory and previous research, to consider if including interaction terms are relevant for the research question.  
 
