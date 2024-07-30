@@ -14,7 +14,7 @@ In addition, readers should also be comfortable with foundational concepts in st
 
 ## <i> R </i>  Packages
 
-These modules will use a variety of <i> R </i> packages which can be installed through the <i> R </i> CRAN network. We encourage readers to become familiar with the syntax of these packages through documentations pages, which we also supply here. We appreciate these packages because they help to visualization and clarity to model outputs.
+These modules will use a variety of <i> R </i> packages which can be installed through the <i> R </i> CRAN network. We encourage readers to become familiar with the syntax of these packages through documentations pages, which we also supply here. We appreciate these packages because they help to visualization and provide clarity to model outputs.
 
   - `easystats`: An R framework for easy statistical modeling, visualization, and reporting. [`easystats` package documentation](https://cran.r-project.org/web/packages/easystats/easystats.pdf)
   
@@ -24,6 +24,23 @@ These modules will use a variety of <i> R </i> packages which can be installed t
   
 For GLM model fitting, modules will utilize the <i> glm </i> function in the `stats` base R package, or the `glmmTMB` package, for fitting GLMs. We refer readers to the [`glmmTMB` package documentation](https://cran.r-project.org/web/packages/glmmTMB/glmmTMB.pdf) for further information. 
 
+## Piping
+
+As of <i>R</i> 4.1.0, a native pipe operator `|>` has been introduced, and we will use this pipe operator throughout our modules. We appreciate pipes as a way to declutter our code, and we find that they are not that much difficult to follow. 
+
+For example, if you wanted to use the `sum()` function, you would input a vector of numbers into the function as so: 
+
+```{r}
+sum(4,5)
+```
+
+Instead, with pipes, you can declare the vector and pipe it (i.e., feed it) to the same function and get the same result:
+
+```{r}
+c(4,5) |> sum() 
+```
+
+This example is kind of contrived, but it is true that pipes allow for passing results/objects to the next function in an elegant way. 
 
 ## Textbook and Website Resources
 

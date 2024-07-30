@@ -223,10 +223,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#parameter-table-and-interpretation" id="toc-parameter-table-and-interpretation" class="nav-link" data-scroll-target="#parameter-table-and-interpretation"><span class="header-section-number">4.1.1</span> Parameter Table and Interpretation</a></li>
   </ul></li>
-  <li><a href="#one-dummy-coded-predictor" id="toc-one-dummy-coded-predictor" class="nav-link" data-scroll-target="#one-dummy-coded-predictor"><span class="header-section-number">4.2</span> One Dummy Coded Predictor</a></li>
-  <li><a href="#one-continuous-and-one-dummy-coded-predictor" id="toc-one-continuous-and-one-dummy-coded-predictor" class="nav-link" data-scroll-target="#one-continuous-and-one-dummy-coded-predictor"><span class="header-section-number">4.3</span> One Continuous and One Dummy Coded Predictor</a></li>
-  <li><a href="#estimating-means" id="toc-estimating-means" class="nav-link" data-scroll-target="#estimating-means"><span class="header-section-number">4.4</span> Estimating Means</a></li>
-  <li><a href="#moderation" id="toc-moderation" class="nav-link" data-scroll-target="#moderation"><span class="header-section-number">4.5</span> Moderation</a></li>
+  <li><a href="#one-dummy-coded-predictor" id="toc-one-dummy-coded-predictor" class="nav-link" data-scroll-target="#one-dummy-coded-predictor"><span class="header-section-number">4.2</span> One Dummy Coded Predictor</a>
+  <ul class="collapse">
+  <li><a href="#estimating-means-and-plot" id="toc-estimating-means-and-plot" class="nav-link" data-scroll-target="#estimating-means-and-plot"><span class="header-section-number">4.2.1</span> Estimating means and plot</a></li>
+  <li><a href="#contrast" id="toc-contrast" class="nav-link" data-scroll-target="#contrast"><span class="header-section-number">4.2.2</span> Contrast</a></li>
+  </ul></li>
+  <li><a href="#one-continuous-and-one-dummy-coded-predictor" id="toc-one-continuous-and-one-dummy-coded-predictor" class="nav-link" data-scroll-target="#one-continuous-and-one-dummy-coded-predictor"><span class="header-section-number">4.3</span> One Continuous and One Dummy Coded Predictor</a>
+  <ul class="collapse">
+  <li><a href="#estimating-means" id="toc-estimating-means" class="nav-link" data-scroll-target="#estimating-means"><span class="header-section-number">4.3.1</span> Estimating Means</a></li>
+  </ul></li>
+  <li><a href="#moderation" id="toc-moderation" class="nav-link" data-scroll-target="#moderation"><span class="header-section-number">4.4</span> Moderation</a></li>
   </ul></li>
   <li><a href="#assumptions" id="toc-assumptions" class="nav-link" data-scroll-target="#assumptions"><span class="header-section-number">5</span> Assumptions</a></li>
   <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion"><span class="header-section-number">6</span> Conclusion</a></li>
@@ -402,41 +408,24 @@ Note
 <p><img src="regression-review_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p>When we move to the multiple regression section, it is advantageous to recode the <code>sex</code> variable into a factor (i.e., as a categorical variable). We can make use of the <code>factor()</code> function for this purpose.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>yearspubs<span class="sc">$</span>sex <span class="ot">&lt;-</span> <span class="fu">factor</span>(yearspubs<span class="sc">$</span>sex, <span class="at">levels =</span>  <span class="fu">c</span>(<span class="st">"female"</span>,<span class="st">"male"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>When we use fucntions, like <code>factor()</code>, we have explicitly written out the input arguments, such as <i>levels</i>, in order to show exactly what information the function is processing.</p>
-</div>
-</div>
 </section>
 <section id="simple-regression-example" class="level1" data-number="3">
 <h1 data-number="3"><span class="header-section-number">3</span> Simple Regression Example</h1>
-<p>Now, we will fit a simple linear regression that regresses <code>salary</code> on <code>years_since_phd</code> using the <code>lm()</code> function, and consider the results output. We will then print a summary table of the model results using the <code>model_parameters()</code> function from the easystats package.</p>
+<p>Now, we will fit a simple linear regression with <code>salary</code> as the outcome variable and <code>years_since_phd</code> as the predictor variable using the <code>lm()</code> function, and consider the results. We will then print a summary table of the model results using the <code>model_parameters()</code> function from the <code>easystats</code> package. Therefore, <code>model_paramters()</code> shows the model’s estimated coefficient values.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Fit linear model and print parameters</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> salary <span class="sc">~</span> years_since_phd,</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> yearspubs</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit)</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Parameter       | Coefficient |      SE |               95% CI | t(60) |      p</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="do">## -------------------------------------------------------------------------------</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="do">## (Intercept)     |    45625.47 | 2473.12 | [40678.49, 50572.46] | 18.45 | &lt; .001</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="do">## years since phd |     1400.94 |  308.87 | [  783.12,  2018.77] |  4.54 | &lt; .001</span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="do">## Uncertainty intervals (equal-tailed) and p-values (two-tailed) computed</span></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="do">##   using a Wald t-distribution approximation.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Fit linear model and print parameters</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> salary <span class="sc">~</span> years_since_phd,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> yearspubs</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Parameter       | Coefficient |      SE |               95% CI | t(60) |      p</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="do">## -------------------------------------------------------------------------------</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="do">## (Intercept)     |    45625.47 | 2473.12 | [40678.49, 50572.46] | 18.45 | &lt; .001</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="do">## years since phd |     1400.94 |  308.87 | [  783.12,  2018.77] |  4.54 | &lt; .001</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="do">## Uncertainty intervals (equal-tailed) and p-values (two-tailed) computed</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="do">##   using a Wald t-distribution approximation.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled" title="lm() syntax">
 <div class="callout-header d-flex align-content-center">
@@ -455,9 +444,9 @@ lm() syntax
 <p>In this case, <code>salary</code> is the outcome variable, and <code>years_since_phd</code> is the predictor variable. The intercept is, by default, implicitly calculated in the model.</p>
 </div>
 </div>
-<p>By default, this prints in code format as above. However, for the rest of the book, we will be using a prettier format called <i>markdown</i> format, as such.</p>
+<p>By default, this prints in code format as above. However, for the rest of the modules, we will be using a prettier format called <i>markdown</i> format, as such.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
 <colgroup>
@@ -508,14 +497,34 @@ lm() syntax
 <li><p>The <code>intercept</code> (<span class="math inline">\(\beta_0\)</span>) is the estimated salary for a professor with zero years since PhD: $45113.71, 95% CI: [$40114.89, 50112.53]. This is significantly different from zero (<i>p</i> &lt; 0.001).</p></li>
 <li><p>The coefficient for <code>years_since_phd</code> (<span class="math inline">\(\beta_1\)</span>) is $1400.94, 95% CI: [$783.12, $2018.77]. Therefore, for every additional year of since PhD was associated with an increase of $783.12 to $2018.77. This zero-order effect (since it is the only predictor variable) is significantly different from zero (<i>p</i> &lt; 0.001) at $1400.94.</p></li>
 </ul>
+<div class="callout callout-style-default callout-tip callout-titled" title="95% CI">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+95% CI
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Confidence intervals in the frequentist interpretation is quite wordy but needs to be understood:</p>
+<p>“If we repeated the experiment over and over again (with different samples of the same size) and computed the 95% CI in each sample, then 95% of those intervals would contain the population parameter value.”</p>
+<p>Alternative, reasonable interpretations can be as follows:</p>
+<p>“We can be 95% confident that the 95% CI contains the population mean.”</p>
+<ul>
+<li>This first alternative isn’t our favorite as it implies a view of probability as belief (which isn’t very frequentist).</li>
+</ul>
+<p>“The 95% CI contains highly reasonable estimates of the population mean.”</p>
+</div>
+</div>
 </section>
 <section id="effect-sizes" class="level2" data-number="3.2">
 <h2 data-number="3.2" class="anchored" data-anchor-id="effect-sizes"><span class="header-section-number">3.2</span> Effect Sizes</h2>
 <p>By standardizing the data and then refitting the data, we can calculate the effect size of the <code>years_since_phd</code>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Calculate effect sizes by standardizing</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co">#standardize_parameters(fit) |&gt; print_md()</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Calculate effect sizes by standardizing</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co">#standardize_parameters(fit) |&gt; print_md()</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
 <colgroup>
@@ -568,8 +577,8 @@ lm() syntax
 <p>One purpose of model fitting is to demonstrate accurate <i>predictions</i> – given a new X, can we reasonably predict a new Y? (This is different to <i>inference</i>, which is how well these models explain the data).</p>
 <p>Three popular metrics of model fit performance in service of prediction are adjusted R^2, AIC, and BIC.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Calculate model performance indices</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">model_performance</span>(fit) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Calculate model performance indices</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">model_performance</span>(fit) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
 <caption>Indices of model performance</caption>
@@ -604,18 +613,18 @@ lm() syntax
 <h2 data-number="3.4" class="anchored" data-anchor-id="ploting-model-predictions"><span class="header-section-number">3.4</span> Ploting Model Predictions</h2>
 <p>Lastly, the model predictions are easy to plot with <code>predict_response</code>. The grey bands show our uncertainty along the best fit line, and you can incorporate data into the plot as well with <code>show_data = TRUE</code>. These plots visualize the parameter estimates we assessed earlier in the parameter tables.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Plot model-based predictions</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">predict_response</span>(fit, <span class="at">terms =</span> <span class="st">"years_since_phd"</span>) <span class="sc">|&gt;</span> <span class="fu">plot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Plot model-based predictions</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">predict_response</span>(fit, <span class="at">terms =</span> <span class="st">"years_since_phd"</span>) <span class="sc">|&gt;</span> <span class="fu">plot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="regression-review_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
+<p><img src="regression-review_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
 </div>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict_response</span>(fit, <span class="at">terms =</span> <span class="st">"years_since_phd"</span>) <span class="sc">|&gt;</span> <span class="fu">plot</span>(<span class="at">show_data =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict_response</span>(fit, <span class="at">terms =</span> <span class="st">"years_since_phd"</span>) <span class="sc">|&gt;</span> <span class="fu">plot</span>(<span class="at">show_data =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Data points may overlap. Use the `jitter` argument to add some amount of
   random variation to the location of data points and avoid overplotting.</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="regression-review_files/figure-html/unnamed-chunk-10-2.png" class="img-fluid" width="672"></p>
+<p><img src="regression-review_files/figure-html/unnamed-chunk-9-2.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </section>
@@ -628,23 +637,23 @@ lm() syntax
 <p>First, we will fit a multiple linear regression with <code>salary</code> as the outcome variable and <code>years_since_phd</code> and <code>n_cites</code> as the predictor variables.</p>
 <p>Let’s proceed like before when we introduce a new variable and plot the distribution for <code>n_pubs</code>as a histogram.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> yearspubs, <span class="fu">aes</span>(n_pubs)) <span class="sc">+</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> yearspubs, <span class="fu">aes</span>(n_pubs)) <span class="sc">+</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="regression-review_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
+<p><img src="regression-review_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>Here’s how we can use the <code>lm()</code> function to fit a multiple regression with <code>salary</code> as the outcome variable and <code>years_since_phd</code> and <code>n_pubs</code> as the predictor variables.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Fit linear model and print parameters</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>fit2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> salary <span class="sc">~</span> years_since_phd <span class="sc">+</span> n_pubs,</span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> yearspubs</span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit2) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Fit linear model and print parameters</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>fit2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> salary <span class="sc">~</span> years_since_phd <span class="sc">+</span> n_pubs,</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> yearspubs</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit2) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
 <colgroup>
@@ -695,7 +704,8 @@ lm() syntax
 </div>
 </div>
 <p>This multiple regression is defined by the formula:</p>
-<p><span class="math display">\[ y_{\hat{i}} = \beta_0 + \beta_1 x_1 + \beta_2 x_2 \]</span> Multiple regression, therefore, allows us the ability to control the relationship of multiple predictors on the outcome variable. Statistically “controlling” for a predictors is when the shared variance between predictors is accounted for/removed so that the unique effect of any one predictor variable on the outcome variable is estimated. We then can ask the following questions:</p>
+<p><span class="math display">\[ y_{\hat{i}} = \beta_0 + \beta_1 x_1 + \beta_2 x_2 \]</span></p>
+<p>Multiple regression allows us the ability to control the relationship of multiple predictors on the outcome variable. Statistically “controlling” for a predictors is when the shared variance between predictors is accounted for/removed so that the unique effect of any one predictor variable on the outcome variable is estimated. We then can ask the following questions:</p>
 <ul>
 <li><p>What is the relationship between <span class="math inline">\(x_1\)</span> and <span class="math inline">\(y\)</span> if we hold <span class="math inline">\(x2\)</span> at a constant value? e.g., What is the salary difference between prof A (woman, 10 years) and prof B (woman, 11 years)?</p></li>
 <li><p>If we already know <span class="math inline">\(x2\)</span>, how much does learning about <span class="math inline">\(x1\)</span> change our prediction of <span class="math inline">\(y\)</span>? e.g.&nbsp;how much does learning that prof C is male change our prediction of their salary if we already knew they have 15 years of seniority?</p></li>
@@ -726,17 +736,190 @@ Partial Effects vs.&nbsp;Zero-Order Effects
 </section>
 <section id="one-dummy-coded-predictor" class="level2" data-number="4.2">
 <h2 data-number="4.2" class="anchored" data-anchor-id="one-dummy-coded-predictor"><span class="header-section-number">4.2</span> One Dummy Coded Predictor</h2>
+<p>In cases of a categorical predictor(s), we need to re-coded them such that each of the categories/groups they represent can be mathematically represented as a code variable. All coding systems turn a categorical variable into g-1 code variables.</p>
+<ul>
+<li>So, for example, if we have 6 groups, we need 5 code variables.</li>
+</ul>
+<p>The easiest way to turn a categorical predictor into the code variables is to use the <code>factor()</code> function.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>yearspubs<span class="sc">$</span>sex <span class="ot">&lt;-</span> <span class="fu">factor</span>(yearspubs<span class="sc">$</span>sex, <span class="at">levels =</span>  <span class="fu">c</span>(<span class="st">"female"</span>,<span class="st">"male"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>It will use the first level (in this case, “female”), as the reference group.</li>
+<li>It will name the slope “factorNonref” (e.g., sexMale).</li>
+</ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>When we use functions like <code>factor()</code> we have explicitly written out the input arguments, such as <i>levels</i>, in order to show exactly what information the function is processing.</p>
+</div>
+</div>
+<p>In order to interpret the results, it’s important to understand how the code variables are integrated into the model’s formula:</p>
+<p><span class="math display">\[ y_{\hat{i}} = \beta_0 + \beta_1 C_1i \]</span></p>
+<ul>
+<li><p>The intercept <span class="math inline">\(\beta_0\)</span> is the value of <span class="math inline">\(y_{\hat{i}}\)</span> when <span class="math inline">\(C_1\)</span> = 0. In other words, the reference group’s average value.</p></li>
+<li><p>The slope <span class="math inline">\(\beta_1\)</span> is the change in <span class="math inline">\(y_{\hat{i}}\)</span> when <span class="math inline">\(C_1 + 1\)</span>. In other words, it is the group difference in average value, and adding it to the intercept means we are focusing on the non-reference group’s outcome value.</p></li>
+</ul>
+<p>Now, we can fit and interpret the model:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>fit3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">formula =</span> salary <span class="sc">~</span> sex, <span class="at">data =</span> yearspubs)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit3) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 16%">
+<col style="width: 18%">
+<col style="width: 12%">
+<col style="width: 30%">
+<col style="width: 9%">
+<col style="width: 11%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Parameter</th>
+<th style="text-align: center;">Coefficient</th>
+<th style="text-align: center;">SE</th>
+<th style="text-align: center;">95% CI</th>
+<th style="text-align: center;">t(60)</th>
+<th style="text-align: center;">p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: center;">51501.85</td>
+<td style="text-align: center;">2214.97</td>
+<td style="text-align: center;">(47071.25, 55932.46)</td>
+<td style="text-align: center;">23.25</td>
+<td style="text-align: center;">&lt; .001</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">sex (male)</td>
+<td style="text-align: center;">6441.78</td>
+<td style="text-align: center;">2948.02</td>
+<td style="text-align: center;">(544.86, 12338.69)</td>
+<td style="text-align: center;">2.19</td>
+<td style="text-align: center;">0.033</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Therefore:</p>
+<ul>
+<li><p>The average salary of female academics is $51,502.</p></li>
+<li><p>Males academics make $6,442 more on average. So their average salary is $51,502 + $6,442 = $57944</p></li>
+</ul>
+<section id="estimating-means-and-plot" class="level3" data-number="4.2.1">
+<h3 data-number="4.2.1" class="anchored" data-anchor-id="estimating-means-and-plot"><span class="header-section-number">4.2.1</span> Estimating means and plot</h3>
+<p>We will use the <code>estimate_means()</code> function to accomplish the same thing we did above to obtain average values.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>gmeans1 <span class="ot">&lt;-</span> <span class="fu">estimate_means</span>(fit3) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>We selected `by = c("sex")`.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>gmeans1 <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<caption>Estimated Marginal Means</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">sex</th>
+<th style="text-align: left;">Mean</th>
+<th style="text-align: left;">SE</th>
+<th style="text-align: left;">95% CI</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">female</td>
+<td style="text-align: left;">51501.85</td>
+<td style="text-align: left;">2214.97</td>
+<td style="text-align: left;">(47071.25, 55932.46)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">male</td>
+<td style="text-align: left;">57943.63</td>
+<td style="text-align: left;">1945.43</td>
+<td style="text-align: left;">(54052.18, 61835.07)</td>
+</tr>
+</tbody>
+</table>
+<p>Marginal means estimated at sex</p>
+</div>
+</div>
+<p>Lastly, we can visualize like so:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(gmeans1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="regression-review_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="contrast" class="level3" data-number="4.2.2">
+<h3 data-number="4.2.2" class="anchored" data-anchor-id="contrast"><span class="header-section-number">4.2.2</span> Contrast</h3>
+<p>To see if this apparent difference of average salary between male and female academics is statistically significant, we can perform a <i>contrast</i>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>contrasts <span class="ot">&lt;-</span> <span class="fu">estimate_contrasts</span>(fit3, <span class="at">contrast =</span> <span class="st">"sex"</span>)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>contrasts <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<caption>Marginal Contrasts Analysis</caption>
+<colgroup>
+<col style="width: 10%">
+<col style="width: 10%">
+<col style="width: 16%">
+<col style="width: 31%">
+<col style="width: 12%">
+<col style="width: 9%">
+<col style="width: 9%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Level1</th>
+<th style="text-align: right;">Level2</th>
+<th style="text-align: right;">Difference</th>
+<th style="text-align: left;">95% CI</th>
+<th style="text-align: left;">SE</th>
+<th style="text-align: left;">t(60)</th>
+<th style="text-align: left;">p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">female</td>
+<td style="text-align: right;">male</td>
+<td style="text-align: right;">-6441.78</td>
+<td style="text-align: left;">(-12338.69, -544.86)</td>
+<td style="text-align: left;">2948.02</td>
+<td style="text-align: left;">-2.19</td>
+<td style="text-align: left;">0.033</td>
+</tr>
+</tbody>
+</table>
+<p>Marginal contrasts estimated at sex p-value adjustment method: Holm (1979)</p>
+</div>
+</div>
+<p>Therefore, there is a statistically significant difference between male and female academics, <i>p</i> &lt; 0.05.</p>
+</section>
 </section>
 <section id="one-continuous-and-one-dummy-coded-predictor" class="level2" data-number="4.3">
 <h2 data-number="4.3" class="anchored" data-anchor-id="one-continuous-and-one-dummy-coded-predictor"><span class="header-section-number">4.3</span> One Continuous and One Dummy Coded Predictor</h2>
-<p>Now, we will fit a multiple linear regression that regresses <code>salary</code> and <code>sex</code> on <code>years_since_phd</code> using the <code>lm()</code> function, and consider the results/output.</p>
+<p>Now, we will fit a multiple linear regression with <code>salary</code> as the outcome variable and with <code>years_since_phd</code> and <code>sex</code> as the predictor variable.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Fit linear model and print parameters</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>fit2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> salary <span class="sc">~</span> years_since_phd <span class="sc">+</span> sex,</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> yearspubs</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit2) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Fit linear model and print parameters</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>fit4 <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> salary <span class="sc">~</span> years_since_phd <span class="sc">+</span> sex,</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> yearspubs</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit4) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
 <colgroup>
@@ -786,15 +969,14 @@ Partial Effects vs.&nbsp;Zero-Order Effects
 </table>
 </div>
 </div>
-</section>
-<section id="estimating-means" class="level2" data-number="4.4">
-<h2 data-number="4.4" class="anchored" data-anchor-id="estimating-means"><span class="header-section-number">4.4</span> Estimating Means</h2>
+<section id="estimating-means" class="level3" data-number="4.3.1">
+<h3 data-number="4.3.1" class="anchored" data-anchor-id="estimating-means"><span class="header-section-number">4.3.1</span> Estimating Means</h3>
 <p>Recall that prior to fitting the multiple regression, we changed <code>sex</code> into a categorical variable using the <code>factor()</code> function. This is an example of <i>dummy coding</i>. Therefore, once we fit the multiple regression we were able to separate response values based on different factor levels.</p>
 <p>In the case of <code>sex</code>, we have a binary categorical variable, so we can obtain average values of <code>salary</code> at each level of sex while also accounting for (i.e.&nbsp;controlling for) the (partial) effect of <code>years_since_phd</code>.</p>
 <p>We will use the <code>estimate_means()</code> function to accomplish this.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>gmeans <span class="ot">&lt;-</span> <span class="fu">estimate_means</span>(fit2, <span class="at">by =</span> <span class="st">"sex"</span>)</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>gmeans <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>gmeans <span class="ot">&lt;-</span> <span class="fu">estimate_means</span>(fit4, <span class="at">by =</span> <span class="st">"sex"</span>)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>gmeans <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
 <caption>Estimated Marginal Means</caption>
@@ -826,16 +1008,16 @@ Partial Effects vs.&nbsp;Zero-Order Effects
 </div>
 <p>We can also create a plot to visualize the means.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(gmeans)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(gmeans)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="regression-review_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="672"></p>
+<p><img src="regression-review_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>We can now more easily see that, across all <code>years_since_phd</code> values, male academics earn on average <i>more</i> salary than women academics. However, as the plot shows, there is variability within each factor level.</p>
 <p>To see if this apparent difference of average salary between male and female academics is statistically significant, we can perform a <i>contrast</i>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>contrasts <span class="ot">&lt;-</span> <span class="fu">estimate_contrasts</span>(fit2, <span class="at">contrast =</span> <span class="st">"sex"</span>)</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>contrasts <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>contrasts <span class="ot">&lt;-</span> <span class="fu">estimate_contrasts</span>(fit4, <span class="at">contrast =</span> <span class="st">"sex"</span>)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>contrasts <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
 <caption>Marginal Contrasts Analysis</caption>
@@ -876,20 +1058,21 @@ Partial Effects vs.&nbsp;Zero-Order Effects
 </div>
 <p>Therefore, there is not a statistically significant difference in means across <code>years_since_phd</code> between male and female academics, <i>p</i> = 0.130</p>
 </section>
-<section id="moderation" class="level2" data-number="4.5">
-<h2 data-number="4.5" class="anchored" data-anchor-id="moderation"><span class="header-section-number">4.5</span> Moderation</h2>
+</section>
+<section id="moderation" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="moderation"><span class="header-section-number">4.4</span> Moderation</h2>
 <p>Moderation, also known as interactions, asks us to consider the extent to which the effect of one predictor <b> depends on </b> the value on another predictor. It is up to the investigator, guided by theory and previous research, to consider if including interaction terms are relevant for the research question.</p>
 <p>Again, with moderation we include interaction terms like so:</p>
 <p><span class="math display">\[ y_{\hat{i}} = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_1 x_2\]</span> - <span class="math inline">\(beta_3\)</span> is the slope of the interaction term (the product of two or more predictors)</p>
 <p>We can now fit our new model with the interaction term:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Fit linear model and print parameters</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="co"># the * (asterisk) is short form for including the interation term</span></span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>fit3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> salary <span class="sc">~</span> years_since_phd <span class="sc">*</span> sex,</span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> yearspubs</span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit3) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Fit linear model and print parameters</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="co"># the * (asterisk) is short form for including the interation term</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>fit5 <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> salary <span class="sc">~</span> years_since_phd <span class="sc">*</span> sex,</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> yearspubs</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit5) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
 <colgroup>
@@ -950,18 +1133,18 @@ Partial Effects vs.&nbsp;Zero-Order Effects
 <p>In this example, the <code>years_since_phd</code> by <code>sex</code> interaction term was not significant (p = 0.762).</p>
 <p>We can visualize the interaction by making a marginal effects, or “spotlight”, plot.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">ggpredict</span>(</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">model =</span> fit3,</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">terms =</span> <span class="fu">c</span>(<span class="st">"years_since_phd"</span>,</span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>            <span class="st">"sex"</span>)</span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">ggpredict</span>(</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">model =</span> fit5,</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">terms =</span> <span class="fu">c</span>(<span class="st">"years_since_phd"</span>,</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>            <span class="st">"sex"</span>)</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="regression-review_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid" width="672"></p>
+<p><img src="regression-review_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>Note that in this multiple regression / moderation model that each level of <code>sex</code> has a different slope. We can estimate these slopes, or the “simple” effect of <code>years_since_phd</code> on salary for each level of <code>sex</code>, with <code>estimate_slopes()</code>. The term “simple” is a result of adding the interaction term in the model.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">estimate_slopes</span>(fit3, <span class="at">trend =</span> <span class="st">"years_since_phd"</span>, <span class="at">by =</span> <span class="st">"sex"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">estimate_slopes</span>(fit5, <span class="at">trend =</span> <span class="st">"years_since_phd"</span>, <span class="at">by =</span> <span class="st">"sex"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Estimated Marginal Effects
 
@@ -994,9 +1177,9 @@ Marginal effects estimated for years_since_phd</code></pre>
 </ul>
 <p>When we utilize GLMs, we are trying to do better than assume that each of these six assumption of general linear models holds. One way to test some of these assumptions visually is to use the <code>check_model()</code> function. As an example will apply these checks on the multiple regression model without the interaction term.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_model</span>(fit2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_model</span>(fit2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="regression-review_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid" width="672"></p>
+<p><img src="regression-review_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>As you can see, this is an easy way to check for assumptions. Given this model, the assumptions seem to fit well. But in the future GLM models, these assumptions will no longer be reasonable.</p>
