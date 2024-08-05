@@ -60,23 +60,23 @@ It is always a good first step to plot data prior to fitting any model.
 
 First, let's consider the distributions, as histograms, of `years_since_phd` and `salary` using the `ggplot()` function[^1]. 
 
-[^1]: ggplot() also from the `tidyverse` package. 
+[^1]: ggplot() is also from the `tidyverse` package. 
 
-```{r}
+```{r, warning=FALSE, message=FALSE}
 ggplot(data=yearspubs, aes(years_since_phd)) + 
   geom_histogram()
 ```
 
 Notice that `years_since_phd` appears somewhat positively skewed (to the right tail). 
 
-```{r}
+```{r, warning =FALSE, message=FALSE}
 ggplot(data=yearspubs, aes(salary)) + 
   geom_histogram()
 ```
 
 In contrast to `years_since_phd`, notice that `salary` is more normally distributed.
 
-Now, we consider the relationship between `years_since_phd` and `salary` using a scatterplot. Notice that, for the most part, we can see a linear relationship such that salary tends to increase with the number of additional years after obtaining a Ph.D.
+Now, we consider the relationship between `years_since_phd` and `salary` using a scatter plot. Notice that, for the most part, we can see a linear relationship such that salary tends to increase with the number of additional years after obtaining a Ph.D.
 
 ```{r}
 ## Explore salary-seniority relationship
@@ -102,7 +102,8 @@ model_parameters(fit)
 ::: {.callout-tip title="lm() syntax"}
 When using the `lm()` function, we are telling <i>R</i> to fit a model of the form:
 
-  - outcome = intercept + predictor. 
+  - <span style="color:red">Formula:</span> outcome = intercept + predictor
+  - <span style="color:blue">lm(): </span>   outcome ~ predictor
 
 In this case, `salary` is the outcome variable, and `years_since_phd` is the predictor variable. The intercept is, by default, implicitly calculated in the model. 
 :::
@@ -142,7 +143,7 @@ Alternative, reasonable interpretations can be as follows:
 :::
 ## Effect Sizes
 
-By standardizing the data and then refitting the data, we can calculate the effect size of the `years_since_phd`.
+By standardizing the data and then refitting the data, we can calculate the effect size of `years_since_phd`.
 
 ```{r}
 ## Calculate effect sizes by standardizing

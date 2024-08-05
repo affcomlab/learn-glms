@@ -6,11 +6,11 @@
   </url>
   <url>
     <loc>https://affcomlab.github.io/learn-glms/intro.html</loc>
-    <lastmod>2024-07-30T18:57:35.111Z</lastmod>
+    <lastmod>2024-08-02T21:16:42.380Z</lastmod>
   </url>
   <url>
     <loc>https://affcomlab.github.io/learn-glms/regression-review.html</loc>
-    <lastmod>2024-07-30T18:40:51.016Z</lastmod>
+    <lastmod>2024-08-05T16:46:34.145Z</lastmod>
   </url>
   <url>
     <loc>https://affcomlab.github.io/learn-glms/linear-models.html</loc>
@@ -27,5 +27,9 @@
   <url>
     <loc>https://affcomlab.github.io/learn-glms/appendix.html</loc>
     <lastmod>2024-07-12T17:03:14.236Z</lastmod>
+  </url>
+  <url>
+    <loc>https://affcomlab.github.io/learn-glms/binary-regression.html</loc>
+    <lastmod>2024-08-05T16:45:39.725Z</lastmod>
   </url>
 </urlset>

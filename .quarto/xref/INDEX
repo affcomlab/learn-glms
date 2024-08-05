@@ -25,5 +25,8 @@
   },
   "appendix.qmd": {
     "appendix.html": "3d6b4923"
+  },
+  "binary-regression.qmd": {
+    "binary-regression.html": "9eddc91d"
   }
 }

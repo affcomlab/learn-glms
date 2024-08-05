@@ -25,6 +25,7 @@ book:
     - index.qmd
     - intro.qmd
     - regression-review.qmd
+    - binary-regression.qmd
     - linear-models.qmd
     - summary.qmd
     - references.qmd

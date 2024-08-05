@@ -122,7 +122,7 @@
     "href": "regression-review.html#footnotes",
     "title": "2  Regression Recap",
     "section": "",
-    "text": "ggplot() also from the tidyverse package.↩︎"
+    "text": "ggplot() is also from the tidyverse package.↩︎"
   },
   {
     "objectID": "regression-review.html#simple-regression-example",
@@ -150,7 +150,7 @@
     "href": "regression-review.html#effect-sizes",
     "title": "2  Regression Recap",
     "section": "3.2 Effect Sizes",
-    "text": "3.2 Effect Sizes\nBy standardizing the data and then refitting the data, we can calculate the effect size of the years_since_phd.\n\n## Calculate effect sizes by standardizing\n#standardize_parameters(fit) |&gt; print_md()\nmodel_parameters(fit) |&gt; print_md()\n\n\n\n\n\n\n\n\n\n\n\n\nParameter\nCoefficient\nSE\n95% CI\nt(60)\np\n\n\n\n\n(Intercept)\n45625.47\n2473.12\n(40678.49, 50572.46)\n18.45\n&lt; .001\n\n\nyears since phd\n1400.94\n308.87\n(783.12, 2018.77)\n4.54\n&lt; .001\n\n\n\n\n\nUsing Cohen’s D guidelines, d = 0.51 which is a medium sized effect.\nWe can also used this standardized model to make the following statement:\n\nFor every one SD increase in years_since_phd, we would expect a 0.51 increase in salary, \\(\\beta_1\\) = 0.51, 95% CI: [0.28, 0.73], p&lt;0.001."
+    "text": "3.2 Effect Sizes\nBy standardizing the data and then refitting the data, we can calculate the effect size of years_since_phd.\n\n## Calculate effect sizes by standardizing\n#standardize_parameters(fit) |&gt; print_md()\nmodel_parameters(fit) |&gt; print_md()\n\n\n\n\n\n\n\n\n\n\n\n\nParameter\nCoefficient\nSE\n95% CI\nt(60)\np\n\n\n\n\n(Intercept)\n45625.47\n2473.12\n(40678.49, 50572.46)\n18.45\n&lt; .001\n\n\nyears since phd\n1400.94\n308.87\n(783.12, 2018.77)\n4.54\n&lt; .001\n\n\n\n\n\nUsing Cohen’s D guidelines, d = 0.51 which is a medium sized effect.\nWe can also used this standardized model to make the following statement:\n\nFor every one SD increase in years_since_phd, we would expect a 0.51 increase in salary, \\(\\beta_1\\) = 0.51, 95% CI: [0.28, 0.73], p&lt;0.001."
   },
   {
     "objectID": "regression-review.html#model-performance",
@@ -185,7 +185,7 @@
     "href": "regression-review.html#prepare-data-exploratory-data-analysis",
     "title": "2  Regression Recap",
     "section": "2.3 Prepare Data / Exploratory Data Analysis",
-    "text": "2.3 Prepare Data / Exploratory Data Analysis\nIt is always a good first step to plot data prior to fitting any model.\nFirst, let’s consider the distributions, as histograms, of years_since_phd and salary using the ggplot() function1.\n\nggplot(data=yearspubs, aes(years_since_phd)) + \n  geom_histogram()\n\n`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.\n\n\n\n\n\nNotice that years_since_phd appears somewhat positively skewed (to the right tail).\n\nggplot(data=yearspubs, aes(salary)) + \n  geom_histogram()\n\n`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.\n\n\n\n\n\nIn contrast to years_since_phd, notice that salary is more normally distributed.\nNow, we consider the relationship between years_since_phd and salary using a scatterplot. Notice that, for the most part, we can see a linear relationship such that salary tends to increase with the number of additional years after obtaining a Ph.D.\n\n## Explore salary-seniority relationship\nggplot(data = yearspubs, mapping = aes(x = years_since_phd, y = salary)) + \n  geom_point()"
+    "text": "2.3 Prepare Data / Exploratory Data Analysis\nIt is always a good first step to plot data prior to fitting any model.\nFirst, let’s consider the distributions, as histograms, of years_since_phd and salary using the ggplot() function1.\n\nggplot(data=yearspubs, aes(years_since_phd)) + \n  geom_histogram()\n\n\n\n\nNotice that years_since_phd appears somewhat positively skewed (to the right tail).\n\nggplot(data=yearspubs, aes(salary)) + \n  geom_histogram()\n\n\n\n\nIn contrast to years_since_phd, notice that salary is more normally distributed.\nNow, we consider the relationship between years_since_phd and salary using a scatter plot. Notice that, for the most part, we can see a linear relationship such that salary tends to increase with the number of additional years after obtaining a Ph.D.\n\n## Explore salary-seniority relationship\nggplot(data = yearspubs, mapping = aes(x = years_since_phd, y = salary)) + \n  geom_point()"
   },
   {
     "objectID": "regression-review.html#loading-the-packages-and-reading-in-data",
@@ -220,6 +220,34 @@
     "href": "intro.html#piping",
     "title": "1  Introduction",
     "section": "1.5 Piping",
-    "text": "1.5 Piping\nAs of R 4.1.0, a native pipe operator |&gt; has been introduced, and we will use this pipe operator throughout our modules. We appreciate pipes as a way to declutter our code, and we find that they are not that much difficult to follow.\nFor example, if you wanted to use the sum() function, you would input a vector of numbers into the function as so:\n\nsum(4,5)\n\n[1] 9\n\n\nInstead, with pipes, you can declare the vector and pipe it (i.e. feed it) to the same function and get the same result:\n\nc(4,5) |&gt; sum() \n\n[1] 9\n\n\nThis example is kind of contrived, but it is true that pipes allow for passing results/objects to the next function in an elegant way."
+    "text": "1.5 Piping\nAs of R 4.1.0, a native pipe operator |&gt; has been introduced, and we will use this pipe operator throughout our modules. We appreciate pipes as a way to declutter our code, and we find that they are not that much difficult to follow.\nFor example, if you wanted to use the sum() function, you would input a vector of numbers into the function as so:\n\nsum(4,5)\n\n[1] 9\n\n\nInstead, with pipes, you can declare the vector and pipe it (i.e., feed it) to the same function and get the same result:\n\nc(4,5) |&gt; sum() \n\n[1] 9\n\n\nThis example is kind of contrived, but it is true that pipes allow for passing results/objects to the next function in an elegant way."
+  },
+  {
+    "objectID": "binary-regression.html#data-demonstration",
+    "href": "binary-regression.html#data-demonstration",
+    "title": "3  Binary Regression",
+    "section": "3.1 Data Demonstration",
+    "text": "3.1 Data Demonstration\nThe data for this chapter consists of some records of passengers on the Titanic. The question we will ask and answer with binomial regression is if the amount of fare contributed in some way to the survival of passengers. Since survived is a binary outcome (yes or no), this relationship is best assessed with binary regression.\n\nData:  titanic.csv \n\n\n\n\n\n\n\n\n\n\nVariable\nDescription\nValues\nMeasurement\n\n\n\n\nsex\nMale or Female\nCharacters\nNominal\n\n\nage\nAge of Passenger\nDouble\nScale\n\n\nclass\nCategory of Passenger Accommodation\nCharacters\nNominal\n\n\nfare\nCost of fare\nDouble\nScale\n\n\nsurvived\n“Yes” or “No” if survived\nCharacters\nNominal"
+  },
+  {
+    "objectID": "binary-regression.html#loading-the-packages-and-reading-in-data",
+    "href": "binary-regression.html#loading-the-packages-and-reading-in-data",
+    "title": "3  Binary Regression",
+    "section": "3.2 Loading the Packages and Reading in Data",
+    "text": "3.2 Loading the Packages and Reading in Data\n\n## Load packages\nlibrary(tidyverse)\nlibrary(easystats)\nlibrary(ggeffects)\n\n## Read in data from file\ntitanic_data &lt;- read_csv(\"titanic.csv\")"
+  },
+  {
+    "objectID": "binary-regression.html#prepare-data-exploratory-data-analysis",
+    "href": "binary-regression.html#prepare-data-exploratory-data-analysis",
+    "title": "3  Binary Regression",
+    "section": "3.3 Prepare Data / Exploratory Data Analysis",
+    "text": "3.3 Prepare Data / Exploratory Data Analysis\nIn order to use survived in our analysis, we need to re-code the outcomes as integer numbers. Here, we will use the mutate() function from the dplyr package (which is a package that also came with tidyverse) to accomplish this.\n\n## Prepare the data for analysis\ntitanic2 &lt;- \n  titanic_data |&gt; \n  mutate(\n    survived_b = case_match(\n      survived, \n      \"no\" ~ 0,\n      \"yes\" ~ 1\n    )\n  )\n\n\n\n\n\n\n\nmutate() and data-wrangling\n\n\n\nmutate() is a function from dplyr that adds a column to the dataframe (the object that holds the data). This isn’t the only way to accomplish our goal of re-coding survived, but it is a fairly elegant, easy, and straightforward way to do so. The trick is to remember that mutate() adds a column to the existing dataframe with the same number of rows as the existing dataframe.\nOur choice of data-wrangling functions are open to reprisal because there are many ways in data analysis and programming to do the same thing."
+  },
+  {
+    "objectID": "binary-regression.html",
+    "href": "binary-regression.html",
+    "title": "3  Binary Regression",
+    "section": "",
+    "text": "4 Fitting the Binary Regression Model\nfit2 &lt;- glm(\n  formula = survived_b ~ fare, \n  family = binomial(link = \"logit\"), \n  data = titanic2\n)\n\n## Print parameters in logit (i.e., log-odds) units\nmodel_parameters(fit2) |&gt; print_md()\n\n\n\n\nParameter\nLog-Odds\nSE\n95% CI\nz\np\n\n\n\n\n(Intercept)\n-0.93\n0.10\n(-1.12, -0.75)\n-9.79\n&lt; .001\n\n\nfare\n0.02\n2.23e-03\n(0.01, 0.02)\n6.77\n&lt; .001"
   }
 ]
