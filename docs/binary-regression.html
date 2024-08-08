@@ -218,7 +218,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </ul></li>
   <li><a href="#data-demonstration" id="toc-data-demonstration" class="nav-link" data-scroll-target="#data-demonstration"><span class="header-section-number">3.2</span> Data Demonstration</a></li>
   <li><a href="#loading-the-packages-and-reading-in-data" id="toc-loading-the-packages-and-reading-in-data" class="nav-link" data-scroll-target="#loading-the-packages-and-reading-in-data"><span class="header-section-number">3.3</span> Loading the Packages and Reading in Data</a></li>
-  <li><a href="#prepare-data-exploratory-data-analysis" id="toc-prepare-data-exploratory-data-analysis" class="nav-link" data-scroll-target="#prepare-data-exploratory-data-analysis"><span class="header-section-number">3.4</span> Prepare Data / Exploratory Data Analysis</a></li>
+  <li><a href="#prepare-data-exploratory-data-analysis" id="toc-prepare-data-exploratory-data-analysis" class="nav-link" data-scroll-target="#prepare-data-exploratory-data-analysis"><span class="header-section-number">3.4</span> Prepare Data / Exploratory Data Analysis</a>
+  <ul class="collapse">
+  <li><a href="#plotting-a-binary-outcome" id="toc-plotting-a-binary-outcome" class="nav-link" data-scroll-target="#plotting-a-binary-outcome"><span class="header-section-number">3.4.1</span> Plotting a binary outcome</a></li>
+  </ul></li>
   <li><a href="#fitting-the-general-linear-model" id="toc-fitting-the-general-linear-model" class="nav-link" data-scroll-target="#fitting-the-general-linear-model"><span class="header-section-number">4</span> Fitting the General Linear Model</a></li>
   <li><a href="#fitting-the-binary-regression-model" id="toc-fitting-the-binary-regression-model" class="nav-link" data-scroll-target="#fitting-the-binary-regression-model"><span class="header-section-number">5</span> Fitting the Binary Regression Model</a></li>
   </ul>
@@ -390,18 +393,35 @@ mutate() and data-wrangling
 <p>Our choice of data-wrangling functions are open to reprisal because there are many ways in data analysis and programming to do the same thing.</p>
 </div>
 </div>
+<section id="plotting-a-binary-outcome" class="level3" data-number="3.4.1">
+<h3 data-number="3.4.1" class="anchored" data-anchor-id="plotting-a-binary-outcome"><span class="header-section-number">3.4.1</span> Plotting a binary outcome</h3>
+<p>Like always, it is important to plot the data prior to fitting any model. Here, we consider if there is some sort of relationship between <code>survived_b</code> and <code>fare</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(titanic2, <span class="fu">aes</span>(<span class="at">x =</span> fare, <span class="at">y =</span> survived_b)) <span class="sc">+</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="binary-regression_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(titanic2, <span class="fu">aes</span>(<span class="at">x =</span> fare, <span class="at">y =</span> survived)) <span class="sc">+</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="binary-regression_files/figure-html/unnamed-chunk-3-2.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>The boxplot helps clarify what the scatter plot can’t easily show: there seems to be some effect of fare on survival, such that the higher the fare, the more mass/points are in having survived the titanic. While this is plot is interesting, we will explore this relationship in our regression models.</p>
+</section>
 </section>
 <section id="fitting-the-general-linear-model" class="level1" data-number="4">
 <h1 data-number="4"><span class="header-section-number">4</span> Fitting the General Linear Model</h1>
 <p>Before we fit the binary regression, it would be worthwhile to try fitting the less appropriate (or downright wrong) regular general linear model. We’ll use our old friend <code>lm()</code> to assess the relationship betwen the outcome variable <code>survived_b</code> with the predictor variable <code>fare</code>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#simple linear regression</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>fit1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> survived_b <span class="sc">~</span> fare,</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> titanic2</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit1) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#simple linear regression</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>fit1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> survived_b <span class="sc">~</span> fare,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> titanic2</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit1) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
 <colgroup>
@@ -446,22 +466,22 @@ mutate() and data-wrangling
 <p>As the results show, we have a significant effect of <code>fare</code>, such that a small amount of fare (0.00251 dollars) increases the chance of survival. However, it is worth nothing that just because regular <code>lm()</code> “worked”, it doesn’t mean that the model is a good model to use.</p>
 <p>This is evident when we plot the predictions using the <code>predict_response()</code> function.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict_response</span>(fit1, <span class="at">terms =</span> <span class="st">"fare"</span>) <span class="sc">|&gt;</span> <span class="fu">plot</span>(<span class="at">show_data =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict_response</span>(fit1, <span class="at">terms =</span> <span class="st">"fare"</span>) <span class="sc">|&gt;</span> <span class="fu">plot</span>(<span class="at">show_data =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Data points may overlap. Use the `jitter` argument to add some amount of
   random variation to the location of data points and avoid overplotting.</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="binary-regression_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+<p><img src="binary-regression_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>Notice that the data points are only either 0 or 1 (binary), but the regression line takes intermediate values between 0 and 1, and extreme values above and below 0 and 1! We can’t have passengers somewhat between alive/dead, or more or less alive/dead!</p>
 <p>If that wasn’t enough to deter one from using the general linear model for binary responses, taking a look at a plot of the residuals, using <code>check_residuals()</code> <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>, should be telling.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Check residuals</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">check_residuals</span>(fit1) <span class="sc">|&gt;</span> <span class="fu">plot</span>() <span class="co"># looks bad</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Check residuals</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">check_residuals</span>(fit1) <span class="sc">|&gt;</span> <span class="fu">plot</span>() <span class="co"># looks bad</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="binary-regression_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+<p><img src="binary-regression_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>Yikes! As you can see, the dots <b>do not</b> fall along the line. Once this assumption of the uniformity/normality of residuals are not met, this is a clear sign that the model should not be trusted.</p>
@@ -470,14 +490,14 @@ mutate() and data-wrangling
 <section id="fitting-the-binary-regression-model" class="level1" data-number="5">
 <h1 data-number="5"><span class="header-section-number">5</span> Fitting the Binary Regression Model</h1>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>fit2 <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> survived_b <span class="sc">~</span> fare, </span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"logit"</span>), </span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> titanic2</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Print parameters in logit (i.e., log-odds) units</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit2) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>fit2 <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> survived_b <span class="sc">~</span> fare, </span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"logit"</span>), </span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> titanic2</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Print parameters in logit (i.e., log-odds) units</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit2) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
 <thead>

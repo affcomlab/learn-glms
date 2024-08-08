@@ -77,6 +77,20 @@ Re-coding these strings/characters into discrete numbers is important for the mo
 Our choice of data-wrangling functions are open to reprisal because there are many ways in data analysis and programming to do the same thing. 
 :::
 
+### Plotting a binary outcome 
+
+Like always, it is important to plot the data prior to fitting any model. Here, we consider if there is some sort of relationship between `survived_b` and `fare`. 
+
+```{r}
+ggplot(titanic2, aes(x = fare, y = survived_b)) +
+  geom_point()
+ggplot(titanic2, aes(x = fare, y = survived)) +
+  geom_boxplot()
+```
+
+The boxplot helps clarify what the scatter plot can't easily show: there seems to be some effect of fare on survival, such that the higher the fare, the more mass/points are in having survived the titanic. While this is plot is interesting, we will explore this relationship in our regression models.  
+
+
 # Fitting the General Linear Model 
 
 Before we fit the binary regression, it would be worthwhile to try fitting the less appropriate (or downright wrong) regular general linear model. We'll use our old friend `lm()` to assess the relationship betwen the outcome variable `survived_b` with the predictor variable `fare`. 
@@ -114,6 +128,28 @@ Yikes! As you can see, the dots <b>do not</b> fall along the line. Once this ass
 So now, finally, we fit our first GLM.
 
 # Fitting the Binary Regression Model 
+
+Before we fit our first binary regression, let's take a look at what is actually happening and why the <b>generalized</b> linear model is similar, but different, to the <i>general</i> linear model. 
+
+## Comparing Simple Regression to Simple Binary Regression 
+
+In simple regression, we are predicting the outcome ($y_{\hat{i}}$) with a linear (additive) combination of an intercept ($\beta_0$) and one predictor variable ($x$).
+
+$$ y_{\hat{i}} = \beta_0 + \beta_1 x $$
+In binary regression, we are <i>still</i> predicting an outcome with a linear (additive) combination of intercept and one predictor variable. 
+
+$$ \eta_{i} = \beta_0 + \beta_1 x $$ 
+
+Note that the linearly additive feature that both simple regression and simple binary regression share is what makes these models interpretable. 
+
+The main difference is why did the outcome variable change from $y_{\hat{i}}$ to $\eta_{i}$ in binary regression? Because in binary regression, we are no longer predicting the binary outcome event (e.g., "yes/no"), but the <i> probability </i> of the binary event occurring. This means that $\eta_{i}$ is a probability that is bounded between 0 ("no" event) and 1 ("yes" event). 
+
+### Link function: logit 
+
+By using $\eta_{i}$ in simple binary regression, we 
+
+
+
 
 ```{r}
 fit2 <- glm(
