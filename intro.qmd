@@ -42,6 +42,18 @@ c(4,5) |> sum()
 
 This example is kind of contrived, but it is true that pipes allow for passing results/objects to the next function in an elegant way. 
 
+## Plot theme
+
+For our visualizations, we have set our plots with a template to show a specific layout for aesthetic purposes. We embedded this template in a variable called `mytheme` and it is in the code with every plot. The settings of this layout is hidden from view for every module, but we display the custome settings here.
+
+```{r, warning=FALSE, message=FALSE}
+library(tidyverse)
+mytheme <- theme_bw(
+  base_size = 12
+)
+```
+
+
 ## Textbook and Website Resources
 
 We recommend the following textbooks and websites for more in-depth readings of GLMs. We also extend our thanks for these resources as they have helped us create our modules.

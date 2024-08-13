@@ -3,23 +3,16 @@ title: "Regression Recap"
 format: html
 ---
 
-Before jumping into generalized linear models (GLMs), we will recap important foundations of general linear models, such as simple and multiple regression. The key is that generalized linear models are useful when assumptions of general linear models no longer hold or are unreasonable.
+Before jumping into generalized linear models (GLMs), we will recap important foundations of general linear models, such as simple and multiple regression. 
 
 ## Data Demonstration
 
-In this data demo, we will first review loading <i>R</i> packages and data, then simple and multiple linear regression.
+In this data demo, we will first review loading <i>R</i> packages and data, and then review key aspects of simple and multiple linear regression.
 
 The data for this chapter is toy data about academic performance after obtaining a Ph.D. including salary information. It is composed of both continuous and categorical variables.
 
 -   Data: <a href="./yearspub.csv" download> yearspub.csv </a>
 
-| Variable    | Description                     |     Values | Measurement |
-|-------------|:--------------------------------|-----------:|:-----------:|
-| `yrs_since_phd` | Years since obtaining Ph.D.     |    Integer |    Scale    |
-| `n_cites`   | Number of Academic Citations    |    Integer |    Scale    |
-| `salary`    | Current Salary Figures          |    Integer |    Scale    |
-| `n_pubs`    | Number of Academic Publications |    Integer |    Scale    |
-| `sex`       | Male or Female                  | Characters |   Nominal   |
 
 ## Loading the Packages and Reading in Data
 
@@ -37,8 +30,15 @@ library(ggeffects)
 
 ## Read in data from file
 yearspubs <- read_csv("yearspubs.csv")
+yearspubs #print 
 
 ```
+```{r, warning=FALSE,echo=FALSE}
+mytheme <- theme_bw(
+  base_size = 12
+)
+```
+
 :::{.callout-note}
 `read_csv()` comes from the `tidyverse` package. As used here, by default it assumes that the file <i>yearspubs.csv</i> is in the same folder directory as the <i>R</i> analysis file.
 :::
@@ -46,32 +46,43 @@ yearspubs <- read_csv("yearspubs.csv")
 :::{.callout-note}
 Each package we load provides functionality:
 
-  - `easystats`: For making table outputs from the models. [`easystats` package documentation](https://cran.r-project.org/web/packages/easystats/easystats.pdf)
+  - `easystats`: For making table outputs from the models. [`easystats` website](https://easystats.github.io/easystats/)
   
-  - `tidyverse`: Provides a suite of easier to use analysis commands. [`tidyverse` package documentation](https://cran.r-project.org/web/packages/tidyverse/tidyverse.pdf)
+  - `tidyverse`: Provides a suite of easier to use analysis commands. [`tidyverse` website](https://www.tidyverse.org/)
   
-  - `ggeffects`: Provides plotting and visualizations of the models. [`ggeffects` package documentation](https://cran.r-project.org/web/packages/ggeffects/ggeffects.pdf)
+  - `ggeffects`: Provides plotting and visualizations of the models. [`ggeffects` website](https://strengejacke.github.io/ggeffects/)
   
 :::
+
+Here's a table of our variables:
+
+| Variable    | Description                     |     Values | Measurement |
+|-------------|:--------------------------------|-----------:|:-----------:|
+| `yrs_since_phd` | Years since obtaining Ph.D.     |    Integer |    Scale    |
+| `n_cites`   | Number of Academic Citations    |    Integer |    Scale    |
+| `salary`    | Current Salary Figures          |    Integer |    Scale    |
+| `n_pubs`    | Number of Academic Publications |    Integer |    Scale    |
+| `sex`       | Male or Female                  | Characters |   Nominal   |
+
 
 ## Prepare Data / Exploratory Data Analysis
 
 It is always a good first step to plot data prior to fitting any model. 
 
-First, let's consider the distributions, as histograms, of `years_since_phd` and `salary` using the `ggplot()` function[^1]. 
+First, let's consider the distributions, as histograms, of `years_since_phd` and `salary` using the `ggplot()` function[^1]. You can learn more about how to use `ggplot()` [here](https://ggplot2-book.org/).
 
-[^1]: ggplot() is also from the `tidyverse` package. 
+[^1]: ggplot() is also included the `tidyverse` package. 
 
 ```{r, warning=FALSE, message=FALSE}
 ggplot(data=yearspubs, aes(years_since_phd)) + 
-  geom_histogram()
+  geom_histogram() + mytheme
 ```
 
 Notice that `years_since_phd` appears somewhat positively skewed (to the right tail). 
 
 ```{r, warning =FALSE, message=FALSE}
 ggplot(data=yearspubs, aes(salary)) + 
-  geom_histogram()
+  geom_histogram() + mytheme
 ```
 
 In contrast to `years_since_phd`, notice that `salary` is more normally distributed.
@@ -81,12 +92,22 @@ Now, we consider the relationship between `years_since_phd` and `salary` using a
 ```{r}
 ## Explore salary-seniority relationship
 ggplot(data = yearspubs, mapping = aes(x = years_since_phd, y = salary)) + 
-  geom_point()
+  geom_point() + mytheme
 ```
 
 # Simple Regression Example
 
 Now, we will fit a simple linear regression with `salary` as the outcome variable and `years_since_phd` as the predictor variable using the `lm()` function, and consider the results. We will then print a summary table of the model results using the `model_parameters()` function from the `easystats` package. Therefore, `model_paramters()` shows the model's estimated coefficient values. 
+
+::: {.callout-tip title="lm() syntax"}
+When using the `lm()` function, we are telling <i>R</i> to fit a model of the form:
+
+  - <span style="color:red">Formula:</span> outcome = intercept + predictor
+  - <span style="color:blue">lm(): </span>   outcome ~ 1 + predictor
+
+Therefore, for `lm()` syntax, `salary` is the outcome variable, and `years_since_phd` is the predictor variable. The intercept is denoted by the "1". 
+:::
+
 
 ```{r}
 #| collapse: true
@@ -99,26 +120,15 @@ fit <- lm(
 model_parameters(fit)
 ```
 
-::: {.callout-tip title="lm() syntax"}
-When using the `lm()` function, we are telling <i>R</i> to fit a model of the form:
-
-  - <span style="color:red">Formula:</span> outcome = intercept + predictor
-  - <span style="color:blue">lm(): </span>   outcome ~ predictor
-
-In this case, `salary` is the outcome variable, and `years_since_phd` is the predictor variable. The intercept is, by default, implicitly calculated in the model. 
-:::
-
-By default, this prints in code format as above. However, for the rest of the modules, we will be using a prettier format called <i>markdown</i> format, as such.
+By default, this prints in code format as above. However, for the rest of the modules, we will be using a prettier format called <i>markdown</i> format with `print_md()`:
 
 ```{r}
 model_parameters(fit) |> print_md()
 ```
 
-
 This simple regression line is defined by the formula:
 
 $$ y_{\hat{i}} = \beta_0 + \beta_1 x $$
-
 
 ## Parameter Table
 
@@ -129,7 +139,7 @@ From the results output, we can assess each parameter:
 -   The coefficient for `years_since_phd` ($\beta_1$) is \$1400.94, 95% CI: \[\$783.12, \$2018.77\]. Therefore, for every additional year of since PhD was associated with an increase of \$783.12 to \$2018.77. This zero-order effect (since it is the only predictor variable) is significantly different from zero (<i>p</i> \< 0.001) at \$1400.94.
 
 ::: {.callout-tip title="95% CI"}
-Confidence intervals in the frequentist interpretation is quite wordy but needs to be understood: 
+Confidence intervals (CI) in the frequentist interpretation is quite wordy but needs to be understood: 
 
 “If we repeated the experiment over and over again (with different samples of the same size) and computed the 95% CI in each sample, then 95% of those intervals would contain the population parameter value.”
 
@@ -141,14 +151,14 @@ Alternative, reasonable interpretations can be as follows:
 
 “The 95% CI contains highly reasonable estimates of the population mean.”
 :::
+
 ## Effect Sizes
 
 By standardizing the data and then refitting the data, we can calculate the effect size of `years_since_phd`.
 
 ```{r}
 ## Calculate effect sizes by standardizing
-#standardize_parameters(fit) |> print_md()
-model_parameters(fit) |> print_md()
+standardize_parameters(fit) |> print_md()
 
 ```
 
@@ -160,9 +170,9 @@ We can also used this standardized model to make the following statement:
 
 ## Model Performance
 
-One purpose of model fitting is to demonstrate accurate <i>predictions</i> -- given a new X, can we reasonably predict a new Y? (This is different to <i>inference</i>, which is how well these models explain the data).
+One purpose of model fitting is to demonstrate accurate <i>predictions</i> -- given a new X, can we reasonably predict a new Y?
 
-Three popular metrics of model fit performance in service of prediction are adjusted R\^2, AIC, and BIC.
+Three popular metrics of model fit performance in service of prediction are adjusted $R^2$, AIC, and BIC.
 
 ```{r}
 ## Calculate model performance indices
@@ -170,7 +180,7 @@ model_performance(fit) |> print_md()
 
 ```
 
-When comparing models, a higher adjusted R\^2 is a better fit, and a lower AIC/BIC is a better fit. Here, we aren't comparing two competing models, but it is easy to obtain these metrics with our packages.
+When comparing models, a higher adjusted $R^2$ is a better fit, and a lower AIC/BIC is a better fit. Here, we aren't comparing two competing models, but it is easy to obtain these metrics with the packages we loaded. 
 
 ## Ploting Model Predictions
 
@@ -184,7 +194,7 @@ predict_response(fit, terms = "years_since_phd") |> plot(show_data = TRUE)
 
 # Multiple Regression Examples
 
-Multiple regression allows us to control for the effects of multiple predictors on the outcome. We will divide our recap across different multiple regression scenarios.
+Multiple regression allows us to control for the effects of multiple predictors on the outcome. Statistically "controlling" for a predictors is when the shared variance between predictors is accounted for/removed so that the unique contribution of any one predictor variable on the outcome variable is estimated. We will divide our recap across different multiple regression scenarios.
 
 ## Two Continuous Predictors 
 
@@ -192,10 +202,9 @@ First, we will fit a multiple linear regression with `salary` as the outcome var
 
 Let's proceed like before when we introduce a new variable and plot the distribution for `n_pubs`as a histogram.
 
-
 ```{r}
 ggplot(data = yearspubs, aes(n_pubs)) +
-  geom_histogram()
+  geom_histogram() + mytheme
 ```
 
 Here's how we can use the `lm()` function to fit a multiple regression with `salary` as the outcome variable and `years_since_phd` and `n_pubs` as the predictor variables.
@@ -214,13 +223,15 @@ This multiple regression is defined by the formula:
 
 $$ y_{\hat{i}} = \beta_0 + \beta_1 x_1 + \beta_2 x_2 $$
 
-Multiple regression allows us the ability to control the relationship of multiple predictors on the outcome variable. Statistically "controlling" for a predictors is when the shared variance between predictors is accounted for/removed so that the unique effect of any one predictor variable on the outcome variable is estimated. We then can ask the following questions:
+Multiple regression allows us the ability to control the relationship of multiple predictors on the outcome variable. As aforementioned, statistically "controlling" for a predictors is when the shared variance between predictors is accounted for/removed so that the unique effect of any one predictor variable on the outcome variable is estimated. We then can ask the following questions:
 
   - What is the relationship between $x_1$ and $y$ if we hold $x2$ at a constant value? e.g., What is the salary difference between prof A (woman, 10 years) and prof B (woman, 11 years)? 
   
   - If we already know $x2$, how much does learning about $x1$ change our prediction of $y$? e.g. how much does learning that prof C is male change our prediction of their salary if we already knew they have 15 years of seniority?
   
-### Parameter Table and Interpretation 
+Remember, as <i>partial effects</i>, we are finding the unique effect of a predictor when controlling for other predictors explicitly in the model. Importantly, we can't say anything when controlling for variables not in the model. 
+  
+### Parameter Table Interpretation 
 
 From the parameter table above, we can make the following statements: 
 
@@ -231,9 +242,11 @@ From the parameter table above, we can make the following statements:
   - The partial effect of `years_since_phd` was significantly different from zero at \$1075.21. Thus, when controlling for `n_pubs`, each additional year since PhD was associated with an additional \$261.30 to \$1889.11.
 
 ::: {.callout-tip title="Partial Effects vs. Zero-Order Effects"}
-When we use multiple regression, the $beta$ predictor parameters are called <b>"partial"</b> (i.e., unique) effects since the model is controlling for each predictors' influence on the outcome variable. 
+When we use multiple regression, the slope ($beta$) parameters are called <b>"partial"</b> (i.e., unique) effects since the model is controlling for each predictors' influence on the outcome variable. 
 
 In contrast, with simple linear regression that has only one predictor, that predictor's effect is called a <b>"zero-order"</b> (i.e., total) effect. 
+
+The decision to focus on partial effects or zero-order effects depends on the specific aims of the research question beacuse they answer different questions. 
 :::
   
 ## One Dummy Coded Predictor 
@@ -255,13 +268,19 @@ yearspubs$sex <- factor(yearspubs$sex, levels =  c("female","male"))
 When we use functions like `factor()` we have explicitly written out the input arguments, such as <i>levels</i>, in order to show exactly what information the function is processing. 
 :::
 
+::: {.callout-tip title="The $"}
+As a reminder, the "$" symbol extracts one of the columns in the dataframe. 
+:::
+
 In order to interpret the results, it's important to understand how the code variables are integrated into the model's formula: 
 
-$$ y_{\hat{i}} = \beta_0 + \beta_1 C_1i $$
+$$ y_{\hat{i}} = \beta_0 + \beta_1 C_{1i} $$
 
   - The intercept $\beta_0$ is the value of $y_{\hat{i}}$ when $C_1$ = 0. In other words, the reference group's average value.
   
   - The slope $\beta_1$ is the change in $y_{\hat{i}}$ when $C_1 + 1$. In other words, it is the group difference in average value, and adding it to the intercept means we are focusing on the non-reference group's outcome value.
+  
+Note that if you have more than two more categories per variable (here, we only have two groups/categories), you will use the exact same approach but have more than one slope.
 
 Now, we can fit and interpret the model: 
 
@@ -279,10 +298,10 @@ Therefore:
 
 ### Estimating means and plot
 
-We will use the `estimate_means()` function to accomplish the same thing we did above to obtain average values.  
+We will use the `estimate_means()` function to accomplish the same thing we did above to obtain average values. 
 
 ```{r}
-gmeans1 <- estimate_means(fit3) 
+gmeans1 <- estimate_means(fit3, by = c("sex")) 
 gmeans1 |> print_md()
 ```
 
@@ -322,7 +341,7 @@ model_parameters(fit4) |> print_md()
 
 Recall that prior to fitting the multiple regression, we changed `sex` into a categorical variable using the `factor()` function. This is an example of <i>dummy coding</i>. Therefore, once we fit the multiple regression we were able to separate response values based on different factor levels.
 
-In the case of `sex`, we have a binary categorical variable, so we can obtain average values of `salary` at each level of sex while also accounting for (i.e. controlling for) the (partial) effect of `years_since_phd`. 
+In the case of `sex`, we have a binary categorical variable, so we can obtain average values of `salary` for each sex category while also accounting for (i.e. controlling for) the (partial) effect of `years_since_phd`. 
 
 We will use the `estimate_means()` function to accomplish this. 
 
@@ -337,7 +356,7 @@ We can also create a plot to visualize the means.
 plot(gmeans)
 ```
 
-We can now more easily see that, across all `years_since_phd` values, male academics earn on average <i>more</i> salary than women academics. However, as the plot shows, there is variability within each factor level. 
+We can now more easily see that, averaged over all `years_since_phd` values, male academics earn on average <i>more</i> salary than women academics. However, as the plot shows, there is variability within each factor level. 
 
 To see if this apparent difference of average salary between male and female academics is statistically significant, we can perform a <i>contrast</i>. 
 
@@ -348,27 +367,38 @@ contrasts |> print_md()
 
 Therefore, there is not a statistically significant difference in means across `years_since_phd` between male and female academics, <i>p</i> = 0.130
 
-## Moderation
+## Interactions
 
-Moderation, also known as interactions, asks us to consider the extent to which the effect of one predictor <b> depends on </b> the value on another predictor. It is up to the investigator, guided by theory and previous research, to consider if including interaction terms are relevant for the research question.  
+Interactions asks us to consider the extent to which the effect of one predictor <i> depends on </i> the value on another predictor. It is up to the investigator, guided by theory and previous research, to consider if including interaction terms are relevant for the research question.  
 
-Again, with moderation we include interaction terms like so: 
+Again, we include interaction terms like so: 
 
 $$ y_{\hat{i}} = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_1 x_2$$
--   $beta_3$ is the slope of the interaction term (the product of two or more predictors)
+-   $\beta_3$ is the slope of the interaction term (the product of two or more predictors)
 
 We can now fit our new model with the interaction term: 
 
 ```{r}
 ## Fit linear model and print parameters
-# the * (asterisk) is short form for including the interation term
 fit5 <- lm(
-  formula = salary ~ years_since_phd * sex,
+  formula = salary ~ years_since_phd + sex + years_since_phd:sex,
   data = yearspubs
 )
 model_parameters(fit5) |> print_md()
 ```
 In this example, the `years_since_phd` by `sex` interaction term was not significant (p = 0.762). 
+
+::: {.callout-tip title="The * symbol for interactions"}
+In the code block above, we specified the interaction term by writing out its explicit form. There is a short-form way in <i>R</i> for writing out all the interaction terms by using the asterisk(*) symbol. This is especially helpful when there are more than two predictor variables where higher-order interaction terms are possible (you would not want to accidentally forget an interaction term!). 
+
+Using the example above:
+
+  - <span style="color:red">Long Form Fomula:</span> salary ~ years_since_phd + sex + years_since_phd:sex
+  - <span style="color:blue">Short Form Formula: </span> salary ~ years_since_phd*sex
+
+Remember, both forms are equivalent. 
+:::
+
 
 We can visualize the interaction by making a marginal effects, or "spotlight", plot. 
 
@@ -377,19 +407,19 @@ plot(ggpredict(
   model = fit5,
   terms = c("years_since_phd",
             "sex")
-))
+)) + mytheme
 ```
-Note that in this multiple regression / moderation model that each level of `sex` has a different slope. We can estimate these slopes, or the "simple" effect of `years_since_phd` on salary for each level of `sex`, with `estimate_slopes()`. The term "simple" is a result of adding the interaction term in the model. 
+Note that in this multiple regression with an interaction term that each level of `sex` has a different slope. We can estimate these slopes, or the "simple" effect of `years_since_phd` on salary for each category of `sex`, with `estimate_slopes()`. The term "simple" is a result of adding the interaction term in the model. 
 
 ```{r}
-estimate_slopes(fit5, trend = "years_since_phd", by = "sex")
+estimate_slopes(fit5, trend = "years_since_phd", by = "sex") |> print_md()
 ```
 
-  - In this moderation model, the simple slope of the `years_since_phd` was significantly different from zero for men at \$1349.17, but not for women (p = 0.113). 
+  - In this model with an interaction, the simple slope of the `years_since_phd` was significantly different from zero for men at \$1349.17, but not for women (p = 0.113). Therefore, it is possible to have a non-significant interaction term, and some, but not all, significant simple slopes. 
 
 # Assumptions
 
-The six assumptions of general linear models can be divided into two general areas.
+The six assumptions of general linear models can be divided into two general areas. The key is that GLMs are useful when assumptions of general linear models no longer hold or are unreasonable.
 
 <u>Assumptions about the Formula</u>
 
