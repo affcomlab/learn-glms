@@ -1175,7 +1175,7 @@ The * symbol for interactions
 <p><img src="regression-review_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p>Note that in this multiple regression / moderation model that each level of <code>sex</code> has a different slope. We can estimate these slopes, or the “simple” effect of <code>years_since_phd</code> on salary for each level of <code>sex</code>, with <code>estimate_slopes()</code>. The term “simple” is a result of adding the interaction term in the model.</p>
+<p>Note that in this multiple regression with an interaction term that each level of <code>sex</code> has a different slope. We can estimate these slopes, or the “simple” effect of <code>years_since_phd</code> on salary for each category of <code>sex</code>, with <code>estimate_slopes()</code>. The term “simple” is a result of adding the interaction term in the model.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">estimate_slopes</span>(fit5, <span class="at">trend =</span> <span class="st">"years_since_phd"</span>, <span class="at">by =</span> <span class="st">"sex"</span>) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -1214,7 +1214,7 @@ The * symbol for interactions
 </div>
 </div>
 <ul>
-<li>In this model with an interaction, the simple slope of the <code>years_since_phd</code> was significantly different from zero for men at $1349.17, but not for women (p = 0.113).</li>
+<li>In this model with an interaction, the simple slope of the <code>years_since_phd</code> was significantly different from zero for men at $1349.17, but not for women (p = 0.113). Therefore, it is possible to have a non-significant interaction term, and some, but not all, significant simple slopes.</li>
 </ul>
 </section>
 </section>
