@@ -3,11 +3,33 @@ title: "Binary Regression"
 format: html
 ---
 
-We start our first look at GLMs with binary regression. Here, we consider when binary regression is more appropriate than a regular (general linear) regression. We will also fit toy data and interpret the results.
+We start our first look at GLMs with binary regression. Here, we consider when binary regression, specifically <i>logistic regression</i>, is more appropriate than a regular (general linear) regression. We will also fit toy data and interpret the results.
 
 ## Why Binary Regression? 
 
-When the outcome is a binary variable, or when there are only <i>two</i> possible outcomes, there are two essntial problems with using the general linear model (e.g., the regular `lm()` function) . The first essential problem is due to the non-normal shape of the residuals. The second essential problem is that the outcome variable is not continuous and normally distributed. Both problems contribute to general linear models being biased and making impossible predictions. Binary regression, also known as <b>logistic regression</b>, is a way to model these kinds of data and hold these assumptions more true. 
+When the outcome is a binary variable, or when there are only <b>two</b> possible outcomes, there are two essential problems with using the general linear model (e.g., the regular `lm()` function) . The first essential problem is due to the non-normal shape of the residuals. The second essential problem is that the outcome variable is not continuous and normally distributed. Both problems contribute to general linear models being biased and making impossible predictions. 
+
+Binary regression is a general term that encompasses specific models such as <i>logistic regression</i> and <i>probit regression</i>, and is a way to analyze these kinds of two-outcome data and hold these assumptions more true. We will focus on logistic regression in this module.  
+
+::: {.column-margin}
+<b>Terms</b>
+:::
+
+::: {.column-margin}
+Binary Regression: A general term for models for when the outcome variable has only two possible outcomes. <br>
+:::
+
+::: {.column-margin}
+Logistic Regression: A specific binary regression model which uses the logistic function as the link function. <br>
+:::
+
+::: {.column-margin}
+Probit Regression: A specific binary regression model which uses the probit function as the link function. <br>
+:::
+
+::: {.column-margin}
+Link Function: A function that transforms the outcome variable into a continuous and unbounded variable. It is a key aspect of generalized linear models.  
+:::
 
 ### Shape of Residuals
 
@@ -15,16 +37,42 @@ The general linear model assumes that residuals, or the differences between the 
 
 ### Continuous and Normally Distributed Outcome
 
-Since the outcome variable is binary, a quick histogram plot will show that it is not continuous (i.e., it is discrete). This is a scourge for the general linear model since it assumes continous and normally distributed outcomes, and it will predict both intermediate states/values between the two possible outcomes <b>and</b> states/values above and below the two possible outcomes. For example, if 0 = Alive, and 1 = Dead, then the general linear model may predict a value between 0 and 1 (somewhere between alive and dead), or values below 0 and above 1 (so less alive and more dead?).
+Since the outcome variable is binary, a quick histogram plot will show that it is not continuous (i.e., it is discrete). This is a scourge for the general linear model since it assumes continuous and normally distributed outcomes, and it will predict both intermediate states/values between the two possible outcomes <b>and</b> states/values above and below the two possible outcomes. For example, if 0 = Alive, and 1 = Dead, then the general linear model may predict a value between 0 and 1 (somewhere between alive and dead), or values below 0 and above 1 (so less alive and more dead?).
 
-
-Therefore, to model a binary outcome using the machinery of linear modeling, we need to <i>transform</i> the outcome variable to a continuous and normally distributed outcome. We do that with what's called a <i>link function</i>.  In other words, the link function will take the binary outcome variable and transform it to a continous and normally distributed outcome variable. By using a link function, we move from the general linear model to the <b>generalized linear model</b>. See more about link functions in Section 4 of this module. 
-
+Therefore, to model a binary outcome using the machinery of linear modeling, we need to <b>transform</b> the outcome variable to a continuous and normally distributed outcome. We do that with what's called a <i>link function</i>.  In other words, the link function will take the binary outcome variable and transform it to a continuous and normally distributed outcome variable. By using a link function, we move from the general linear model to a <i>generalized linear model</i>. See more about link functions in <u>Section 5</u> of this module. 
 
 ## Data Demonstration 
 The data for this chapter consists of some records of passengers on the Titanic. The question we will ask and answer with binary regression is if the amount of fare contributed in some way to the survival of passengers. Since `survived` is a binary outcome (yes or no), this relationship is best assessed with binary regression. 
 
 -   Data: <a href="./titanic.csv" download> titanic.csv </a>
+
+## Loading the Packages and Reading in Data
+
+In addition to our usual packages (`tidyverse`, `easystats`, and `ggeffects`), we will also need to load `DHARMa` and `qqplotr` in order to make our plots for our binary regression models. 
+
+```{r, warning = FALSE, message=FALSE}
+## Load packages
+library(tidyverse)
+library(easystats)
+library(ggeffects)
+library(DHARMa)
+library(qqplotr)
+
+## Read in data from file
+titanic_data <- read_csv("titanic.csv")
+titanic_data
+
+```
+
+```{r, warning=FALSE,echo=FALSE}
+mytheme <- theme_bw(
+  base_size = 12
+)
+```
+
+This data shows records for 877 passengers on the Titanic.
+
+Here's a table of our variables in this dataset: 
 
 | Variable    | Description                     |     Values | Measurement |
 |-------------|:--------------------------------|-----------:|:-----------:|
@@ -33,23 +81,6 @@ The data for this chapter consists of some records of passengers on the Titanic.
 | `class`    | Category of Passenger Accommodation         |   Characters |   Nominal   |
 | `fare`   | Cost of fare    |    Double |    Scale    |
 | `survived` | "Yes" or "No" if survived   |    Characters |    Nominal    |
-
-
-## Loading the Packages and Reading in Data
-
-```{r, warning = FALSE, message=FALSE}
-## Load packages
-library(tidyverse)
-library(easystats)
-library(ggeffects)
-
-## Read in data from file
-titanic_data <- read_csv("titanic.csv")
-titanic_data
-
-```
-
-This data shows records for 877 passengers on the Titanic.
 
 ## Prepare Data / Exploratory Data Analysis
 
@@ -66,7 +97,7 @@ titanic2 <-
       "yes" ~ 1
     )
   )
-titanic2
+titanic2 #print
 ```
 
 Re-coding these strings/characters into discrete numbers is important for the model's mathematics to work. 
@@ -83,9 +114,9 @@ Like always, it is important to plot the data prior to fitting any model. Here, 
 
 ```{r}
 ggplot(titanic2, aes(x = fare, y = survived_b)) +
-  geom_point()
+  geom_point() + mytheme
 ggplot(titanic2, aes(x = fare, y = survived)) +
-  geom_boxplot()
+  geom_boxplot() + mytheme
 ```
 
 The boxplot helps clarify what the scatter plot can't easily show: there seems to be some effect of fare on survival, such that the higher the fare, the more mass/points are in having survived the titanic. While this is plot is interesting, we will explore this relationship in our regression models.  
@@ -113,7 +144,7 @@ This is evident when we plot the predictions using the `predict_response()` func
 predict_response(fit1, terms = "fare") |> plot(show_data = TRUE)
 ```
 
-Notice that the data points are only either 0 or 1 (binary), but the regression line takes intermediate values between 0 and 1, and extreme values above and below 0 and 1! We can't have passengers somewhat between alive/dead, or more or less alive/dead! 
+Notice that although the data points are only either 0 or 1 (binary), the regression line takes intermediate values between 0 and 1, and extreme values above and below 0 and 1! For example, if a passenger paid \$100, then the outcome value would be ~0.55, which is halfway between alive and dead! We can't have passengers somewhat between alive/dead, or more or less alive/dead! 
 
 If that wasn't enough to deter one from using the general linear model for binary responses, taking a look at a plot of the residuals, using `check_residuals()` [^1], should be telling. 
 
@@ -123,26 +154,26 @@ If that wasn't enough to deter one from using the general linear model for binar
 ## Check residuals
 check_residuals(fit1) |> plot() # looks bad
 ```
-Yikes! As you can see, the dots <b>do not</b> fall along the line. Once this assumption of the uniformity/normality of residuals are not met, this is a clear sign that the model should not be trusted. 
+Yikes! As you can see, the dots <b>do not</b> fall along the line. Once this assumption of the uniformity/normality of residuals are not met, this is a clear sign that the model should not be so easily trusted. 
 
 So now, finally, we fit our first GLM.
 
 # Fitting the Binary Regression Model 
 
-Before we fit our first binary regression, let's take a look at what is actually happening and why the <b>generalized</b> linear model is similar, but different, to the <i>general</i> linear model. 
+Before we fit our first binary regression, let's take a look at what is actually happening and why the <b>generalized</b> linear model is similar, but different, to the general linear model. 
 
 ## Comparing Simple Regression to Simple Binary Regression 
 
 In simple regression, we are predicting the outcome ($y_{{i}}$) with a linear (additive) combination of an intercept ($\beta_0$) and one predictor variable ($x$).
 
 $$ y_{\hat{i}} = \beta_0 + \beta_1 x $$
-In simple binary regression, we are <i>still</i> predicting an outcome with a linear (additive) combination of intercept and one predictor variable. We use the term "simple" only because we have one predictor variable in this case. 
+In simple binary regression, we are <b>still</b> predicting an outcome with a linear (additive) combination of intercept and one predictor variable. We use the term "simple" only because we have one predictor variable in this case. 
 
 $$ \eta_{i} = \beta_0 + \beta_1 x $$ 
 
 Note that the linearly additive feature that both simple regression and simple binary regression share is what makes these models related and interpretable. 
 
-The main difference is why, in simple binary regression, did the outcome variable change from $y_{{i}}$ to $\eta_{i}$? Because in binary regression, we are no longer predicting the binary outcome event (e.g., "yes/no"), but the <i> probability </i> of the binary event occurring. This means that $\eta_{i}$ is a probability that is bounded between 0 ("no" event) and 1 ("yes" event). 
+The main difference is why, in simple binary regression, did the outcome variable change from $y_{{i}}$ to $\eta_{i}$? Because in binary regression, we are no longer predicting the binary outcome event (e.g., "yes/no"), but the <b> probability </b> of the binary event occurring. This means that $\eta_{i}$ is a probability that is bounded between 0 ("no" event) and 1 ("yes" event). 
 
 The next section will relate $y_{\hat{i}}$ to $\eta_{i}$.
 
@@ -171,15 +202,15 @@ When we use the logit link function with a linear predictor, we now can call thi
 
 
 :::{.callout-tip title="Takeaway: Link Functions"}
-When we use GLMs, we will be using many different link functions depending on the data. In the case of binary/logistic regression, all this function is trying to do is relate our linear predictors to a response outcome that is continuous and between some bounds (like 0 and 1). This is because if we <i>did not</i> do this, we are using the linear predictors to predictor some value that is continuous when it is <b>not</b> technically continuous and out of bounds (so, when an event "yes" = 1, then the model will spit out a value like 1.53, which is not possible). 
+When we use GLMs, we will be using many different link functions depending on the data. In the case of binary/logistic regression, all this function is trying to do is relate our linear predictors to a response outcome that is continuous and between some bounds (like 0 and 1). This is because if we <b>did not</b> do this, we are using the linear predictors to predictor some value that is continuous when it is <b>not</b> technically continuous and out of bounds (so, when an event "yes" = 1, then the model will spit out a value like 1.53, which is not possible). 
 We also find that when using the appropriate link function, other problems, like the shape of residuals, also gets fixed! 
 :::
 
 ## Fitting our Binary Regression 
 
-When we fit our binary regression, we now will use the `glm()` funciton which is similar to `lm()`, but has one extra input argument.  Notice the "family" input argument, which requires the <i>family of distributions</i> to use and the <i>link function</i> choice.  
+When we fit our binary regression, we now will use the `glm()` funciton which is similar to `lm()`, but has one extra input argument.  Notice the "family" input argument, which requires which "family of distributions" to use and which "link function" choice.  
 
-For binary regression, we supply the <b>binomial</b> distribution and the <b>logit</b> link funciton. 
+For binary regression, we supply the <b>binomial</b> distribution and the <b>logit</b> link function. 
 
 ```{r}
 fit2 <- glm(
@@ -190,5 +221,30 @@ fit2 <- glm(
 
 ## Print parameters in logit (i.e., log-odds) units
 model_parameters(fit2) |> print_md()
+
 ```
 
+### Parameter Table Interpretation
+
+As seen above, the parameter table output from a model fit with `glm()` looks very similar to parameter table outputs from models fit with `lm()`. But there is a <b>big</b> difference -- in `glm()` models, we are no longer working in the same raw units! 
+
+This difference is apparent in the second column of the output table: "Log-Odds". Because we fit a logistic regression with a logit function, the parameter values are in "log-odds" unit; it is no longer possible to consider `fare` in terms of dollar amounts. Technically, when `fare` is in log-odds units, we can only say:
+
+> For every one 1 unit increase in log-odds of `fare` is a 0.02 increase in the probability of surviving. 
+
+Although this is technically true, it isn't at first clear what "1 unit increase in log-odds of `fare`" is. But before we completely abandon what log-odds unit can tells and tranform back into our original units (e.g., dollars), let's see more what using logistic regression can show us.
+
+### Predicted Probability
+
+A very useful part of about working with logistic regression is that our outcome variable is also in a transformed space (thanks to the logit function).  Our outcome is now "the probability of `survival_b`".  We can see how this plays out when we plot the predicted probabilities using `predict_response()`. <b>This function is especially helpful because it keeps the outcome variable in the transformed, continuous space, but transforms the predictors back to their raw units.</b> 
+
+```{r, warning=FALSE,message=FALSE}
+predict_response(fit2, terms = "fare") |> plot(show_data = TRUE)
+
+```
+
+Again, the transformed outcome variable is the "probability of `survived_b`" (on the y-axis), so we can see that it is bounded between [0,100]. The logistic regression line also makes predictions between these bounds so we no longer have the model predicting unreasonable values/states. Lastly, we can now see how an increase in `fare` increases the probability of survival.  
+
+::: {.callout-tip title="Critical Thinking"}
+While the plot above looks very convincing that paying a `fare` over $400 seems to ensure 100% probability of survival, this model only has <i>one</i> predictor variable. There are a lot of other variables that are not accounted for. Certainly, we would need to consider other variables that may impact survival rates other than fare, and, at the very least, it would be quite surprising if only 'fare` ensured survival. 
+:::
