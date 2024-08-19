@@ -218,23 +218,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#shape-of-residuals" id="toc-shape-of-residuals" class="nav-link" data-scroll-target="#shape-of-residuals"><span class="header-section-number">3.1.1</span> Shape of Residuals</a></li>
   <li><a href="#continuous-and-normally-distributed-outcome" id="toc-continuous-and-normally-distributed-outcome" class="nav-link" data-scroll-target="#continuous-and-normally-distributed-outcome"><span class="header-section-number">3.1.2</span> Continuous and Normally Distributed Outcome</a></li>
   </ul></li>
-  <li><a href="#data-demonstration" id="toc-data-demonstration" class="nav-link" data-scroll-target="#data-demonstration"><span class="header-section-number">3.2</span> Data Demonstration</a></li>
-  <li><a href="#loading-the-packages-and-reading-in-data" id="toc-loading-the-packages-and-reading-in-data" class="nav-link" data-scroll-target="#loading-the-packages-and-reading-in-data"><span class="header-section-number">3.3</span> Loading the Packages and Reading in Data</a></li>
-  <li><a href="#prepare-data-exploratory-data-analysis" id="toc-prepare-data-exploratory-data-analysis" class="nav-link" data-scroll-target="#prepare-data-exploratory-data-analysis"><span class="header-section-number">3.4</span> Prepare Data / Exploratory Data Analysis</a>
+  <li><a href="#comparing-simple-regression-to-simple-binary-regression" id="toc-comparing-simple-regression-to-simple-binary-regression" class="nav-link" data-scroll-target="#comparing-simple-regression-to-simple-binary-regression"><span class="header-section-number">3.2</span> Comparing Simple Regression to Simple Binary Regression</a>
   <ul class="collapse">
-  <li><a href="#plotting-a-binary-outcome" id="toc-plotting-a-binary-outcome" class="nav-link" data-scroll-target="#plotting-a-binary-outcome"><span class="header-section-number">3.4.1</span> Plotting a binary outcome</a></li>
+  <li><a href="#link-function-logit" id="toc-link-function-logit" class="nav-link" data-scroll-target="#link-function-logit"><span class="header-section-number">3.2.1</span> Link function: logit</a></li>
+  </ul></li>
+  <li><a href="#data-demonstration" id="toc-data-demonstration" class="nav-link" data-scroll-target="#data-demonstration"><span class="header-section-number">3.3</span> Data Demonstration</a></li>
+  <li><a href="#loading-the-packages-and-reading-in-data" id="toc-loading-the-packages-and-reading-in-data" class="nav-link" data-scroll-target="#loading-the-packages-and-reading-in-data"><span class="header-section-number">3.4</span> Loading the Packages and Reading in Data</a></li>
+  <li><a href="#prepare-data-exploratory-data-analysis" id="toc-prepare-data-exploratory-data-analysis" class="nav-link" data-scroll-target="#prepare-data-exploratory-data-analysis"><span class="header-section-number">3.5</span> Prepare Data / Exploratory Data Analysis</a>
+  <ul class="collapse">
+  <li><a href="#plotting-a-binary-outcome" id="toc-plotting-a-binary-outcome" class="nav-link" data-scroll-target="#plotting-a-binary-outcome"><span class="header-section-number">3.5.1</span> Plotting a binary outcome</a></li>
   </ul></li>
   <li><a href="#fitting-the-general-linear-model-not-recommended" id="toc-fitting-the-general-linear-model-not-recommended" class="nav-link" data-scroll-target="#fitting-the-general-linear-model-not-recommended"><span class="header-section-number">4</span> Fitting the General Linear Model (Not Recommended)</a></li>
   <li><a href="#fitting-the-binary-regression-model" id="toc-fitting-the-binary-regression-model" class="nav-link" data-scroll-target="#fitting-the-binary-regression-model"><span class="header-section-number">5</span> Fitting the Binary Regression Model</a>
   <ul class="collapse">
-  <li><a href="#comparing-simple-regression-to-simple-binary-regression" id="toc-comparing-simple-regression-to-simple-binary-regression" class="nav-link" data-scroll-target="#comparing-simple-regression-to-simple-binary-regression"><span class="header-section-number">5.1</span> Comparing Simple Regression to Simple Binary Regression</a>
+  <li><a href="#fitting-our-binary-regression" id="toc-fitting-our-binary-regression" class="nav-link" data-scroll-target="#fitting-our-binary-regression"><span class="header-section-number">5.1</span> Fitting our Binary Regression</a>
   <ul class="collapse">
-  <li><a href="#link-function-logit" id="toc-link-function-logit" class="nav-link" data-scroll-target="#link-function-logit"><span class="header-section-number">5.1.1</span> Link function: logit</a></li>
-  </ul></li>
-  <li><a href="#fitting-our-binary-regression" id="toc-fitting-our-binary-regression" class="nav-link" data-scroll-target="#fitting-our-binary-regression"><span class="header-section-number">5.2</span> Fitting our Binary Regression</a>
-  <ul class="collapse">
-  <li><a href="#parameter-table-interpretation" id="toc-parameter-table-interpretation" class="nav-link" data-scroll-target="#parameter-table-interpretation"><span class="header-section-number">5.2.1</span> Parameter Table Interpretation</a></li>
-  <li><a href="#predicted-probability" id="toc-predicted-probability" class="nav-link" data-scroll-target="#predicted-probability"><span class="header-section-number">5.2.2</span> Predicted Probability</a></li>
+  <li><a href="#parameter-table-interpretation" id="toc-parameter-table-interpretation" class="nav-link" data-scroll-target="#parameter-table-interpretation"><span class="header-section-number">5.1.1</span> Parameter Table Interpretation</a></li>
+  <li><a href="#predicted-probability" id="toc-predicted-probability" class="nav-link" data-scroll-target="#predicted-probability"><span class="header-section-number">5.1.2</span> Predicted Probability</a></li>
   </ul></li>
   </ul></li>
   </ul>
@@ -287,18 +287,58 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="continuous-and-normally-distributed-outcome" class="level3" data-number="3.1.2">
 <h3 data-number="3.1.2" class="anchored" data-anchor-id="continuous-and-normally-distributed-outcome"><span class="header-section-number">3.1.2</span> Continuous and Normally Distributed Outcome</h3>
 <p>Since the outcome variable is binary, a quick histogram plot will show that it is not continuous (i.e., it is discrete). This is a scourge for the general linear model since it assumes continuous and normally distributed outcomes, and it will predict both intermediate states/values between the two possible outcomes <b>and</b> states/values above and below the two possible outcomes. For example, if 0 = Alive, and 1 = Dead, then the general linear model may predict a value between 0 and 1 (somewhere between alive and dead), or values below 0 and above 1 (so less alive and more dead?).</p>
-<p>Therefore, to model a binary outcome using the machinery of linear modeling, we need to <b>transform</b> the outcome variable to a continuous and normally distributed outcome. We do that with what’s called a <i>link function</i>. In other words, the link function will take the binary outcome variable and transform it to a continuous and normally distributed outcome variable. By using a link function, we move from the general linear model to a <i>generalized linear model</i>. See more about link functions in <u>Section 5</u> of this module.</p>
+<p>Therefore, to model a binary outcome using the machinery of linear modeling, we need to <b>transform</b> the outcome variable to a continuous and normally distributed outcome. We do that with what’s called a <i>link function</i>. In other words, the link function will take the binary outcome variable and transform it to a continuous and normally distributed outcome variable. By using a link function, we move from the general linear model to a <i>generalized linear model</i>. See more about link functions in the next section.</p>
+<p>Before we fit our first binary regression, let’s take a look at what is actually happening and why the <b>generalized</b> linear model is similar, but different, to the general linear model.</p>
 </section>
 </section>
-<section id="data-demonstration" class="level2" data-number="3.2">
-<h2 data-number="3.2" class="anchored" data-anchor-id="data-demonstration"><span class="header-section-number">3.2</span> Data Demonstration</h2>
+<section id="comparing-simple-regression-to-simple-binary-regression" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="comparing-simple-regression-to-simple-binary-regression"><span class="header-section-number">3.2</span> Comparing Simple Regression to Simple Binary Regression</h2>
+<p>In simple regression, we are predicting the outcome (<span class="math inline">\(y_{{i}}\)</span>) with a linear (additive) combination of an intercept (<span class="math inline">\(\beta_0\)</span>) and one predictor variable (<span class="math inline">\(x\)</span>).</p>
+<p><span class="math display">\[ y_{\hat{i}} = \beta_0 + \beta_1 x \]</span> In simple binary regression, we are <b>still</b> predicting an outcome with a linear (additive) combination of intercept and one predictor variable. We use the term “simple” only because we have one predictor variable in this case.</p>
+<p><span class="math display">\[ \eta_{i} = \beta_0 + \beta_1 x \]</span></p>
+<p>Note that the linearly additive feature that both simple regression and simple binary regression share is what makes these models related and interpretable.</p>
+<p>The main difference is why, in simple binary regression, did the outcome variable change from <span class="math inline">\(y_{{i}}\)</span> to <span class="math inline">\(\eta_{i}\)</span>? Because in binary regression, we are no longer predicting the binary outcome event (e.g., “yes/no”), but the <b> probability </b> of the binary event occurring. This means that <span class="math inline">\(\eta_{i}\)</span> is a probability that is bounded between 0 (“no” event) and 1 (“yes” event).</p>
+<p>The next section will relate <span class="math inline">\(y_{\hat{i}}\)</span> to <span class="math inline">\(\eta_{i}\)</span>.</p>
+<section id="link-function-logit" class="level3" data-number="3.2.1">
+<h3 data-number="3.2.1" class="anchored" data-anchor-id="link-function-logit"><span class="header-section-number">3.2.1</span> Link function: logit</h3>
+<p>We need to make a connection between the probability of an event (<span class="math inline">\(\eta_{i}\)</span>) to an event outcome (<span class="math inline">\(y_{{i}}\)</span>). This is possible in this way:</p>
+<ul>
+<li><p>The outcome <span class="math inline">\(y_{{i}}\)</span> for i = 1,…,<span class="math inline">\(n\)</span> events takes values zero or one with the probability of a 1 = <span class="math inline">\(p_i\)</span></p></li>
+<li><p>In other words, <span class="math inline">\(P(Y_i = 1)\)</span> = <span class="math inline">\(p_i\)</span>, or P is the probabilty of a 1 (e.g., “yes” happening).</p></li>
+</ul>
+<p>That is all just setup to define <span class="math inline">\(\eta_{i}\)</span>.</p>
+<ul>
+<li><span class="math inline">\(\eta_{i}= g(p_i)\)</span></li>
+</ul>
+<p>The variable <span class="math inline">\(g\)</span> is our “link function”. It is a function that transforms a probability (<span class="math inline">\(p_i\)</span>) into our <span class="math inline">\(\eta_{i}\)</span>, which is the outcome we are trying to find in binary regression (i.e., the probabilty of an event occuring.)</p>
+<p>In binary regression, our <span class="math inline">\(g\)</span> is the “logit function”, which is defined as:</p>
+<p><span class="math display">\[ \eta = log(p/(1-p)) \]</span> or, equivalently,</p>
+<p><span class="math display">\[ p = e^\eta/ (1 + e^\eta) \]</span></p>
+<p>When we use the logit link function with a linear predictor, we now can call this <i>“logistic regression”</i>.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Takeaway: Link Functions">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Takeaway: Link Functions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>When we use GLMs, we will be using many different link functions depending on the data. In the case of binary/logistic regression, all this function is trying to do is relate our linear predictors to a response outcome that is continuous and between some bounds (like 0 and 1). This is because if we <b>did not</b> do this, we are using the linear predictors to predictor some value that is continuous when it is <b>not</b> technically continuous and out of bounds (so, when an event “yes” = 1, then the model will spit out a value like 1.53, which is not possible). We also find that when using the appropriate link function, other problems, like the shape of residuals, also gets fixed!</p>
+</div>
+</div>
+</section>
+</section>
+<section id="data-demonstration" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="data-demonstration"><span class="header-section-number">3.3</span> Data Demonstration</h2>
 <p>The data for this chapter consists of some records of passengers on the Titanic. The question we will ask and answer with binary regression is if the amount of fare contributed in some way to the survival of passengers. Since <code>survived</code> is a binary outcome (yes or no), this relationship is best assessed with binary regression.</p>
 <ul>
 <li>Data: <a href="./titanic.csv" download=""> titanic.csv </a></li>
 </ul>
 </section>
-<section id="loading-the-packages-and-reading-in-data" class="level2" data-number="3.3">
-<h2 data-number="3.3" class="anchored" data-anchor-id="loading-the-packages-and-reading-in-data"><span class="header-section-number">3.3</span> Loading the Packages and Reading in Data</h2>
+<section id="loading-the-packages-and-reading-in-data" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="loading-the-packages-and-reading-in-data"><span class="header-section-number">3.4</span> Loading the Packages and Reading in Data</h2>
 <p>In addition to our usual packages (<code>tidyverse</code>, <code>easystats</code>, and <code>ggeffects</code>), we will also need to load <code>DHARMa</code> and <code>qqplotr</code> in order to make our plots for our binary regression models.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Load packages</span></span>
@@ -379,8 +419,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 </section>
-<section id="prepare-data-exploratory-data-analysis" class="level2" data-number="3.4">
-<h2 data-number="3.4" class="anchored" data-anchor-id="prepare-data-exploratory-data-analysis"><span class="header-section-number">3.4</span> Prepare Data / Exploratory Data Analysis</h2>
+<section id="prepare-data-exploratory-data-analysis" class="level2" data-number="3.5">
+<h2 data-number="3.5" class="anchored" data-anchor-id="prepare-data-exploratory-data-analysis"><span class="header-section-number">3.5</span> Prepare Data / Exploratory Data Analysis</h2>
 <p>In order to use the <code>survived</code> variable in our analyses, we need to re-code the outcomes as integer numbers. Here, we will use the <code>mutate()</code> function from the <code>dplyr</code> package (which is a package that automatically loaded with <code>tidyverse</code>) to add a new column to our data which re-codes “Yes” = 1 and “No” = 0.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Prepare the data for analysis</span></span>
@@ -426,8 +466,8 @@ mutate() and data-wrangling
 <p>Our choice of data-wrangling functions are open to reprisal because there are many ways in data analysis and programming to do the same thing.</p>
 </div>
 </div>
-<section id="plotting-a-binary-outcome" class="level3" data-number="3.4.1">
-<h3 data-number="3.4.1" class="anchored" data-anchor-id="plotting-a-binary-outcome"><span class="header-section-number">3.4.1</span> Plotting a binary outcome</h3>
+<section id="plotting-a-binary-outcome" class="level3" data-number="3.5.1">
+<h3 data-number="3.5.1" class="anchored" data-anchor-id="plotting-a-binary-outcome"><span class="header-section-number">3.5.1</span> Plotting a binary outcome</h3>
 <p>Like always, it is important to plot the data prior to fitting any model. Here, we consider if there is some sort of relationship between <code>survived_b</code> and <code>fare</code>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(titanic2, <span class="fu">aes</span>(<span class="at">x =</span> fare, <span class="at">y =</span> survived_b)) <span class="sc">+</span></span>
@@ -522,48 +562,8 @@ mutate() and data-wrangling
 </section>
 <section id="fitting-the-binary-regression-model" class="level1" data-number="5">
 <h1 data-number="5"><span class="header-section-number">5</span> Fitting the Binary Regression Model</h1>
-<p>Before we fit our first binary regression, let’s take a look at what is actually happening and why the <b>generalized</b> linear model is similar, but different, to the general linear model.</p>
-<section id="comparing-simple-regression-to-simple-binary-regression" class="level2" data-number="5.1">
-<h2 data-number="5.1" class="anchored" data-anchor-id="comparing-simple-regression-to-simple-binary-regression"><span class="header-section-number">5.1</span> Comparing Simple Regression to Simple Binary Regression</h2>
-<p>In simple regression, we are predicting the outcome (<span class="math inline">\(y_{{i}}\)</span>) with a linear (additive) combination of an intercept (<span class="math inline">\(\beta_0\)</span>) and one predictor variable (<span class="math inline">\(x\)</span>).</p>
-<p><span class="math display">\[ y_{\hat{i}} = \beta_0 + \beta_1 x \]</span> In simple binary regression, we are <b>still</b> predicting an outcome with a linear (additive) combination of intercept and one predictor variable. We use the term “simple” only because we have one predictor variable in this case.</p>
-<p><span class="math display">\[ \eta_{i} = \beta_0 + \beta_1 x \]</span></p>
-<p>Note that the linearly additive feature that both simple regression and simple binary regression share is what makes these models related and interpretable.</p>
-<p>The main difference is why, in simple binary regression, did the outcome variable change from <span class="math inline">\(y_{{i}}\)</span> to <span class="math inline">\(\eta_{i}\)</span>? Because in binary regression, we are no longer predicting the binary outcome event (e.g., “yes/no”), but the <b> probability </b> of the binary event occurring. This means that <span class="math inline">\(\eta_{i}\)</span> is a probability that is bounded between 0 (“no” event) and 1 (“yes” event).</p>
-<p>The next section will relate <span class="math inline">\(y_{\hat{i}}\)</span> to <span class="math inline">\(\eta_{i}\)</span>.</p>
-<section id="link-function-logit" class="level3" data-number="5.1.1">
-<h3 data-number="5.1.1" class="anchored" data-anchor-id="link-function-logit"><span class="header-section-number">5.1.1</span> Link function: logit</h3>
-<p>We need to make a connection between the probability of an event (<span class="math inline">\(\eta_{i}\)</span>) to an event outcome (<span class="math inline">\(y_{{i}}\)</span>). This is possible in this way:</p>
-<ul>
-<li><p>The outcome <span class="math inline">\(y_{{i}}\)</span> for i = 1,…,<span class="math inline">\(n\)</span> events takes values zero or one with the probability of a 1 = <span class="math inline">\(p_i\)</span></p></li>
-<li><p>In other words, <span class="math inline">\(P(Y_i = 1)\)</span> = <span class="math inline">\(p_i\)</span>, or P is the probabilty of a 1 (e.g., “yes” happening).</p></li>
-</ul>
-<p>That is all just setup to define <span class="math inline">\(\eta_{i}\)</span>.</p>
-<ul>
-<li><span class="math inline">\(\eta_{i}\)</span> = <span class="math inline">\(g(p_i)\)</span></li>
-</ul>
-<p>The variable <span class="math inline">\(g\)</span> is our “link function”. It is a function that transforms a probability (<span class="math inline">\(p_i\)</span>) into our <span class="math inline">\(\eta_{i}\)</span>, which is the outcome we are trying to find in binary regression (i.e., the probabilty of an event occuring.)</p>
-<p>In binary regression, our <span class="math inline">\(g\)</span> is the “logit function”, which is defined as:</p>
-<p><span class="math display">\[ \eta = log(p/(1-p)) \]</span> or, equivalently,</p>
-<p><span class="math display">\[ p = e^\eta/ (1 + e^\eta) \]</span></p>
-<p>When we use the logit link function with a linear predictor, we now can call this <i>“logistic regression”</i>.</p>
-<div class="callout callout-style-default callout-tip callout-titled" title="Takeaway: Link Functions">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Takeaway: Link Functions
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>When we use GLMs, we will be using many different link functions depending on the data. In the case of binary/logistic regression, all this function is trying to do is relate our linear predictors to a response outcome that is continuous and between some bounds (like 0 and 1). This is because if we <b>did not</b> do this, we are using the linear predictors to predictor some value that is continuous when it is <b>not</b> technically continuous and out of bounds (so, when an event “yes” = 1, then the model will spit out a value like 1.53, which is not possible). We also find that when using the appropriate link function, other problems, like the shape of residuals, also gets fixed!</p>
-</div>
-</div>
-</section>
-</section>
-<section id="fitting-our-binary-regression" class="level2" data-number="5.2">
-<h2 data-number="5.2" class="anchored" data-anchor-id="fitting-our-binary-regression"><span class="header-section-number">5.2</span> Fitting our Binary Regression</h2>
+<section id="fitting-our-binary-regression" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="fitting-our-binary-regression"><span class="header-section-number">5.1</span> Fitting our Binary Regression</h2>
 <p>When we fit our binary regression, we now will use the <code>glm()</code> funciton which is similar to <code>lm()</code>, but has one extra input argument. Notice the “family” input argument, which requires which “family of distributions” to use and which “link function” choice.</p>
 <p>For binary regression, we supply the <b>binomial</b> distribution and the <b>logit</b> link function.</p>
 <div class="cell">
@@ -608,8 +608,8 @@ Takeaway: Link Functions
 </table>
 </div>
 </div>
-<section id="parameter-table-interpretation" class="level3" data-number="5.2.1">
-<h3 data-number="5.2.1" class="anchored" data-anchor-id="parameter-table-interpretation"><span class="header-section-number">5.2.1</span> Parameter Table Interpretation</h3>
+<section id="parameter-table-interpretation" class="level3" data-number="5.1.1">
+<h3 data-number="5.1.1" class="anchored" data-anchor-id="parameter-table-interpretation"><span class="header-section-number">5.1.1</span> Parameter Table Interpretation</h3>
 <p>As seen above, the parameter table output from a model fit with <code>glm()</code> looks very similar to parameter table outputs from models fit with <code>lm()</code>. But there is a <b>big</b> difference – in <code>glm()</code> models, we are no longer working in the same raw units!</p>
 <p>This difference is apparent in the second column of the output table: “Log-Odds”. Because we fit a logistic regression with a logit function, the parameter values are in “log-odds” unit; it is no longer possible to consider <code>fare</code> in terms of dollar amounts. Technically, when <code>fare</code> is in log-odds units, we can only say:</p>
 <blockquote class="blockquote">
@@ -617,13 +617,13 @@ Takeaway: Link Functions
 </blockquote>
 <p>Although this is technically true, it isn’t at first clear what “1 unit increase in log-odds of <code>fare</code>” is. But before we completely abandon what log-odds unit can tells and tranform back into our original units (e.g., dollars), let’s see more what using logistic regression can show us.</p>
 </section>
-<section id="predicted-probability" class="level3" data-number="5.2.2">
-<h3 data-number="5.2.2" class="anchored" data-anchor-id="predicted-probability"><span class="header-section-number">5.2.2</span> Predicted Probability</h3>
+<section id="predicted-probability" class="level3" data-number="5.1.2">
+<h3 data-number="5.1.2" class="anchored" data-anchor-id="predicted-probability"><span class="header-section-number">5.1.2</span> Predicted Probability</h3>
 <p>A very useful part of about working with logistic regression is that our outcome variable is also in a transformed space (thanks to the logit function). Our outcome is now “the probability of <code>survival_b</code>”. We can see how this plays out when we plot the predicted probabilities using <code>predict_response()</code>. <b>This function is especially helpful because it keeps the outcome variable in the transformed, continuous space, but transforms the predictors back to their raw units.</b></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict_response</span>(fit2, <span class="at">terms =</span> <span class="st">"fare"</span>) <span class="sc">|&gt;</span> <span class="fu">plot</span>(<span class="at">show_data =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="binary-regression_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+<p><img src="binary-regression_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>Again, the transformed outcome variable is the “probability of <code>survived_b</code>” (on the y-axis), so we can see that it is bounded between [0,100]. The logistic regression line also makes predictions between these bounds so we no longer have the model predicting unreasonable values/states. Lastly, we can now see how an increase in <code>fare</code> increases the probability of survival.</p>

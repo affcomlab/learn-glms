@@ -39,7 +39,54 @@ The general linear model assumes that residuals, or the differences between the 
 
 Since the outcome variable is binary, a quick histogram plot will show that it is not continuous (i.e., it is discrete). This is a scourge for the general linear model since it assumes continuous and normally distributed outcomes, and it will predict both intermediate states/values between the two possible outcomes <b>and</b> states/values above and below the two possible outcomes. For example, if 0 = Alive, and 1 = Dead, then the general linear model may predict a value between 0 and 1 (somewhere between alive and dead), or values below 0 and above 1 (so less alive and more dead?).
 
-Therefore, to model a binary outcome using the machinery of linear modeling, we need to <b>transform</b> the outcome variable to a continuous and normally distributed outcome. We do that with what's called a <i>link function</i>.  In other words, the link function will take the binary outcome variable and transform it to a continuous and normally distributed outcome variable. By using a link function, we move from the general linear model to a <i>generalized linear model</i>. See more about link functions in <u>Section 5</u> of this module. 
+Therefore, to model a binary outcome using the machinery of linear modeling, we need to <b>transform</b> the outcome variable to a continuous and normally distributed outcome. We do that with what's called a <i>link function</i>.  In other words, the link function will take the binary outcome variable and transform it to a continuous and normally distributed outcome variable. By using a link function, we move from the general linear model to a <i>generalized linear model</i>. See more about link functions in the next section.
+
+Before we fit our first binary regression, let's take a look at what is actually happening and why the <b>generalized</b> linear model is similar, but different, to the general linear model. 
+
+## Comparing Simple Regression to Simple Binary Regression 
+
+In simple regression, we are predicting the outcome ($y_{{i}}$) with a linear (additive) combination of an intercept ($\beta_0$) and one predictor variable ($x$).
+
+$$ y_{\hat{i}} = \beta_0 + \beta_1 x $$
+In simple binary regression, we are <b>still</b> predicting an outcome with a linear (additive) combination of intercept and one predictor variable. We use the term "simple" only because we have one predictor variable in this case. 
+
+$$ \eta_{i} = \beta_0 + \beta_1 x $$ 
+
+Note that the linearly additive feature that both simple regression and simple binary regression share is what makes these models related and interpretable. 
+
+The main difference is why, in simple binary regression, did the outcome variable change from $y_{{i}}$ to $\eta_{i}$? Because in binary regression, we are no longer predicting the binary outcome event (e.g., "yes/no"), but the <b> probability </b> of the binary event occurring. This means that $\eta_{i}$ is a probability that is bounded between 0 ("no" event) and 1 ("yes" event). 
+
+The next section will relate $y_{\hat{i}}$ to $\eta_{i}$.
+
+### Link function: logit 
+
+We need to make a connection between the probability of an event ($\eta_{i}$) to an event outcome ($y_{{i}}$). This is possible in this way: 
+
+  - The outcome $y_{{i}}$ for i = 1,...,$n$ events takes values zero or one with the probability of a 1 = $p_i$ 
+  
+  - In other words, $P(Y_i = 1)$ = $p_i$, or P is the probabilty of a 1 (e.g., "yes" happening).
+
+That is all just setup to define $\eta_{i}$.
+
+  - $\eta_{i}= g(p_i)$
+  
+The variable $g$ is our "link function".  It is a function that transforms a probability ($p_i$) into our $\eta_{i}$, which is the outcome we are trying to find in binary regression (i.e., the probabilty of an event occuring.)
+
+In binary regression, our $g$ is the "logit function", which is defined as: 
+
+$$ \eta = log(p/(1-p)) $$
+or, equivalently, 
+
+$$ p = e^\eta/ (1 + e^\eta) $$
+
+When we use the logit link function with a linear predictor, we now can call this <i>"logistic regression"</i>. 
+
+
+:::{.callout-tip title="Takeaway: Link Functions"}
+When we use GLMs, we will be using many different link functions depending on the data. In the case of binary/logistic regression, all this function is trying to do is relate our linear predictors to a response outcome that is continuous and between some bounds (like 0 and 1). This is because if we <b>did not</b> do this, we are using the linear predictors to predictor some value that is continuous when it is <b>not</b> technically continuous and out of bounds (so, when an event "yes" = 1, then the model will spit out a value like 1.53, which is not possible). 
+We also find that when using the appropriate link function, other problems, like the shape of residuals, also gets fixed! 
+:::
+
 
 ## Data Demonstration 
 The data for this chapter consists of some records of passengers on the Titanic. The question we will ask and answer with binary regression is if the amount of fare contributed in some way to the survival of passengers. Since `survived` is a binary outcome (yes or no), this relationship is best assessed with binary regression. 
@@ -160,51 +207,7 @@ So now, finally, we fit our first GLM.
 
 # Fitting the Binary Regression Model 
 
-Before we fit our first binary regression, let's take a look at what is actually happening and why the <b>generalized</b> linear model is similar, but different, to the general linear model. 
 
-## Comparing Simple Regression to Simple Binary Regression 
-
-In simple regression, we are predicting the outcome ($y_{{i}}$) with a linear (additive) combination of an intercept ($\beta_0$) and one predictor variable ($x$).
-
-$$ y_{\hat{i}} = \beta_0 + \beta_1 x $$
-In simple binary regression, we are <b>still</b> predicting an outcome with a linear (additive) combination of intercept and one predictor variable. We use the term "simple" only because we have one predictor variable in this case. 
-
-$$ \eta_{i} = \beta_0 + \beta_1 x $$ 
-
-Note that the linearly additive feature that both simple regression and simple binary regression share is what makes these models related and interpretable. 
-
-The main difference is why, in simple binary regression, did the outcome variable change from $y_{{i}}$ to $\eta_{i}$? Because in binary regression, we are no longer predicting the binary outcome event (e.g., "yes/no"), but the <b> probability </b> of the binary event occurring. This means that $\eta_{i}$ is a probability that is bounded between 0 ("no" event) and 1 ("yes" event). 
-
-The next section will relate $y_{\hat{i}}$ to $\eta_{i}$.
-
-### Link function: logit 
-
-We need to make a connection between the probability of an event ($\eta_{i}$) to an event outcome ($y_{{i}}$). This is possible in this way: 
-
-  - The outcome $y_{{i}}$ for i = 1,...,$n$ events takes values zero or one with the probability of a 1 = $p_i$ 
-  
-  - In other words, $P(Y_i = 1)$ = $p_i$, or P is the probabilty of a 1 (e.g., "yes" happening).
-
-That is all just setup to define $\eta_{i}$.
-
-  - $\eta_{i}$ = $g(p_i)$
-  
-The variable $g$ is our "link function".  It is a function that transforms a probability ($p_i$) into our $\eta_{i}$, which is the outcome we are trying to find in binary regression (i.e., the probabilty of an event occuring.)
-
-In binary regression, our $g$ is the "logit function", which is defined as: 
-
-$$ \eta = log(p/(1-p)) $$
-or, equivalently, 
-
-$$ p = e^\eta/ (1 + e^\eta) $$
-
-When we use the logit link function with a linear predictor, we now can call this <i>"logistic regression"</i>. 
-
-
-:::{.callout-tip title="Takeaway: Link Functions"}
-When we use GLMs, we will be using many different link functions depending on the data. In the case of binary/logistic regression, all this function is trying to do is relate our linear predictors to a response outcome that is continuous and between some bounds (like 0 and 1). This is because if we <b>did not</b> do this, we are using the linear predictors to predictor some value that is continuous when it is <b>not</b> technically continuous and out of bounds (so, when an event "yes" = 1, then the model will spit out a value like 1.53, which is not possible). 
-We also find that when using the appropriate link function, other problems, like the shape of residuals, also gets fixed! 
-:::
 
 ## Fitting our Binary Regression 
 
@@ -239,6 +242,10 @@ Although this is technically true, it isn't at first clear what "1 unit increase
 A very useful part of about working with logistic regression is that our outcome variable is also in a transformed space (thanks to the logit function).  Our outcome is now "the probability of `survival_b`".  We can see how this plays out when we plot the predicted probabilities using `predict_response()`. <b>This function is especially helpful because it keeps the outcome variable in the transformed, continuous space, but transforms the predictors back to their raw units.</b> 
 
 ```{r, warning=FALSE,message=FALSE}
+```
+
+
+```{r, warning=FALSE,message=FALSE}
 predict_response(fit2, terms = "fare") |> plot(show_data = TRUE)
 
 ```
@@ -248,3 +255,6 @@ Again, the transformed outcome variable is the "probability of `survived_b`" (on
 ::: {.callout-tip title="Critical Thinking"}
 While the plot above looks very convincing that paying a `fare` over $400 seems to ensure 100% probability of survival, this model only has <i>one</i> predictor variable. There are a lot of other variables that are not accounted for. Certainly, we would need to consider other variables that may impact survival rates other than fare, and, at the very least, it would be quite surprising if only 'fare` ensured survival. 
 :::
+
+
+
