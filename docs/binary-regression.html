@@ -229,13 +229,34 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#plotting-a-binary-outcome" id="toc-plotting-a-binary-outcome" class="nav-link" data-scroll-target="#plotting-a-binary-outcome"><span class="header-section-number">3.5.1</span> Plotting a binary outcome</a></li>
   </ul></li>
   <li><a href="#fitting-the-general-linear-model-not-recommended" id="toc-fitting-the-general-linear-model-not-recommended" class="nav-link" data-scroll-target="#fitting-the-general-linear-model-not-recommended"><span class="header-section-number">4</span> Fitting the General Linear Model (Not Recommended)</a></li>
-  <li><a href="#fitting-the-binary-regression-model" id="toc-fitting-the-binary-regression-model" class="nav-link" data-scroll-target="#fitting-the-binary-regression-model"><span class="header-section-number">5</span> Fitting the Binary Regression Model</a>
+  <li><a href="#fitting-the-logistic-regression-models" id="toc-fitting-the-logistic-regression-models" class="nav-link" data-scroll-target="#fitting-the-logistic-regression-models"><span class="header-section-number">5</span> Fitting the Logistic Regression Models</a>
   <ul class="collapse">
-  <li><a href="#fitting-our-binary-regression" id="toc-fitting-our-binary-regression" class="nav-link" data-scroll-target="#fitting-our-binary-regression"><span class="header-section-number">5.1</span> Fitting our Binary Regression</a>
+  <li><a href="#intercept-only-model" id="toc-intercept-only-model" class="nav-link" data-scroll-target="#intercept-only-model"><span class="header-section-number">5.1</span> Intercept-Only Model</a>
   <ul class="collapse">
-  <li><a href="#parameter-table-interpretation" id="toc-parameter-table-interpretation" class="nav-link" data-scroll-target="#parameter-table-interpretation"><span class="header-section-number">5.1.1</span> Parameter Table Interpretation</a></li>
-  <li><a href="#predicted-probability" id="toc-predicted-probability" class="nav-link" data-scroll-target="#predicted-probability"><span class="header-section-number">5.1.2</span> Predicted Probability</a></li>
+  <li><a href="#probability-odds-and-log-odds" id="toc-probability-odds-and-log-odds" class="nav-link" data-scroll-target="#probability-odds-and-log-odds"><span class="header-section-number">5.1.1</span> Probability, Odds, and Log Odds</a></li>
+  <li><a href="#fitting-the-intercept-only-model" id="toc-fitting-the-intercept-only-model" class="nav-link" data-scroll-target="#fitting-the-intercept-only-model"><span class="header-section-number">5.1.2</span> Fitting the Intercept-Only Model</a></li>
+  <li><a href="#paramter-table-interpretation" id="toc-paramter-table-interpretation" class="nav-link" data-scroll-target="#paramter-table-interpretation"><span class="header-section-number">5.1.3</span> Paramter Table Interpretation</a></li>
   </ul></li>
+  <li><a href="#one-continuous-predictor" id="toc-one-continuous-predictor" class="nav-link" data-scroll-target="#one-continuous-predictor"><span class="header-section-number">5.2</span> One Continuous Predictor</a>
+  <ul class="collapse">
+  <li><a href="#parameter-table-interpretation-log-odds" id="toc-parameter-table-interpretation-log-odds" class="nav-link" data-scroll-target="#parameter-table-interpretation-log-odds"><span class="header-section-number">5.2.1</span> Parameter Table Interpretation (Log-odds)</a></li>
+  <li><a href="#parameter-table-interpretation-odds" id="toc-parameter-table-interpretation-odds" class="nav-link" data-scroll-target="#parameter-table-interpretation-odds"><span class="header-section-number">5.2.2</span> Parameter Table Interpretation (Odds)</a></li>
+  <li><a href="#predicted-probability" id="toc-predicted-probability" class="nav-link" data-scroll-target="#predicted-probability"><span class="header-section-number">5.2.3</span> Predicted Probability</a></li>
+  </ul></li>
+  <li><a href="#two-continuous-predictors" id="toc-two-continuous-predictors" class="nav-link" data-scroll-target="#two-continuous-predictors"><span class="header-section-number">5.3</span> Two Continuous Predictors</a>
+  <ul class="collapse">
+  <li><a href="#parameter-table-interpretation-log-odds-1" id="toc-parameter-table-interpretation-log-odds-1" class="nav-link" data-scroll-target="#parameter-table-interpretation-log-odds-1"><span class="header-section-number">5.3.1</span> Parameter Table Interpretation (Log-odds)</a></li>
+  <li><a href="#parameter-table-interpretation-odds-1" id="toc-parameter-table-interpretation-odds-1" class="nav-link" data-scroll-target="#parameter-table-interpretation-odds-1"><span class="header-section-number">5.3.2</span> Parameter Table Interpretation (Odds)</a></li>
+  <li><a href="#predicted-probability-1" id="toc-predicted-probability-1" class="nav-link" data-scroll-target="#predicted-probability-1"><span class="header-section-number">5.3.3</span> Predicted Probability</a></li>
+  </ul></li>
+  <li><a href="#one-dummy-coded-predictor" id="toc-one-dummy-coded-predictor" class="nav-link" data-scroll-target="#one-dummy-coded-predictor"><span class="header-section-number">5.4</span> One Dummy Coded Predictor</a>
+  <ul class="collapse">
+  <li><a href="#parameter-table-interpretation-log-odds-2" id="toc-parameter-table-interpretation-log-odds-2" class="nav-link" data-scroll-target="#parameter-table-interpretation-log-odds-2"><span class="header-section-number">5.4.1</span> Parameter Table Interpretation (Log-odds)</a></li>
+  <li><a href="#estimating-means-and-plots" id="toc-estimating-means-and-plots" class="nav-link" data-scroll-target="#estimating-means-and-plots"><span class="header-section-number">5.4.2</span> Estimating means and plots</a></li>
+  <li><a href="#parameter-table-interpretation-odds-2" id="toc-parameter-table-interpretation-odds-2" class="nav-link" data-scroll-target="#parameter-table-interpretation-odds-2"><span class="header-section-number">5.4.3</span> Parameter Table Interpretation (Odds)</a></li>
+  <li><a href="#predicted-probability-2" id="toc-predicted-probability-2" class="nav-link" data-scroll-target="#predicted-probability-2"><span class="header-section-number">5.4.4</span> Predicted Probability</a></li>
+  </ul></li>
+  <li><a href="#one-dummy-coded-and-one-continuous-predictor" id="toc-one-dummy-coded-and-one-continuous-predictor" class="nav-link" data-scroll-target="#one-dummy-coded-and-one-continuous-predictor"><span class="header-section-number">5.5</span> One Dummy Coded and One Continuous Predictor</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://www.github.com/affcomlab/learn-glms/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
@@ -264,7 +285,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="why-binary-regression" class="level2 page-columns page-full" data-number="3.1">
 <h2 data-number="3.1" class="anchored" data-anchor-id="why-binary-regression"><span class="header-section-number">3.1</span> Why Binary Regression?</h2>
 <p>When the outcome is a binary variable, or when there are only <b>two</b> possible outcomes, there are two essential problems with using the general linear model (e.g., the regular <code>lm()</code> function) . The first essential problem is due to the non-normal shape of the residuals. The second essential problem is that the outcome variable is not continuous and normally distributed. Both problems contribute to general linear models being biased and making impossible predictions.</p>
-<p>Binary regression is a general term that encompasses specific models such as <i>logistic regression</i> and <i>probit regression</i>, and is a way to analyze these kinds of two-outcome data and hold these assumptions more true. We will focus on logistic regression in this module.</p>
+<p>Binary regression is a general term that encompasses specific models such as <i>logistic regression</i> and <i>probit regression</i>. It is a way to analyze binary data and hold the assumptions of linear models more true. We will focus on logistic regression in this module.</p>
 
 <div class="no-row-height column-margin column-container"><div class="">
 <p><b>Terms</b></p>
@@ -287,7 +308,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="continuous-and-normally-distributed-outcome" class="level3" data-number="3.1.2">
 <h3 data-number="3.1.2" class="anchored" data-anchor-id="continuous-and-normally-distributed-outcome"><span class="header-section-number">3.1.2</span> Continuous and Normally Distributed Outcome</h3>
 <p>Since the outcome variable is binary, a quick histogram plot will show that it is not continuous (i.e., it is discrete). This is a scourge for the general linear model since it assumes continuous and normally distributed outcomes, and it will predict both intermediate states/values between the two possible outcomes <b>and</b> states/values above and below the two possible outcomes. For example, if 0 = Alive, and 1 = Dead, then the general linear model may predict a value between 0 and 1 (somewhere between alive and dead), or values below 0 and above 1 (so less alive and more dead?).</p>
-<p>Therefore, to model a binary outcome using the machinery of linear modeling, we need to <b>transform</b> the outcome variable to a continuous and normally distributed outcome. We do that with what’s called a <i>link function</i>. In other words, the link function will take the binary outcome variable and transform it to a continuous and normally distributed outcome variable. By using a link function, we move from the general linear model to a <i>generalized linear model</i>. See more about link functions in the next section.</p>
+<p>Therefore, to model a binary outcome using the machinery of linear modeling, we need to <b>transform</b> the outcome variable to a continuous and normally distributed outcome. We do that with what’s called a <i>link function</i>. In other words, the link function will take the binary outcome variable and transform it to a continuous and more normally distributed outcome variable. By using a link function, we move from the general linear model to a <i>generalized linear model</i>. See more about link functions in the next section.</p>
 <p>Before we fit our first binary regression, let’s take a look at what is actually happening and why the <b>generalized</b> linear model is similar, but different, to the general linear model.</p>
 </section>
 </section>
@@ -297,7 +318,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><span class="math display">\[ y_{\hat{i}} = \beta_0 + \beta_1 x \]</span> In simple binary regression, we are <b>still</b> predicting an outcome with a linear (additive) combination of intercept and one predictor variable. We use the term “simple” only because we have one predictor variable in this case.</p>
 <p><span class="math display">\[ \eta_{i} = \beta_0 + \beta_1 x \]</span></p>
 <p>Note that the linearly additive feature that both simple regression and simple binary regression share is what makes these models related and interpretable.</p>
-<p>The main difference is why, in simple binary regression, did the outcome variable change from <span class="math inline">\(y_{{i}}\)</span> to <span class="math inline">\(\eta_{i}\)</span>? Because in binary regression, we are no longer predicting the binary outcome event (e.g., “yes/no”), but the <b> probability </b> of the binary event occurring. This means that <span class="math inline">\(\eta_{i}\)</span> is a probability that is bounded between 0 (“no” event) and 1 (“yes” event).</p>
+<p>The main difference is why, in simple binary regression, did the outcome variable change from <span class="math inline">\(y_{{i}}\)</span> to <span class="math inline">\(\eta_{i}\)</span>? Because in binary regression, we are no longer predicting the binary outcome event (e.g., “yes/no”). Usually (but not always) we are predicting the <b> probability </b> of the binary event occurring. This means that <span class="math inline">\(\eta_{i}\)</span> is a probability that is bounded between 0 (“no” event) and 1 (“yes” event).</p>
 <p>The next section will relate <span class="math inline">\(y_{\hat{i}}\)</span> to <span class="math inline">\(\eta_{i}\)</span>.</p>
 <section id="link-function-logit" class="level3" data-number="3.2.1">
 <h3 data-number="3.2.1" class="anchored" data-anchor-id="link-function-logit"><span class="header-section-number">3.2.1</span> Link function: logit</h3>
@@ -310,7 +331,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ul>
 <li><span class="math inline">\(\eta_{i}= g(p_i)\)</span></li>
 </ul>
-<p>The variable <span class="math inline">\(g\)</span> is our “link function”. It is a function that transforms a probability (<span class="math inline">\(p_i\)</span>) into our <span class="math inline">\(\eta_{i}\)</span>, which is the outcome we are trying to find in binary regression (i.e., the probabilty of an event occuring.)</p>
+<p>The variable <span class="math inline">\(g\)</span> is our “link function”. In this case, it is a function that transforms a probability (<span class="math inline">\(p_i\)</span>) into our <span class="math inline">\(\eta_{i}\)</span>. Therefore, we are trying to find the probability of an event occurring.</p>
 <p>In binary regression, our <span class="math inline">\(g\)</span> is the “logit function”, which is defined as:</p>
 <p><span class="math display">\[ \eta = log(p/(1-p)) \]</span> or, equivalently,</p>
 <p><span class="math display">\[ p = e^\eta/ (1 + e^\eta) \]</span></p>
@@ -325,7 +346,7 @@ Takeaway: Link Functions
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>When we use GLMs, we will be using many different link functions depending on the data. In the case of binary/logistic regression, all this function is trying to do is relate our linear predictors to a response outcome that is continuous and between some bounds (like 0 and 1). This is because if we <b>did not</b> do this, we are using the linear predictors to predictor some value that is continuous when it is <b>not</b> technically continuous and out of bounds (so, when an event “yes” = 1, then the model will spit out a value like 1.53, which is not possible). We also find that when using the appropriate link function, other problems, like the shape of residuals, also gets fixed!</p>
+<p>When we use GLMs, we will be using many different link functions depending on the data. In the case of binary/logistic regression, all this function is trying to do is relate our linear predictors to a response outcome that is continuous and between some bounds (like 0 and 1). This is because if we <b>did not</b> do this, we are using the linear predictors to predictor some value that is continuous when it is <b>not</b> technically continuous, and the predictions can be out of bounds (so, when an event “yes” = 1, then the model can spit out a value like 1.53, even though this event is unreasonable). We also find that when using the appropriate link function, other problems, like the shape of residuals, gets fixed!</p>
 </div>
 </div>
 </section>
@@ -560,21 +581,118 @@ mutate() and data-wrangling
 <p>Yikes! As you can see, the dots <b>do not</b> fall along the line. Once this assumption of the uniformity/normality of residuals are not met, this is a clear sign that the model should not be so easily trusted.</p>
 <p>So now, finally, we fit our first GLM.</p>
 </section>
-<section id="fitting-the-binary-regression-model" class="level1" data-number="5">
-<h1 data-number="5"><span class="header-section-number">5</span> Fitting the Binary Regression Model</h1>
-<section id="fitting-our-binary-regression" class="level2" data-number="5.1">
-<h2 data-number="5.1" class="anchored" data-anchor-id="fitting-our-binary-regression"><span class="header-section-number">5.1</span> Fitting our Binary Regression</h2>
-<p>When we fit our binary regression, we now will use the <code>glm()</code> funciton which is similar to <code>lm()</code>, but has one extra input argument. Notice the “family” input argument, which requires which “family of distributions” to use and which “link function” choice.</p>
-<p>For binary regression, we supply the <b>binomial</b> distribution and the <b>logit</b> link function.</p>
+<section id="fitting-the-logistic-regression-models" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Fitting the Logistic Regression Models</h1>
+<section id="intercept-only-model" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="intercept-only-model"><span class="header-section-number">5.1</span> Intercept-Only Model</h2>
+<p>First, let’s fit an <i>intercept only</i> binary regression model. This means we are going to fit a model with an outcome variable and without any predictor variables. The usefulness of intercept-only models will be clear once we see the results.</p>
+<p>Note first that <code>surivived_b</code> outcome variable distribution is like so:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>fit2 <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> survived_b <span class="sc">~</span> fare, </span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"logit"</span>), </span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> titanic2</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Print parameters in logit (i.e., log-odds) units</span></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit2) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(titanic2<span class="sc">$</span>survived_b) <span class="co"># 0 = dead, 1 = alive</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+  0   1 
+545 342 </code></pre>
+</div>
+</div>
+<p>From this breakdown, we can calculate our <i>probability, odds, and log-odds</i>.</p>
+<section id="probability-odds-and-log-odds" class="level3" data-number="5.1.1">
+<h3 data-number="5.1.1" class="anchored" data-anchor-id="probability-odds-and-log-odds"><span class="header-section-number">5.1.1</span> Probability, Odds, and Log Odds</h3>
+<p><u>Probability</u> The probabilty of survival is:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>p_survived <span class="ot">&lt;-</span> <span class="dv">342</span><span class="sc">/</span>(<span class="dv">342</span><span class="sc">+</span><span class="dv">545</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>p_survived</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.3855693</code></pre>
+</div>
+</div>
+<p>Notice that the probability is a proportion/ratio of survivors out of the total number of people in the dataset.</p>
+<p><u>Odds</u></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>o_survived <span class="ot">&lt;-</span> p_survived<span class="sc">/</span>(<span class="dv">1</span> <span class="sc">-</span> p_survived)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>o_survived</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.6275229</code></pre>
+</div>
+</div>
+<p>Odds is simply another way of describing probability. It is also a ratio, like probability, but essentially with odds you can have some way to describe the relative likelihood of the event occurring versus not occurring. For example, if the probability of an event occurring is 0.75 or 75% likely, its odds of happening is “3 to 1”, or it is 3 times more likely that the event will occur relative to it not occurring.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fl">0.75</span><span class="sc">/</span>(<span class="dv">1</span><span class="fl">-0.75</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3</code></pre>
+</div>
+</div>
+<p>In the case of the data, the odds for surviving the Titanic is 0.62.</p>
+<p>Working with odds can be challenging at first but there is a rule of thumb to follow. Imagine if <span class="math inline">\(p=.50\)</span>, then it is 50% chance of an event occurring or not occurring. Then, when we convert this to odds, then <span class="math inline">\(odds= .50/.50 =1\)</span>. So, if you get an odds value that equals 1, then both events are equally likely, and if it less than 1, then it is less likely for an event to occur, and if it is more than one, it is more likely for an event to occur.</p>
+<p><u>Log-Odds</u></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>log_odds <span class="ot">&lt;-</span> <span class="fu">log</span>(o_survived)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>log_odds</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -0.4659751</code></pre>
+</div>
+</div>
+<p>You might wonder why we make an effort to convert odds to log-odds. Well, again, it is because it our logistic link function that takes our outcome variable and transforms it into a continuous and bounded outcome variable so that it can work well with linearly additive predictors variables.</p>
+<p>Just like with odds, there we can consider a rule of thumb where if <span class="math inline">\(odds=1\)</span> then the $log odds=ln(1)=0 $. So, if we obtain a log-odds value of 0, then the event is equally likely to occur or not occur.</p>
+<p>Our data shows a log-odds of <span class="math inline">\(-0.47\)</span>, which means it is less than 0, so we can see that it is less likely (in terms of log-odds) for someone survive than die in the Titanic.</p>
+</section>
+<section id="fitting-the-intercept-only-model" class="level3" data-number="5.1.2">
+<h3 data-number="5.1.2" class="anchored" data-anchor-id="fitting-the-intercept-only-model"><span class="header-section-number">5.1.2</span> Fitting the Intercept-Only Model</h3>
+<p>When we fit our binary regression, we now will use the <code>glm()</code> funciton which is similar to <code>lm()</code>, but has one extra input argument. Notice the “family” input argument, which requires which “family of distributions” to use and which “link function” choice.</p>
+<p>For binary regression, we supply the <b>binomial</b> distribution and the <b>logit</b> link function. Let’s fit our intercept-only model and consider the model parameters.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>fit1 <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> survived_b <span class="sc">~</span> <span class="dv">1</span>, </span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"logit"</span>),</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> titanic2</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit1) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Parameter</th>
+<th style="text-align: center;">Log-Odds</th>
+<th style="text-align: center;">SE</th>
+<th style="text-align: center;">95% CI</th>
+<th style="text-align: center;">z</th>
+<th style="text-align: center;">p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: center;">-0.47</td>
+<td style="text-align: center;">0.07</td>
+<td style="text-align: center;">(-0.60, -0.33)</td>
+<td style="text-align: center;">-6.75</td>
+<td style="text-align: center;">&lt; .001</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="paramter-table-interpretation" class="level3" data-number="5.1.3">
+<h3 data-number="5.1.3" class="anchored" data-anchor-id="paramter-table-interpretation"><span class="header-section-number">5.1.3</span> Paramter Table Interpretation</h3>
+<p>The first thing to notice in our intercept only model is that the estimate for our intercept is in <b>log-odds</b>. It is <b>not</b> in raw units (unlike in regular <code>lm()</code> models). The second thing to note is that the intercept value is <span class="math inline">\(0.47\)</span> which is equal to the log-odds we calculated by hand!</p>
+<p>Therefore, the intercept only model is useful because, since there are no predictor variables, we can <b>interpret the intercept parameter as the overall log-odds of the outcome variable (defined as the log-odds of an event occurring).</b></p>
+</section>
+</section>
+<section id="one-continuous-predictor" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="one-continuous-predictor"><span class="header-section-number">5.2</span> One Continuous Predictor</h2>
+<p>Now, we investigate the question “Is there a relationship between the amount of fare and the log-odds of survival?”.</p>
+<p>To do this, let’s use <code>glm()</code> to fit our first simple binary regression (a logistic regreesion with one predictor variable).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>fit2 <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> survived_b <span class="sc">~</span> fare, </span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"logit"</span>), </span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> titanic2</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Print parameters in logit (i.e., log-odds) units</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit2) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
 <thead>
@@ -608,22 +726,80 @@ mutate() and data-wrangling
 </table>
 </div>
 </div>
-<section id="parameter-table-interpretation" class="level3" data-number="5.1.1">
-<h3 data-number="5.1.1" class="anchored" data-anchor-id="parameter-table-interpretation"><span class="header-section-number">5.1.1</span> Parameter Table Interpretation</h3>
-<p>As seen above, the parameter table output from a model fit with <code>glm()</code> looks very similar to parameter table outputs from models fit with <code>lm()</code>. But there is a <b>big</b> difference – in <code>glm()</code> models, we are no longer working in the same raw units!</p>
-<p>This difference is apparent in the second column of the output table: “Log-Odds”. Because we fit a logistic regression with a logit function, the parameter values are in “log-odds” unit; it is no longer possible to consider <code>fare</code> in terms of dollar amounts. Technically, when <code>fare</code> is in log-odds units, we can only say:</p>
+<section id="parameter-table-interpretation-log-odds" class="level3" data-number="5.2.1">
+<h3 data-number="5.2.1" class="anchored" data-anchor-id="parameter-table-interpretation-log-odds"><span class="header-section-number">5.2.1</span> Parameter Table Interpretation (Log-odds)</h3>
+<p>Again, the parameter table output from a model fit with <code>glm()</code> looks very similar to parameter table outputs from models fit with <code>lm()</code>. But there is a <b>big</b> difference – in <code>glm()</code> models, we are no longer working in the same raw units!</p>
+<p>This difference is apparent in the second column of the output table: “Log-Odds”. Because we fit a logistic regression with a logit function, the parameter values are in “log-odds” unit. Technically, when <code>fare</code> is in log-odds units, we can only say:</p>
 <blockquote class="blockquote">
-<p>For every one 1 unit increase in log-odds of <code>fare</code> is a 0.02 increase in the probability of surviving.</p>
+<p>For every one 1 unit increase in <code>fare</code>, there is a 0.02 increase in the log-odds of surviving.</p>
 </blockquote>
-<p>Although this is technically true, it isn’t at first clear what “1 unit increase in log-odds of <code>fare</code>” is. But before we completely abandon what log-odds unit can tells and tranform back into our original units (e.g., dollars), let’s see more what using logistic regression can show us.</p>
+<p>Although this is technically true, it isn’t at first clear what “0.02 unit increase in log-odds of <code>fare</code>” is. It is at this point one may want to convert log-odds to probability. But before we do that, let’s interpret the <span class="math inline">\(0.02\)</span> log-odds value:</p>
+<ul>
+<li><p>If log-odds $ = 0.02$, then it is the case that we can say it is more likely for someone to survive the Titanic with an <b>increase</b> in the amount of paid fare.</p></li>
+<li><p>This effect is also statistically significant from 0 (<span class="math inline">\(p&lt;0.001\)</span>). Remember, with log-odds, a value of 0 means it is equally likely for an event to occur or not occur.</p></li>
+</ul>
 </section>
-<section id="predicted-probability" class="level3" data-number="5.1.2">
-<h3 data-number="5.1.2" class="anchored" data-anchor-id="predicted-probability"><span class="header-section-number">5.1.2</span> Predicted Probability</h3>
-<p>A very useful part of about working with logistic regression is that our outcome variable is also in a transformed space (thanks to the logit function). Our outcome is now “the probability of <code>survival_b</code>”. We can see how this plays out when we plot the predicted probabilities using <code>predict_response()</code>. <b>This function is especially helpful because it keeps the outcome variable in the transformed, continuous space, but transforms the predictors back to their raw units.</b></p>
+<section id="parameter-table-interpretation-odds" class="level3" data-number="5.2.2">
+<h3 data-number="5.2.2" class="anchored" data-anchor-id="parameter-table-interpretation-odds"><span class="header-section-number">5.2.2</span> Parameter Table Interpretation (Odds)</h3>
+<p>We can easily convert log-odds to odds. Given we know that it is a positive value, we can expect the odds of surviving to be more likely and therefore above 1. In order to convert from a log-odds to odds, we just need to take the exponent of the value (because if a log-odds value of 0 is equally likely, then <span class="math inline">\(e^1 = 0\)</span> where 1 is our reference for an equally likely event in odds). Let’s practice our conversion by hand.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict_response</span>(fit2, <span class="at">terms =</span> <span class="st">"fare"</span>) <span class="sc">|&gt;</span> <span class="fu">plot</span>(<span class="at">show_data =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="fl">0.02</span>) <span class="co">#convert log-odds to odds</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.020201</code></pre>
+</div>
+</div>
+<p>Now that we are in odds, we can adjust our previous interpretation of the <code>fare</code> parameter for odds:</p>
+<blockquote class="blockquote">
+<p>For every one unit increase in <code>fare</code>, there is a 0.020 increase, or a 2.0% increase, in the odds of surviving.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+</blockquote>
+<p>Fortunately, we can actually transform the entire log-odds parameter table results into odds using the same <code>model_parameters()</code> function with the added input argument of “exponentiate”, like so:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Print parameters in odds </span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit2, <span class="at">exponentiate =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="binary-regression_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
+<table class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Parameter</th>
+<th style="text-align: center;">Odds Ratio</th>
+<th style="text-align: center;">SE</th>
+<th style="text-align: center;">95% CI</th>
+<th style="text-align: center;">z</th>
+<th style="text-align: center;">p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: center;">0.39</td>
+<td style="text-align: center;">0.04</td>
+<td style="text-align: center;">(0.33, 0.47)</td>
+<td style="text-align: center;">-9.79</td>
+<td style="text-align: center;">&lt; .001</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">fare</td>
+<td style="text-align: center;">1.02</td>
+<td style="text-align: center;">2.26e-03</td>
+<td style="text-align: center;">(1.01, 1.02)</td>
+<td style="text-align: center;">6.77</td>
+<td style="text-align: center;">&lt; .001</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Knowing the significance values in odds, we can now say that the effect of <code>fare</code> in the increase of odds is statistically significant from <b>1</b>, <span class="math inline">\(p&lt;0.001\)</span> <a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
+<p>A lot of fields, like medicine, prefer to output and report their logistic regression values in odds.</p>
+</section>
+<section id="predicted-probability" class="level3" data-number="5.2.3">
+<h3 data-number="5.2.3" class="anchored" data-anchor-id="predicted-probability"><span class="header-section-number">5.2.3</span> Predicted Probability</h3>
+<p>A convenient transformation is taking the log-odds and converting into probability. Then, our question becomes “Is there a relationship between the amount of fare and the probability of survival?”.</p>
+<p>We can assess this relationship with the <code>predict_response()</code> function. It outputs a plot with the Y-axis as “the probability of <code>survival_b</code>” and the X-axis as the predictor (in this case <code>fare</code>) in raw units.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict_response</span>(fit2, <span class="at">terms =</span> <span class="st">"fare"</span>) <span class="sc">|&gt;</span> <span class="fu">plot</span>(<span class="at">show_data =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="binary-regression_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>Again, the transformed outcome variable is the “probability of <code>survived_b</code>” (on the y-axis), so we can see that it is bounded between [0,100]. The logistic regression line also makes predictions between these bounds so we no longer have the model predicting unreasonable values/states. Lastly, we can now see how an increase in <code>fare</code> increases the probability of survival.</p>
@@ -640,15 +816,361 @@ Critical Thinking
 <p>While the plot above looks very convincing that paying a <code>fare</code> over $400 seems to ensure 100% probability of survival, this model only has <i>one</i> predictor variable. There are a lot of other variables that are not accounted for. Certainly, we would need to consider other variables that may impact survival rates other than fare, and, at the very least, it would be quite surprising if only ’fare` ensured survival.</p>
 </div>
 </div>
-
-
 </section>
+</section>
+<section id="two-continuous-predictors" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="two-continuous-predictors"><span class="header-section-number">5.3</span> Two Continuous Predictors</h2>
+<p>“Is there a relationship between the amount of fare, age, and the probability of survival?”</p>
+<p>When we have two predictors, we are now conducting a multiple logistic regression. Recall that multiple regression, in general, allows us to control for the effects of multiple predictors on the outcome, and we are left with the unique effect of a predictor when controlling for other predictors.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>fit3 <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> survived_b <span class="sc">~</span> fare <span class="sc">+</span> age, </span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"logit"</span>), </span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> titanic2</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Print parameters in logit (i.e., log-odds) units</span></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit3) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 17%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 29%">
+<col style="width: 10%">
+<col style="width: 11%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Parameter</th>
+<th style="text-align: center;">Log-Odds</th>
+<th style="text-align: center;">SE</th>
+<th style="text-align: center;">95% CI</th>
+<th style="text-align: center;">z</th>
+<th style="text-align: center;">p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: center;">-0.51</td>
+<td style="text-align: center;">0.17</td>
+<td style="text-align: center;">(-0.84, -0.18)</td>
+<td style="text-align: center;">-3.02</td>
+<td style="text-align: center;">0.003</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">fare</td>
+<td style="text-align: center;">0.02</td>
+<td style="text-align: center;">2.31e-03</td>
+<td style="text-align: center;">(0.01, 0.02)</td>
+<td style="text-align: center;">6.99</td>
+<td style="text-align: center;">&lt; .001</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">age</td>
+<td style="text-align: center;">-0.02</td>
+<td style="text-align: center;">5.24e-03</td>
+<td style="text-align: center;">(-0.03, -5.32e-03)</td>
+<td style="text-align: center;">-2.96</td>
+<td style="text-align: center;">0.003</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<section id="parameter-table-interpretation-log-odds-1" class="level3" data-number="5.3.1">
+<h3 data-number="5.3.1" class="anchored" data-anchor-id="parameter-table-interpretation-log-odds-1"><span class="header-section-number">5.3.1</span> Parameter Table Interpretation (Log-odds)</h3>
+<p>When the parameter table is in log-odds, we can now say the following:</p>
+<blockquote class="blockquote">
+<p>For every one unit increase in <code>fare</code>, there is a 0.02 increase in the log-odds of surviving when controlling for the effect of <code>age</code>. The unique (i.e., partial) effect of <code>fare</code> is significantly different from 0, <span class="math inline">\(p&lt;0.01\)</span>.</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>For every one unit increase in ‘age’, there is a 0.02 decrease in the log-odds of surviving when controlling for the effect of <code>fare</code>. The unique (i.e., partial) effect of <code>age</code> is significantly different from 0, <span class="math inline">\(p&lt;0.01\)</span>.</p>
+</blockquote>
+<p>Remember, in log-odds, if the value is positive, it is more likely for the event to occur, and if it is negative, it is more likely for the event to not occur.</p>
+</section>
+<section id="parameter-table-interpretation-odds-1" class="level3" data-number="5.3.2">
+<h3 data-number="5.3.2" class="anchored" data-anchor-id="parameter-table-interpretation-odds-1"><span class="header-section-number">5.3.2</span> Parameter Table Interpretation (Odds)</h3>
+<p>We can also present the results in odds.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Print parameters in odds </span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit3, <span class="at">exponentiate =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Parameter</th>
+<th style="text-align: center;">Odds Ratio</th>
+<th style="text-align: center;">SE</th>
+<th style="text-align: center;">95% CI</th>
+<th style="text-align: center;">z</th>
+<th style="text-align: center;">p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: center;">0.60</td>
+<td style="text-align: center;">0.10</td>
+<td style="text-align: center;">(0.43, 0.84)</td>
+<td style="text-align: center;">-3.02</td>
+<td style="text-align: center;">0.003</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">fare</td>
+<td style="text-align: center;">1.02</td>
+<td style="text-align: center;">2.35e-03</td>
+<td style="text-align: center;">(1.01, 1.02)</td>
+<td style="text-align: center;">6.99</td>
+<td style="text-align: center;">&lt; .001</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">age</td>
+<td style="text-align: center;">0.98</td>
+<td style="text-align: center;">5.16e-03</td>
+<td style="text-align: center;">(0.97, 0.99)</td>
+<td style="text-align: center;">-2.96</td>
+<td style="text-align: center;">0.003</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>When the parameter table is in odds, we can now say the following:</p>
+<blockquote class="blockquote">
+<p>For every one unit increase in <code>fare</code>, there is a 0.02 increase, or 2.0% increase, in the odds of surviving when controlling for the effect of <code>age</code>. The unique (i.e., partial) effect of <code>fare</code> is significantly different from 0, <span class="math inline">\(p&lt;0.01\)</span>.</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>For every one unit increase in ‘age’, there is a 0.02 decrease, or 2.0% decrease, in the odds of surviving when controlling for the effect of <code>fare</code>. The unique (i.e., partial) effect of <code>age</code> is significantly different from 0, <span class="math inline">\(p&lt;0.01\)</span>.</p>
+</blockquote>
+<p>Remember, in odds, if the value greater than 1, it is more likely for the event to occur, and if it less than 1, it is more likely for the event to not occur.</p>
+</section>
+<section id="predicted-probability-1" class="level3" data-number="5.3.3">
+<h3 data-number="5.3.3" class="anchored" data-anchor-id="predicted-probability-1"><span class="header-section-number">5.3.3</span> Predicted Probability</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict_response</span>(fit3, <span class="at">terms =</span> <span class="st">"fare"</span>) <span class="sc">|&gt;</span> <span class="fu">plot</span>(<span class="at">show_data =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="binary-regression_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict_response</span>(fit3, <span class="at">terms =</span> <span class="st">"age"</span>) <span class="sc">|&gt;</span> <span class="fu">plot</span>(<span class="at">show_data =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="binary-regression_files/figure-html/unnamed-chunk-20-2.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>The plots for predicted probabilities is helpful for highlighting the different effects for <code>fare</code> and <code>age</code>. As we see, there is a decrease in the probability of surviving as age increases, and there is an increase in the probability of surviving as the amount of fare increases.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Why not always use probability?">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Why not always use probability?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Although working with probabilities seems to be more easily understandable, we cannot have parameter estimates in probabilities. Therefore, results are often communicated in logits or odds since we can have estimates, uncertainty values (like standard deviations), and significance tests applied to them.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="one-dummy-coded-predictor" class="level2" data-number="5.4">
+<h2 data-number="5.4" class="anchored" data-anchor-id="one-dummy-coded-predictor"><span class="header-section-number">5.4</span> One Dummy Coded Predictor</h2>
+<p>Let’s consider the question “Is there a relationship between the type of <code>class</code> accommodation and the log-odds of surviving”?</p>
+<p>Remember, first we have to change our predictor variable to a factor (i.e., a dummy-coded variable), and then we can fit with <code>glm()</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>titanic2<span class="sc">$</span>class <span class="ot">&lt;-</span> <span class="fu">factor</span>(titanic2<span class="sc">$</span>class, <span class="at">levels =</span><span class="fu">c</span>(<span class="st">"1st"</span>,<span class="st">"2nd"</span>,<span class="st">"3rd"</span>))</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>fit4 <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> survived_b <span class="sc">~</span> class, </span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"logit"</span>), </span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> titanic2</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit4) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Parameter</th>
+<th style="text-align: center;">Log-Odds</th>
+<th style="text-align: center;">SE</th>
+<th style="text-align: center;">95% CI</th>
+<th style="text-align: center;">z</th>
+<th style="text-align: center;">p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: center;">0.53</td>
+<td style="text-align: center;">0.14</td>
+<td style="text-align: center;">(0.26, 0.81)</td>
+<td style="text-align: center;">3.77</td>
+<td style="text-align: center;">&lt; .001</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">class (2nd)</td>
+<td style="text-align: center;">-0.64</td>
+<td style="text-align: center;">0.20</td>
+<td style="text-align: center;">(-1.04, -0.24)</td>
+<td style="text-align: center;">-3.13</td>
+<td style="text-align: center;">0.002</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">class (3rd)</td>
+<td style="text-align: center;">-1.66</td>
+<td style="text-align: center;">0.18</td>
+<td style="text-align: center;">(-2.01, -1.32)</td>
+<td style="text-align: center;">-9.43</td>
+<td style="text-align: center;">&lt; .001</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<section id="parameter-table-interpretation-log-odds-2" class="level3" data-number="5.4.1">
+<h3 data-number="5.4.1" class="anchored" data-anchor-id="parameter-table-interpretation-log-odds-2"><span class="header-section-number">5.4.1</span> Parameter Table Interpretation (Log-odds)</h3>
+<p>Remember, although we are performing a logistic regression, it is still dummy-coded so our parameters estimates are given relative to the first category of the predictor variable. In this case, the “1st Class” is the reference group.</p>
+<blockquote class="blockquote">
+<p>The intercept is the average log-odds of surviving for the “1st Class” category. In this case, members of the “1st Class” have a 0.53 increase in the log-odds of surviving.</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>The members of the “2nd Class” have a 0.64 decrease in the log-odds of suriving relative to the “1st Class” (i.e., they have a worse chance of surviving).</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>The members of the “3rd Class” have 1.66 decrease in the log-odds of suriving relative to the “1st Class”.</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>There was a significant difference between the “1st Class” and 0, <span class="math inline">\(p&lt;0.01\)</span>. The difference between each class and the “1st Class” was significant, <span class="math inline">\(p&lt;0.01\)</span>.</p>
+</blockquote>
+</section>
+<section id="estimating-means-and-plots" class="level3" data-number="5.4.2">
+<h3 data-number="5.4.2" class="anchored" data-anchor-id="estimating-means-and-plots"><span class="header-section-number">5.4.2</span> Estimating means and plots</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>gmeans1 <span class="ot">&lt;-</span> <span class="fu">estimate_means</span>(fit4, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"class"</span>)) </span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>gmeans1 <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<caption>Estimated Marginal Means</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">class</th>
+<th style="text-align: right;">Probability</th>
+<th style="text-align: left;">SE</th>
+<th style="text-align: left;">95% CI</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">1st</td>
+<td style="text-align: right;">0.63</td>
+<td style="text-align: left;">0.03</td>
+<td style="text-align: left;">(0.56, 0.69)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2nd</td>
+<td style="text-align: right;">0.47</td>
+<td style="text-align: left;">0.04</td>
+<td style="text-align: left;">(0.40, 0.55)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">3rd</td>
+<td style="text-align: right;">0.24</td>
+<td style="text-align: left;">0.02</td>
+<td style="text-align: left;">(0.21, 0.28)</td>
+</tr>
+</tbody>
+</table>
+<p>Marginal means estimated at class</p>
+</div>
+</div>
+</section>
+<section id="parameter-table-interpretation-odds-2" class="level3" data-number="5.4.3">
+<h3 data-number="5.4.3" class="anchored" data-anchor-id="parameter-table-interpretation-odds-2"><span class="header-section-number">5.4.3</span> Parameter Table Interpretation (Odds)</h3>
+<p>Like in other logistic regression models, we can convert to odds ratios with <code>model_parameters</code> and “exponentiate” input argument.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit4, <span class="at">exponentiate =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Parameter</th>
+<th style="text-align: center;">Odds Ratio</th>
+<th style="text-align: center;">SE</th>
+<th style="text-align: center;">95% CI</th>
+<th style="text-align: center;">z</th>
+<th style="text-align: center;">p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: center;">1.70</td>
+<td style="text-align: center;">0.24</td>
+<td style="text-align: center;">(1.29, 2.25)</td>
+<td style="text-align: center;">3.77</td>
+<td style="text-align: center;">&lt; .001</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">class (2nd)</td>
+<td style="text-align: center;">0.53</td>
+<td style="text-align: center;">0.11</td>
+<td style="text-align: center;">(0.35, 0.79)</td>
+<td style="text-align: center;">-3.13</td>
+<td style="text-align: center;">0.002</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">class (3rd)</td>
+<td style="text-align: center;">0.19</td>
+<td style="text-align: center;">0.03</td>
+<td style="text-align: center;">(0.13, 0.27)</td>
+<td style="text-align: center;">-9.43</td>
+<td style="text-align: center;">&lt; .001</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<blockquote class="blockquote">
+<p>The intercept is the average odds of surviving for the “1st Class” category. In this case, members of the “1st Class” have a 0.70 increase, or 70% increase, in the odds of surviving.</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>The members of the “2nd Class” have a 0.53 decrease, or 54% decrease, in the odds of suriving relative to the “1st Class” (i.e., they have a worse chance of surviving).</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>The members of the “3rd Class” have 0.19 decrease, or 19% decrease, in the log-odds of suriving relative to the “1st Class” (i.e., they have a worse chance of surviving).</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>There was a significant difference between the “1st Class” and 1, <span class="math inline">\(p&lt;0.01\)</span>. The difference between each class and the “1st Class” was significant, <span class="math inline">\(p&lt;0.01\)</span>.</p>
+</blockquote>
+</section>
+<section id="predicted-probability-2" class="level3" data-number="5.4.4">
+<h3 data-number="5.4.4" class="anchored" data-anchor-id="predicted-probability-2"><span class="header-section-number">5.4.4</span> Predicted Probability</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict_response</span>(fit4, <span class="at">terms =</span> <span class="st">"class"</span>) <span class="sc">|&gt;</span> <span class="fu">plot</span>(<span class="at">show_data =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="binary-regression_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>When the predicted probabilities are plotted, we can visualize the differences in probabilities of surviving between classes.</p>
+</section>
+</section>
+<section id="one-dummy-coded-and-one-continuous-predictor" class="level2" data-number="5.5">
+<h2 data-number="5.5" class="anchored" data-anchor-id="one-dummy-coded-and-one-continuous-predictor"><span class="header-section-number">5.5</span> One Dummy Coded and One Continuous Predictor</h2>
+<p>“Is there a relationship between the amount of fare, class, and the probability of survival?”</p>
+<p>Again, multiple regression allows us to control for the effects of multiple predictors on the outcome, and we are left with the unique effect of a predictor when controlling for other predictors.</p>
+
+
 </section>
 </section>
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr>
 <ol>
 <li id="fn1"><p><code>check_residuals()</code> requires the package <code>qqplotr</code> to be installed.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Recall that when odds <span class="math inline">\(=1\)</span>, that means both events are equally likely to happen. So when the odds read a value like <span class="math inline">\(1.02\)</span>, then we only consider the differences from 1 as meaningful. In this case, that increase is 0.02, or 2%, from our baseline value of 1.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>When the paramter table is in odds, the significance test is applied to see differences from an odds value of 1. This is because, again, an odds value of 1 means that an event occuring versus not occuring is equally likely.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 

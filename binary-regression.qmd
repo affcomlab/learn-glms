@@ -9,7 +9,7 @@ We start our first look at GLMs with binary regression. Here, we consider when b
 
 When the outcome is a binary variable, or when there are only <b>two</b> possible outcomes, there are two essential problems with using the general linear model (e.g., the regular `lm()` function) . The first essential problem is due to the non-normal shape of the residuals. The second essential problem is that the outcome variable is not continuous and normally distributed. Both problems contribute to general linear models being biased and making impossible predictions. 
 
-Binary regression is a general term that encompasses specific models such as <i>logistic regression</i> and <i>probit regression</i>, and is a way to analyze these kinds of two-outcome data and hold these assumptions more true. We will focus on logistic regression in this module.  
+Binary regression is a general term that encompasses specific models such as <i>logistic regression</i> and <i>probit regression</i>. It is a way to analyze  binary data and hold the assumptions of linear models more true. We will focus on logistic regression in this module.  
 
 ::: {.column-margin}
 <b>Terms</b>
@@ -39,7 +39,7 @@ The general linear model assumes that residuals, or the differences between the 
 
 Since the outcome variable is binary, a quick histogram plot will show that it is not continuous (i.e., it is discrete). This is a scourge for the general linear model since it assumes continuous and normally distributed outcomes, and it will predict both intermediate states/values between the two possible outcomes <b>and</b> states/values above and below the two possible outcomes. For example, if 0 = Alive, and 1 = Dead, then the general linear model may predict a value between 0 and 1 (somewhere between alive and dead), or values below 0 and above 1 (so less alive and more dead?).
 
-Therefore, to model a binary outcome using the machinery of linear modeling, we need to <b>transform</b> the outcome variable to a continuous and normally distributed outcome. We do that with what's called a <i>link function</i>.  In other words, the link function will take the binary outcome variable and transform it to a continuous and normally distributed outcome variable. By using a link function, we move from the general linear model to a <i>generalized linear model</i>. See more about link functions in the next section.
+Therefore, to model a binary outcome using the machinery of linear modeling, we need to <b>transform</b> the outcome variable to a continuous and normally distributed outcome. We do that with what's called a <i>link function</i>.  In other words, the link function will take the binary outcome variable and transform it to a continuous and more normally distributed outcome variable. By using a link function, we move from the general linear model to a <i>generalized linear model</i>. See more about link functions in the next section.
 
 Before we fit our first binary regression, let's take a look at what is actually happening and why the <b>generalized</b> linear model is similar, but different, to the general linear model. 
 
@@ -54,7 +54,7 @@ $$ \eta_{i} = \beta_0 + \beta_1 x $$
 
 Note that the linearly additive feature that both simple regression and simple binary regression share is what makes these models related and interpretable. 
 
-The main difference is why, in simple binary regression, did the outcome variable change from $y_{{i}}$ to $\eta_{i}$? Because in binary regression, we are no longer predicting the binary outcome event (e.g., "yes/no"), but the <b> probability </b> of the binary event occurring. This means that $\eta_{i}$ is a probability that is bounded between 0 ("no" event) and 1 ("yes" event). 
+The main difference is why, in simple binary regression, did the outcome variable change from $y_{{i}}$ to $\eta_{i}$? Because in binary regression, we are no longer predicting the binary outcome event (e.g., "yes/no"). Usually (but not always) we are predicting the <b> probability </b> of the binary event occurring. This means that $\eta_{i}$ is a probability that is bounded between 0 ("no" event) and 1 ("yes" event). 
 
 The next section will relate $y_{\hat{i}}$ to $\eta_{i}$.
 
@@ -70,7 +70,7 @@ That is all just setup to define $\eta_{i}$.
 
   - $\eta_{i}= g(p_i)$
   
-The variable $g$ is our "link function".  It is a function that transforms a probability ($p_i$) into our $\eta_{i}$, which is the outcome we are trying to find in binary regression (i.e., the probabilty of an event occuring.)
+The variable $g$ is our "link function".  In this case, it is a function that transforms a probability ($p_i$) into our $\eta_{i}$.  Therefore, we are trying to find the probability of an event occurring. 
 
 In binary regression, our $g$ is the "logit function", which is defined as: 
 
@@ -83,8 +83,8 @@ When we use the logit link function with a linear predictor, we now can call thi
 
 
 :::{.callout-tip title="Takeaway: Link Functions"}
-When we use GLMs, we will be using many different link functions depending on the data. In the case of binary/logistic regression, all this function is trying to do is relate our linear predictors to a response outcome that is continuous and between some bounds (like 0 and 1). This is because if we <b>did not</b> do this, we are using the linear predictors to predictor some value that is continuous when it is <b>not</b> technically continuous and out of bounds (so, when an event "yes" = 1, then the model will spit out a value like 1.53, which is not possible). 
-We also find that when using the appropriate link function, other problems, like the shape of residuals, also gets fixed! 
+When we use GLMs, we will be using many different link functions depending on the data. In the case of binary/logistic regression, all this function is trying to do is relate our linear predictors to a response outcome that is continuous and between some bounds (like 0 and 1). This is because if we <b>did not</b> do this, we are using the linear predictors to predictor some value that is continuous when it is <b>not</b> technically continuous, and the predictions can be out of bounds (so, when an event "yes" = 1, then the model can spit out a value like 1.53, even though this event is unreasonable). 
+We also find that when using the appropriate link function, other problems, like the shape of residuals, gets fixed! 
 :::
 
 
@@ -205,15 +205,88 @@ Yikes! As you can see, the dots <b>do not</b> fall along the line. Once this ass
 
 So now, finally, we fit our first GLM.
 
-# Fitting the Binary Regression Model 
+# Fitting the Logistic Regression Models 
+
+## Intercept-Only Model
+
+First, let's fit an <i>intercept only</i> binary regression model. This means we are going to fit a model with an outcome variable and without any predictor variables. The usefulness of intercept-only models will be clear once we see the results.
+
+Note first that `surivived_b` outcome variable distribution is like so: 
+
+```{r}
+table(titanic2$survived_b) # 0 = dead, 1 = alive
+```
+From this breakdown, we can calculate our <i>probability, odds, and log-odds</i>.
+
+### Probability, Odds, and Log Odds ###
+
+<u>Probability</u>
+The probabilty of survival is:
+```{r}
+p_survived <- 342/(342+545)
+p_survived
+```
+
+Notice that the probability is a proportion/ratio of survivors out of the total number of people in the dataset. 
+
+<u>Odds</u> 
+```{r}
+o_survived <- p_survived/(1 - p_survived)
+o_survived
+```
+
+Odds is simply another way of describing probability. It is also a ratio, like probability, but essentially with odds you can have some way to describe the relative likelihood of the event occurring versus not occurring. For example, if the probability of an event occurring is 0.75 or 75% likely, its odds of happening is "3 to 1", or it is 3 times more likely that the event will occur relative to it not occurring. 
+```{r}
+0.75/(1-0.75)
+```
+
+In the case of the data, the odds for surviving the Titanic is 0.62. 
+
+Working with odds can be challenging at first but there is a rule of thumb to follow. Imagine if $p=.50$, then it is 50% chance of an event occurring or not occurring. Then, when we convert this to odds, then $odds= .50/.50 =1$. So, if you get an odds value that equals 1, then both events are equally likely, and if it less than 1, then it is less likely for an event to occur, and if it is more than one, it is more likely for an event to occur. 
 
 
+<u>Log-Odds</u>
 
-## Fitting our Binary Regression 
+```{r}
+log_odds <- log(o_survived)
+log_odds
+```
+
+You might wonder why we make an effort to convert odds to log-odds.  Well, again, it is because it our logistic link function that takes our outcome variable and transforms it into a continuous and bounded outcome variable so that it can work well with linearly additive predictors variables. 
+
+Just like with odds, there we can consider a rule of thumb where if $odds=1$ then the $log odds=ln(1)=0 $. So, if we obtain a log-odds value of 0, then the event is equally likely to occur or not occur. 
+
+Our data shows a log-odds of $-0.47$, which means it is less than 0, so we can see that it is less likely (in terms of log-odds) for someone survive than die in the Titanic. 
+
+### Fitting the Intercept-Only Model ###
 
 When we fit our binary regression, we now will use the `glm()` funciton which is similar to `lm()`, but has one extra input argument.  Notice the "family" input argument, which requires which "family of distributions" to use and which "link function" choice.  
 
-For binary regression, we supply the <b>binomial</b> distribution and the <b>logit</b> link function. 
+For binary regression, we supply the <b>binomial</b> distribution and the <b>logit</b> link function. Let's fit our intercept-only model and consider the model parameters.
+
+
+```{r}
+fit1 <- glm(
+  formula = survived_b ~ 1, 
+  family = binomial(link = "logit"),
+  data = titanic2
+)
+
+model_parameters(fit1) |> print_md()
+
+```
+
+### Paramter Table Interpretation ###
+
+The first thing to notice in our intercept only model is that the estimate for our intercept is in <b>log-odds</b>. It is <b>not</b> in raw units (unlike in regular `lm()` models). The second thing to note is that the intercept value is $0.47$ which is equal to the log-odds we calculated by hand! 
+
+Therefore, the intercept only model is useful because, since there are no predictor variables, we can <b>interpret the intercept parameter as the overall log-odds of the outcome variable (defined as the log-odds of an event occurring).</b> 
+
+## One Continuous Predictor 
+
+Now, we investigate the question "Is there a relationship between the amount of fare and the log-odds of survival?". 
+
+To do this, let's use `glm()` to fit our first simple binary regression (a logistic regreesion with one predictor variable). 
 
 ```{r}
 fit2 <- glm(
@@ -227,23 +300,52 @@ model_parameters(fit2) |> print_md()
 
 ```
 
-### Parameter Table Interpretation
+### Parameter Table Interpretation (Log-odds)
 
-As seen above, the parameter table output from a model fit with `glm()` looks very similar to parameter table outputs from models fit with `lm()`. But there is a <b>big</b> difference -- in `glm()` models, we are no longer working in the same raw units! 
+Again, the parameter table output from a model fit with `glm()` looks very similar to parameter table outputs from models fit with `lm()`. But there is a <b>big</b> difference -- in `glm()` models, we are no longer working in the same raw units! 
 
-This difference is apparent in the second column of the output table: "Log-Odds". Because we fit a logistic regression with a logit function, the parameter values are in "log-odds" unit; it is no longer possible to consider `fare` in terms of dollar amounts. Technically, when `fare` is in log-odds units, we can only say:
+This difference is apparent in the second column of the output table: "Log-Odds". Because we fit a logistic regression with a logit function, the parameter values are in "log-odds" unit. Technically, when `fare` is in log-odds units, we can only say:
 
-> For every one 1 unit increase in log-odds of `fare` is a 0.02 increase in the probability of surviving. 
+> For every one 1 unit increase in `fare`, there is a 0.02 increase in the log-odds of surviving.
 
-Although this is technically true, it isn't at first clear what "1 unit increase in log-odds of `fare`" is. But before we completely abandon what log-odds unit can tells and tranform back into our original units (e.g., dollars), let's see more what using logistic regression can show us.
+Although this is technically true, it isn't at first clear what "0.02 unit increase in log-odds of `fare`" is. It is at this point one may want to convert log-odds to probability. But before we do that, let's interpret the $0.02$ log-odds value: 
+
+-   If log-odds $ = 0.02$, then it is the case that we can say it is more likely for someone to survive the Titanic with an <b>increase</b> in the amount of paid fare.  
+
+-   This effect is also statistically significant from 0 ($p<0.001$). Remember, with log-odds, a value of 0 means it is equally likely for an event to occur or not occur. 
+
+### Parameter Table Interpretation (Odds)
+
+We can easily convert log-odds to odds. Given we know that it is a positive value, we can expect the odds of surviving to be more likely and therefore above 1. In order to convert from a log-odds to odds, we just need to take the exponent of the value (because if a log-odds value of 0 is equally likely, then $e^1 = 0$ where 1 is our reference for an equally likely event in odds). Let's practice our conversion by hand. 
+
+```{r}
+exp(0.02) #convert log-odds to odds
+```
+
+Now that we are in odds, we can adjust our previous interpretation of the `fare` parameter for odds:
+
+> For every one unit increase in `fare`, there is a 0.020 increase, or a 2.0% increase, in the odds of surviving.[^2]
+
+[^2]: Recall that when odds $=1$, that means both events are equally likely to happen. So when the odds read a value like $1.02$, then we only consider the differences from 1 as meaningful. In this case, that increase is 0.02, or 2%, from our baseline value of 1.
+
+Fortunately, we can actually transform the entire log-odds parameter table results into odds using the same `model_parameters()` function with the added input argument of "exponentiate", like so: 
+
+```{r}
+## Print parameters in odds 
+model_parameters(fit2, exponentiate = TRUE) |> print_md()
+```
+
+Knowing the significance values in odds, we can now say that the effect of `fare` in the increase of odds is statistically significant from <b>1</b>, $p<0.001$ [^3]
+
+[^3]: When the paramter table is in odds, the significance test is applied to see differences from an odds value of 1. This is because, again, an odds value of 1 means that an event occuring versus not occuring is equally likely. 
+
+A lot of fields, like medicine, prefer to output and report their logistic regression values in odds. 
 
 ### Predicted Probability
 
-A very useful part of about working with logistic regression is that our outcome variable is also in a transformed space (thanks to the logit function).  Our outcome is now "the probability of `survival_b`".  We can see how this plays out when we plot the predicted probabilities using `predict_response()`. <b>This function is especially helpful because it keeps the outcome variable in the transformed, continuous space, but transforms the predictors back to their raw units.</b> 
+A convenient transformation is taking the log-odds and converting into probability. Then, our question becomes "Is there a relationship between the amount of fare and the probability of survival?".
 
-```{r, warning=FALSE,message=FALSE}
-```
-
+We can assess this relationship with the `predict_response()` function. It outputs a plot with the Y-axis as "the probability of `survival_b`" and the X-axis as the predictor (in this case `fare`) in raw units.  
 
 ```{r, warning=FALSE,message=FALSE}
 predict_response(fit2, terms = "fare") |> plot(show_data = TRUE)
@@ -256,5 +358,128 @@ Again, the transformed outcome variable is the "probability of `survived_b`" (on
 While the plot above looks very convincing that paying a `fare` over $400 seems to ensure 100% probability of survival, this model only has <i>one</i> predictor variable. There are a lot of other variables that are not accounted for. Certainly, we would need to consider other variables that may impact survival rates other than fare, and, at the very least, it would be quite surprising if only 'fare` ensured survival. 
 :::
 
+## Two Continuous Predictors
+
+"Is there a relationship between the amount of fare, age, and the probability of survival?"
+
+When we have two predictors, we are now conducting a multiple logistic regression. Recall that multiple regression, in general, allows us to control for the effects of multiple predictors on the outcome, and we are left with the unique effect of a predictor when controlling for other predictors. 
+
+```{r}
+fit3 <- glm(
+  formula = survived_b ~ fare + age, 
+  family = binomial(link = "logit"), 
+  data = titanic2
+)
+
+## Print parameters in logit (i.e., log-odds) units
+model_parameters(fit3) |> print_md()
+
+```
+
+### Parameter Table Interpretation (Log-odds)
+
+When the parameter table is in log-odds, we can now say the following: 
+
+> For every one unit increase in `fare`, there is a 0.02 increase in the log-odds of surviving when controlling for the effect of `age`. The unique (i.e., partial) effect of `fare` is significantly different from 0, $p<0.01$.  
+
+> For every one unit increase in 'age', there is a 0.02 decrease in the log-odds of surviving when controlling for the effect of `fare`.  The unique (i.e., partial) effect of `age` is significantly different from 0, $p<0.01$.
+
+Remember, in log-odds, if the value is positive, it is more likely for the event to occur, and if it is negative, it is more likely for the event to not occur. 
+
+### Parameter Table Interpretation (Odds)
+
+We can also present the results in odds. 
+```{r}
+## Print parameters in odds 
+model_parameters(fit3, exponentiate = TRUE) |> print_md()
+```
+
+When the parameter table is in odds, we can now say the following: 
+
+> For every one unit increase in `fare`, there is a 0.02 increase, or 2.0% increase, in the odds of surviving when controlling for the effect of `age`. The unique (i.e., partial) effect of `fare` is significantly different from 0, $p<0.01$.  
+
+> For every one unit increase in 'age', there is a 0.02 decrease, or 2.0% decrease, in the odds of surviving when controlling for the effect of `fare`.  The unique (i.e., partial) effect of `age` is significantly different from 0, $p<0.01$.
+
+Remember, in odds, if the value greater than 1, it is more likely for the event to occur, and if it less than 1, it is more likely for the event to not occur. 
+
+
+### Predicted Probability 
+
+```{r, warning=FALSE,message=FALSE}
+predict_response(fit3, terms = "fare") |> plot(show_data = TRUE)
+predict_response(fit3, terms = "age") |> plot(show_data = TRUE)
+```
+The plots for predicted probabilities is helpful for highlighting the different effects for `fare` and `age`. As we see, there is a decrease in the probability of surviving as age increases, and there is an increase in the probability of surviving as the amount of fare increases. 
+
+::: {.callout-tip title="Why not always use probability?"}
+Although working with probabilities seems to be more easily understandable, we cannot have parameter estimates in probabilities. Therefore, results are often communicated in logits or odds since we can have estimates, uncertainty values (like standard deviations), and significance tests applied to them. 
+:::
+
+## One Dummy Coded Predictor 
+
+Let's consider the question "Is there a relationship between the type of `class` accommodation and the log-odds of surviving"? 
+
+Remember, first we have to change our predictor variable to a factor (i.e., a dummy-coded variable), and then we can fit with `glm()`. 
+
+```{r}
+titanic2$class <- factor(titanic2$class, levels =c("1st","2nd","3rd"))
+
+fit4 <- glm(
+  formula = survived_b ~ class, 
+  family = binomial(link = "logit"), 
+  data = titanic2
+)
+
+model_parameters(fit4) |> print_md()
+```
+
+### Parameter Table Interpretation (Log-odds)
+
+Remember, although we are performing a logistic regression, it is still dummy-coded so our parameters estimates are given relative to the first category of the predictor variable.  In this case, the "1st Class" is the reference group.
+
+> The intercept is the average log-odds of surviving for the "1st Class" category. In this case, members of the "1st Class" have a 0.53 increase in the log-odds of surviving. 
+
+> The members of the "2nd Class" have a 0.64 decrease in the log-odds of suriving relative to the "1st Class" (i.e., they have a worse chance of surviving). 
+
+> The members of the "3rd Class" have 1.66 decrease in the log-odds of suriving relative to the "1st Class".
+
+> There was a significant difference between the "1st Class" and 0, $p<0.01$. The difference between each class and the "1st Class" was significant, $p<0.01$. 
+
+
+### Estimating means and plots 
+
+```{r}
+gmeans1 <- estimate_means(fit4, by = c("class")) 
+gmeans1 |> print_md()
+```
+
+### Parameter Table Interpretation (Odds)
+
+Like in other logistic regression models, we can convert to odds ratios with `model_parameters` and "exponentiate" input argument. 
+
+```{r}
+model_parameters(fit4, exponentiate = TRUE) |> print_md()
+```
+
+> The intercept is the average odds of surviving for the "1st Class" category. In this case, members of the "1st Class" have a 0.70 increase, or 70% increase, in the odds of surviving. 
+
+> The members of the "2nd Class" have a 0.53 decrease, or 54% decrease, in the odds of suriving relative to the "1st Class" (i.e., they have a worse chance of surviving). 
+
+> The members of the "3rd Class" have 0.19 decrease, or 19% decrease, in the log-odds of suriving relative to the "1st Class" (i.e., they have a worse chance of surviving). 
+
+> There was a significant difference between the "1st Class" and 1, $p<0.01$. The difference between each class and the "1st Class" was significant, $p<0.01$. 
+
+### Predicted Probability
+
+```{r, warning=FALSE,message=FALSE}
+predict_response(fit4, terms = "class") |> plot(show_data = TRUE)
+```
+When the predicted probabilities are plotted, we can visualize the differences in probabilities of surviving between classes. 
+
+## One Dummy Coded and One Continuous Predictor 
+
+"Is there a relationship between the amount of fare, class, and the probability of survival?"
+
+Again, multiple regression allows us to control for the effects of multiple predictors on the outcome, and we are left with the unique effect of a predictor when controlling for other predictors. 
 
 
