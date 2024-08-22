@@ -175,7 +175,7 @@ Before we fit the binary regression, it would be worthwhile to try fitting the l
 
 ```{r}
 #simple linear regression
-fit1 <- lm(
+fitlm <- lm(
   formula = survived_b ~ fare,
   data = titanic2
 )
@@ -188,7 +188,7 @@ As the results show, we have a significant effect of `fare`, such that a small a
 This is evident when we plot the predictions using the `predict_response()` function. 
 
 ```{r}
-predict_response(fit1, terms = "fare") |> plot(show_data = TRUE)
+predict_response(fitlm, terms = "fare") |> plot(show_data = TRUE)
 ```
 
 Notice that although the data points are only either 0 or 1 (binary), the regression line takes intermediate values between 0 and 1, and extreme values above and below 0 and 1! For example, if a passenger paid \$100, then the outcome value would be ~0.55, which is halfway between alive and dead! We can't have passengers somewhat between alive/dead, or more or less alive/dead! 
@@ -199,7 +199,7 @@ If that wasn't enough to deter one from using the general linear model for binar
 
 ```{r}
 ## Check residuals
-check_residuals(fit1) |> plot() # looks bad
+check_residuals(fitlm) |> plot() # looks bad
 ```
 Yikes! As you can see, the dots <b>do not</b> fall along the line. Once this assumption of the uniformity/normality of residuals are not met, this is a clear sign that the model should not be so easily trusted. 
 
@@ -284,7 +284,7 @@ Therefore, the intercept only model is useful because, since there are no predic
 
 ## One Continuous Predictor 
 
-Now, we investigate the question "Is there a relationship between the amount of fare and the log-odds of survival?". 
+Now, we investigate the question "Is there a relationship between the amount of fare and the log-odds/probability of survival?". 
 
 To do this, let's use `glm()` to fit our first simple binary regression (a logistic regreesion with one predictor variable). 
 
@@ -360,7 +360,7 @@ While the plot above looks very convincing that paying a `fare` over $400 seems 
 
 ## Two Continuous Predictors
 
-"Is there a relationship between the amount of fare, age, and the probability of survival?"
+"Is there a relationship between the amount of fare, age, and the log-odds/probability of survival?"
 
 When we have two predictors, we are now conducting a multiple logistic regression. Recall that multiple regression, in general, allows us to control for the effects of multiple predictors on the outcome, and we are left with the unique effect of a predictor when controlling for other predictors. 
 
@@ -417,7 +417,7 @@ Although working with probabilities seems to be more easily understandable, we c
 
 ## One Dummy Coded Predictor 
 
-Let's consider the question "Is there a relationship between the type of `class` accommodation and the log-odds of surviving"? 
+Let's consider the question "Is there a relationship between the type of `class` accommodation and the log-odds/probability of surviving"? 
 
 Remember, first we have to change our predictor variable to a factor (i.e., a dummy-coded variable), and then we can fit with `glm()`. 
 
@@ -463,9 +463,9 @@ model_parameters(fit4, exponentiate = TRUE) |> print_md()
 
 > The intercept is the average odds of surviving for the "1st Class" category. In this case, members of the "1st Class" have a 0.70 increase, or 70% increase, in the odds of surviving. 
 
-> The members of the "2nd Class" have a 0.53 decrease, or 54% decrease, in the odds of suriving relative to the "1st Class" (i.e., they have a worse chance of surviving). 
+> The members of the "2nd Class" have a 0.47 decrease, or 47% decrease, in the odds of suriving relative to the "1st Class" (i.e., they have a worse chance of surviving). This is because 1 - 0.53 = 0.47.
 
-> The members of the "3rd Class" have 0.19 decrease, or 19% decrease, in the log-odds of suriving relative to the "1st Class" (i.e., they have a worse chance of surviving). 
+> The members of the "3rd Class" have 0.81 decrease, or 81% decrease, in the log-odds of suriving relative to the "1st Class" (i.e., they have a worse chance of surviving). Again, this is because 1 - 0.19 = 0.81. 
 
 > There was a significant difference between the "1st Class" and 1, $p<0.01$. The difference between each class and the "1st Class" was significant, $p<0.01$. 
 
@@ -474,12 +474,67 @@ model_parameters(fit4, exponentiate = TRUE) |> print_md()
 ```{r, warning=FALSE,message=FALSE}
 predict_response(fit4, terms = "class") |> plot(show_data = TRUE)
 ```
+
 When the predicted probabilities are plotted, we can visualize the differences in probabilities of surviving between classes. 
 
 ## One Dummy Coded and One Continuous Predictor 
 
-"Is there a relationship between the amount of fare, class, and the probability of survival?"
+"Is there a relationship between the amount of fare, class, and the log-odds/probability of survival?"
 
-Again, multiple regression allows us to control for the effects of multiple predictors on the outcome, and we are left with the unique effect of a predictor when controlling for other predictors. 
+Again, multiple regression allows us to control for the effects of multiple predictors on the outcome, and we are left with the unique effect of a predictor when controlling for other predictors. In this case, the outcome variable will be `survived_b`, and the predictor variables will be `class` (categorical variable) and `age` (continuous variable). 
+
+```{r}
+fit5 <- glm(
+  formula = survived_b ~ class + age, 
+  family = binomial(link = "logit"), 
+  data = titanic2
+)
+
+model_parameters(fit5) |> print_md()
+```
+### Paramter Table Interpretation (Log-odds)
+
+> The intercept is the average odds of surviving for the "1st Class" category while accounting for the effect of `age`. In this case, members of the "1st Class" have a average log odds of 2.10 indiciating that passengers in the 1st Class are more likely to survive.
+
+> The members of the "2nd Class" have a 1.04 decrease in the log-odds of suriving relative to the "1st Class" while accounting for the effect of `age` (i.e., they have a worse chance of surviving). 
+
+> The members of the "3rd Class" have 2.29 decrease in the log-odds of suriving relative to the "1st Class" while accounting for the effect of `age`. (i.e., they have a worse chance of surviving). 
+
+> There was a significant difference between the "1st Class" and 0, $p<0.01$. The difference between each class and the "1st Class" was significant, $p<0.01$. 
+
+> Lastly, while accounting for the effect of `class`, a one unit increase in age was significantly related to a 0.04 decrease in the log-odds of survival. 
+
+### Parameter Table Interpretation (Odds)
+
+
+```{r}
+model_parameters(fit5, exponentiate = TRUE) |> print_md()
+```
+
+> The intercept is the average odds of surviving for the "1st Class" category while accounting for the effect of `age`. In this case, members of the "1st Class" have a average odds of 8.16 indiciating that passengers in the 1st Class are more likely to survive.
+
+> The members of the "2nd Class" have a 0.35, or 35% decrease, in the odds of suriving relative to the "1st Class" while accounting for the effect of `age` (i.e., they have a worse chance of surviving). 
+
+> The members of the "3rd Class" have 0.10 decrease, or 10% decrease, in the odds of suriving relative to the "1st Class" while accounting for the effect of `age`. (i.e., they have a worse chance of surviving). 
+
+> There was a significant difference between the "1st Class" and 1, $p<0.01$. The difference between each class and the "1st Class" was significant, $p<0.01$. 
+
+> Lastly, while accounting for the effect of `class`, a one unit increase in age was significantly related to a 0.04 decrease, or 4% decrease, in the odds of survival. 
+
+### Predicted Probabilities 
+
+```{r, warning=FALSE,message=FALSE}
+predict_response(fit5, terms = "age") |> plot(show_data = TRUE)
+```
+With predicted probabilities, while accounting for `class`, we can see the probability of surviving is decreasing with age. 
+
+### Estimating Means and Plots 
+```{r}
+gmeans2 <- estimate_means(fit5, by = c("class")) 
+gmeans2 |> print_md()
+```
+
+# Assumptions
+
 
 
