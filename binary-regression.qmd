@@ -49,70 +49,72 @@ A binomial distribution is described by only two parameters: <i>n</i> and <i>p</
 The important thing to know is that logistic regression's goal is to model the "p" parameter, or the <b>probability of success</b>, of a binary distribution with a linear and additive combination of an intercept and slope of a predictor variable(s). But there's an inherent problem with modeling probability with a linear model because probability is bounded from [0,1], and we already know that a linear model works best when the outcome is unbounded (and continuous).
 
 :::{.callout-important title="Binary Outcomes vs Probability?"}
-At this point, we need to make a distinction between the outcome of a binary event and the probability of a binary event. 
+At this point, we need to make a distinction between the outcome of a binary event and the probability of a binary event. Because logistic regression's goal is modeling the probability of a binary event rather than the outcome of a binary event.
 
-The outcome of a binary event is the result of the trial -- whether the event was a success or not. For example, if our goal is to count the number of Heads when flipping a coin. 
+The outcome of a binary event is the result of the trial -- whether the event was a success or not. The way we define which one of two outcomes of a binary event is a "success" is arbitrary and depends on our goals. For example, if 0 = Dead, and 1 = Alive, the "success" or outcome we are concerned with is being alive. 
+
+The probability of a binary event is <i>not</i> the result of the trial. It is the model's estimation of the chance or likelihood of the "success" of the trial, i.e., the probability of one of the two events occurring. As a review, if the probability of one event = p, then 1-p is the probability of the other event. 
 :::
 
 
-## Enter the Logit Link Function 
+## Defining the Logistic Regression Model and the Logit Link Function
 
-We need to make a connection between the probability of an event ($\eta_{i}$) to an event outcome ($y_{{i}}$). This is possible in this way: 
+As mentioned in the previous section, the logistic regression model takes into account that the outcome we are modeling is a binary outcome, and its goal is to model the probability of a binary event (since this is the parameter of the binomial distribution we are concerned with).  Since a probability is a value that is bounded between [0,1], we need a way to modify the linear model to work with probability. We are motivated to do this because the linear model works best when the outcome it is modeling is a unbounded (and continuous), but probability is clearly bounded between [0,1].   
 
-  - The outcome $y_{{i}}$ for i = 1,...,$n$ events takes values zero or one with the probability of a 1 = $p_i$ 
-  
-  - In other words, $P(Y_i = 1)$ = $p_i$, or P is the probabilty of a 1 (e.g., "yes" happening).
+Let's summarize the details of this model in a more compact way: 
 
-That is all just setup to define $\eta_{i}$.
+$$ y_i \sim Binomial(n,p)$$
+Here we are saying that our outcome variable is binomially distributed. This is not the part of the model that logistic regression is specifically concerned with -- this is an assumption we are placing on the model knowing that the data is a binary outcome.
 
-  - $\eta_{i}= g(p_i)$
-  
-The variable $g$ is our "link function".  In this case, it is a function that transforms a probability ($p_i$) into our $\eta_{i}$.  Therefore, we are trying to find the probability of an event occurring. 
+$$ g(p) = \beta_0 + \beta_1 x_1$$
+Here we are now defining how we use the simple logistic regression model. We call it simple because there is only one predictor variable ($x_1$). The right side of the equation should be very familiar to us: it is the linear machinery of the model where we have $\beta_0$ (the intercept), and $\beta_1$ (the slope of the predictor variable). 
 
-In binary regression, our $g$ is the "logit function", which is defined as: 
+But the left side of this equation is unique to <b>generalized linear models</b>. First, we see that we are assigning $\beta_0$ and $\beta_1$ to estimate $p$, which is the probability parameter of the binomial distribution. However, we also see that $p$ is inside a function called $n$, which we now define as our <i>link function</i>. 
 
-$$ \eta = log(p/(1-p)) $$
+The link function will allow us to use the linear model (the right side of the equation that usually assumed a continuous and unbounded outcome) and estimate probability, $p$, which is continuous and bounded. 
+
+In logistic regression, our $g$ is the "logit function", which is defined as: 
+
+$$ g = log(p/(1-p)) $$
 or, equivalently, 
 
-$$ p = e^\eta/ (1 + e^\eta) $$
+$$ p = e^g/ (1 + e^g) $$
 
 When we use the logit link function with a linear predictor, we now can call this <i>"logistic regression"</i>. 
 
-
 :::{.callout-tip title="Takeaway: Link Functions"}
-When we use GLMs, we will be using many different link functions depending on the data. In the case of binary/logistic regression, all this function is trying to do is relate our linear predictors to a response outcome that is continuous and between some bounds (like 0 and 1). This is because if we <b>did not</b> do this, we are using the linear predictors to predictor some value that is continuous when it is <b>not</b> technically continuous, and the predictions can be out of bounds (so, when an event "yes" = 1, then the model can spit out a value like 1.53, even though this event is unreasonable). 
+When we use GLMs, we will be using many different link functions depending on the data. In the case of binary/logistic regression, all this function is trying to do is relate our linear predictors to a response outcome that is continuous and between some bounds (like 0 and 1). More generally, we need link functions because if we <b>did not</b> do this, we are using the linear predictors to predictor some value that is continuous when it may  <b>not</b> technically continuous (like discrete values for binary variables), and the predictions can be out of bounds (like when an event "yes" = 1, then the model can spit out a value like 1.53, even though this event is unreasonable). 
 We also find that when using the appropriate link function, other problems, like the shape of residuals, gets fixed! 
 :::
 
+Before we fit our first logistic regression, let's take a look at what is actually happening and why the <b>generalized</b> linear model is similar, but different, to the general linear model. 
 
-
-## Defining the Logistic Regression Model 
-
-As mentioned in the previous section, the logistic regression model takes into account that the outcome we are modeling is a binary outcome. Let's summarize the details of this model in a more compact way: 
-
-$$ y_i \sim Binomial(n,p)$$
-
-
-
-We do that with what's called a <i>link function</i>.  In other words, the link function will take the binary outcome variable and transform it to a continuous and more normally distributed outcome variable. By using a link function, we move from the general linear model to a <i>generalized linear model</i>. See more about link functions in the next section.
-
-Before we fit our first binary regression, let's take a look at what is actually happening and why the <b>generalized</b> linear model is similar, but different, to the general linear model. 
-
-## Comparing Simple Regression to Simple Binary Regression 
+## Comparing Simple Regression to Simple Binary Regression (MAY DELETE)
 
 In simple regression, we are predicting the outcome ($y_{{i}}$) with a linear (additive) combination of an intercept ($\beta_0$) and one predictor variable ($x$).
 
 $$ \hat{y}_{{i}} = \beta_0 + \beta_1 x $$
-In simple binary regression, we are <b>still</b> predicting an outcome with a linear (additive) combination of intercept and one predictor variable. We use the term "simple" only because we have one predictor variable in this case. 
+In simple logistic regression, we are <b>still</b> predicting an outcome with a linear (additive) combination of intercept and one predictor variable. We use the term "simple" only because we have one predictor variable in this case. 
 
-$$ \hat{\eta}_{i} = \beta_0 + \beta_1 x $$ 
+$$ \hat{g}_{i} = \beta_0 + \beta_1 x $$ 
 
-Note that the linearly additive feature that both simple regression and simple binary regression share is what makes these models related and interpretable. 
+Note that the linearly additive feature that both simple linear regression and simple logistic regression share is what makes these models related and interpretable. 
 
-The main difference is why, in simple binary regression, did the outcome variable change from $y_{{i}}$ to $\eta_{i}$? Because in binary regression, we are no longer predicting the binary outcome event (e.g., "yes/no"). Usually (but not always) we are predicting the <b> probability </b> of the binary event occurring. This means that $\eta_{i}$ is a probability that is bounded between 0 ("no" event) and 1 ("yes" event). 
+The main difference is why, in simple logistic regression, did the outcome variable change from $y_{{i}}$ to $g_{i}$? Because in binary regression, we are no longer predicting the binary outcome event (e.g., "yes/no"). Usually (but not always) we are predicting the <b> probability </b> of the binary event occurring. This means that $\eta_{i}$ is a probability that is bounded between 0 ("no" event) and 1 ("yes" event). 
 
-The next section will relate $y_{\hat{i}}$ to $\eta_{i}$.
+Now, we will relate $y_{\hat{i}}$ to $g_{i}$.
 
+We need to make a connection between the probability of an event ($g_{i}$) to an event outcome ($y_{{i}}$). This is possible in this way: 
+
+  - The outcome $y_{{i}}$ for i = 1,...,$n$ events takes values zero or one with the probability of a 1 = $p_i$ 
+  
+  - In other words, $P(Y_i = 1)$ = $p_i$, or P is the probability of a 1 (e.g., "yes" happening).
+
+That is all just setup to define $g_{i}$.
+
+  - $\eta_{i}= g(p_i)$
+  
+The variable $g$ is our "link function".  In this case, it is a function that transforms a probability ($p_i$) into our $\eta_{i}$.  Therefore, we are trying to find the probability of an event occurring. 
 
 ### Probability, Odds, and Log Odds ###
 
@@ -301,7 +303,7 @@ From this breakdown, we can calculate our <i>probability, odds, and log-odds</i>
 ### Probability, Odds, and Log Odds ###
 
 <u>Probability</u>
-The probabilty of survival is:
+The probability of survival is:
 ```{r}
 p_survived <- 342/(342+545)
 p_survived
@@ -343,7 +345,6 @@ When we fit our binary regression, we now will use the `glm()` function.
 We did a lot of work already with the `lm()` in the "Regression Recap". The `glm()` function is in many ways the same as the `lm()` function. Even the syntax for how we write the equation is the same. In addition, we can use the same `model_parameters()` function to get our table of parameter estimates. Indeed, we will use the `glm()` function for the remainder of the rest of the online modules. 
 
 But notice that the `glm()` function has one more input argument. This input argument is the "family" input argument, which requires which "family of distributions" to use and which "link function" choice.  
-
 For binary regression, we supply the <b>binomial</b> distribution and the <b>logit</b> link function. Let's fit our intercept-only model and consider the model parameters.
 
 
@@ -364,8 +365,18 @@ The first thing to notice in our intercept only model is that the estimate for o
 
 Therefore, the intercept only model is useful because, since there are no predictor variables, we can <b>interpret the intercept parameter as the overall log-odds of the outcome variable (defined as the log-odds of an event occurring).</b> 
 
-### Exponentiate
+Notice that the log-odds value is negative. Since it is below 0, we can see that it is less likely (in terms of log-odds) for someone survive than die in the Titanic. Remember, this is because in the data we coded 0 = Dead and 1 = Alive, and a negative log odds means it is less likely that an event is a success (so, more likely to be dead than alive). 
 
+### Exponentiate for Odds
+
+We can reconsider this log-odds value in terms of odds when we add the extra input argument "exponentiate = TRUE" to the `model_paramters()` function. 
+
+```{r}
+model_parameters(fit1, exponentiate = TRUE) |> print_md()
+```
+Now, we can interpret the intercept only model estimate for our intercept in <b>odds</b>. Also note  that the intercept value in odds is $0.63$ which is equal to the odds we calculated by hand! 
+
+Therefore, with no predictor variables, we can <b>interpret the intercept parameter as the overall odds of the outcome variable as a success as $0.63$</b>, which is less than 1, meaning the odds of success is less likely than the odds of failure. 
 
 
 ## One Continuous Predictor 

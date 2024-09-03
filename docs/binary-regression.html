@@ -218,16 +218,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#shape-of-residuals" id="toc-shape-of-residuals" class="nav-link" data-scroll-target="#shape-of-residuals"><span class="header-section-number">3.1.1</span> Shape of Residuals</a></li>
   <li><a href="#continuous-and-normally-distributed-outcome" id="toc-continuous-and-normally-distributed-outcome" class="nav-link" data-scroll-target="#continuous-and-normally-distributed-outcome"><span class="header-section-number">3.1.2</span> Continuous and Normally Distributed Outcome</a></li>
   </ul></li>
-  <li><a href="#comparing-simple-regression-to-simple-binary-regression" id="toc-comparing-simple-regression-to-simple-binary-regression" class="nav-link" data-scroll-target="#comparing-simple-regression-to-simple-binary-regression"><span class="header-section-number">3.2</span> Comparing Simple Regression to Simple Binary Regression</a>
+  <li><a href="#binary-events-with-a-binomial-distribution" id="toc-binary-events-with-a-binomial-distribution" class="nav-link" data-scroll-target="#binary-events-with-a-binomial-distribution"><span class="header-section-number">3.2</span> Binary Events with a Binomial Distribution</a></li>
+  <li><a href="#defining-the-logistic-regression-model-and-the-logit-link-function" id="toc-defining-the-logistic-regression-model-and-the-logit-link-function" class="nav-link" data-scroll-target="#defining-the-logistic-regression-model-and-the-logit-link-function"><span class="header-section-number">3.3</span> Defining the Logistic Regression Model and the Logit Link Function</a></li>
+  <li><a href="#comparing-simple-regression-to-simple-binary-regression-may-delete" id="toc-comparing-simple-regression-to-simple-binary-regression-may-delete" class="nav-link" data-scroll-target="#comparing-simple-regression-to-simple-binary-regression-may-delete"><span class="header-section-number">3.4</span> Comparing Simple Regression to Simple Binary Regression (MAY DELETE)</a>
   <ul class="collapse">
-  <li><a href="#link-function-logit" id="toc-link-function-logit" class="nav-link" data-scroll-target="#link-function-logit"><span class="header-section-number">3.2.1</span> Link function: logit</a></li>
-  <li><a href="#probability-odds-and-log-odds" id="toc-probability-odds-and-log-odds" class="nav-link" data-scroll-target="#probability-odds-and-log-odds"><span class="header-section-number">3.2.2</span> Probability, Odds, and Log Odds</a></li>
+  <li><a href="#probability-odds-and-log-odds" id="toc-probability-odds-and-log-odds" class="nav-link" data-scroll-target="#probability-odds-and-log-odds"><span class="header-section-number">3.4.1</span> Probability, Odds, and Log Odds</a></li>
   </ul></li>
-  <li><a href="#data-demonstration" id="toc-data-demonstration" class="nav-link" data-scroll-target="#data-demonstration"><span class="header-section-number">3.3</span> Data Demonstration</a></li>
-  <li><a href="#loading-the-packages-and-reading-in-data" id="toc-loading-the-packages-and-reading-in-data" class="nav-link" data-scroll-target="#loading-the-packages-and-reading-in-data"><span class="header-section-number">3.4</span> Loading the Packages and Reading in Data</a></li>
-  <li><a href="#prepare-data-exploratory-data-analysis" id="toc-prepare-data-exploratory-data-analysis" class="nav-link" data-scroll-target="#prepare-data-exploratory-data-analysis"><span class="header-section-number">3.5</span> Prepare Data / Exploratory Data Analysis</a>
+  <li><a href="#data-demonstration" id="toc-data-demonstration" class="nav-link" data-scroll-target="#data-demonstration"><span class="header-section-number">3.5</span> Data Demonstration</a></li>
+  <li><a href="#loading-the-packages-and-reading-in-data" id="toc-loading-the-packages-and-reading-in-data" class="nav-link" data-scroll-target="#loading-the-packages-and-reading-in-data"><span class="header-section-number">3.6</span> Loading the Packages and Reading in Data</a></li>
+  <li><a href="#prepare-data-exploratory-data-analysis" id="toc-prepare-data-exploratory-data-analysis" class="nav-link" data-scroll-target="#prepare-data-exploratory-data-analysis"><span class="header-section-number">3.7</span> Prepare Data / Exploratory Data Analysis</a>
   <ul class="collapse">
-  <li><a href="#plotting-a-binary-outcome" id="toc-plotting-a-binary-outcome" class="nav-link" data-scroll-target="#plotting-a-binary-outcome"><span class="header-section-number">3.5.1</span> Plotting a binary outcome</a></li>
+  <li><a href="#plotting-a-binary-outcome" id="toc-plotting-a-binary-outcome" class="nav-link" data-scroll-target="#plotting-a-binary-outcome"><span class="header-section-number">3.7.1</span> Plotting a binary outcome</a></li>
   </ul></li>
   <li><a href="#fitting-the-general-linear-model-not-recommended" id="toc-fitting-the-general-linear-model-not-recommended" class="nav-link" data-scroll-target="#fitting-the-general-linear-model-not-recommended"><span class="header-section-number">4</span> Fitting the General Linear Model (Not Recommended)</a></li>
   <li><a href="#fitting-the-logistic-regression-models" id="toc-fitting-the-logistic-regression-models" class="nav-link" data-scroll-target="#fitting-the-logistic-regression-models"><span class="header-section-number">5</span> Fitting the Logistic Regression Models</a>
@@ -237,6 +238,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#probability-odds-and-log-odds-1" id="toc-probability-odds-and-log-odds-1" class="nav-link" data-scroll-target="#probability-odds-and-log-odds-1"><span class="header-section-number">5.1.1</span> Probability, Odds, and Log Odds</a></li>
   <li><a href="#fitting-the-intercept-only-model" id="toc-fitting-the-intercept-only-model" class="nav-link" data-scroll-target="#fitting-the-intercept-only-model"><span class="header-section-number">5.1.2</span> Fitting the Intercept-Only Model</a></li>
   <li><a href="#paramter-table-interpretation" id="toc-paramter-table-interpretation" class="nav-link" data-scroll-target="#paramter-table-interpretation"><span class="header-section-number">5.1.3</span> Paramter Table Interpretation</a></li>
+  <li><a href="#exponentiate-for-odds" id="toc-exponentiate-for-odds" class="nav-link" data-scroll-target="#exponentiate-for-odds"><span class="header-section-number">5.1.4</span> Exponentiate for Odds</a></li>
   </ul></li>
   <li><a href="#one-continuous-predictor" id="toc-one-continuous-predictor" class="nav-link" data-scroll-target="#one-continuous-predictor"><span class="header-section-number">5.2</span> One Continuous Predictor</a>
   <ul class="collapse">
@@ -315,34 +317,41 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="continuous-and-normally-distributed-outcome" class="level3" data-number="3.1.2">
 <h3 data-number="3.1.2" class="anchored" data-anchor-id="continuous-and-normally-distributed-outcome"><span class="header-section-number">3.1.2</span> Continuous and Normally Distributed Outcome</h3>
-<p>Since the outcome variable is binary, a quick histogram plot will show that it is not continuous (i.e., it is discrete). This is a scourge for the general linear model since it assumes continuous and normally distributed outcomes, and it will predict both intermediate states/values between the two possible outcomes <b>and</b> states/values above and below the two possible outcomes. For example, if 0 = Alive, and 1 = Dead, then the general linear model may predict a value between 0 and 1 (somewhere between alive and dead), or values below 0 and above 1 (so less alive and more dead?).</p>
-<p>Therefore, to model a binary outcome using the machinery of linear modeling, we need to <b>transform</b> the outcome variable to a continuous and normally distributed outcome. We do that with what’s called a <i>link function</i>. In other words, the link function will take the binary outcome variable and transform it to a continuous and more normally distributed outcome variable. By using a link function, we move from the general linear model to a <i>generalized linear model</i>. See more about link functions in the next section.</p>
-<p>Before we fit our first binary regression, let’s take a look at what is actually happening and why the <b>generalized</b> linear model is similar, but different, to the general linear model.</p>
+<p>Since the outcome variable is binary, a quick histogram plot will show that it is not continuous (i.e., it is discrete). This is a scourge for the general linear model since it assumes continuous and normally distributed outcomes, and it will predict both intermediate states/values between the two possible outcomes <b>and</b> states/values above and below the two possible outcomes. For example, if 0 = Alive, and 1 = Dead, then the general linear model may predict a value between 0 and 1 (somewhere between alive and dead), or values below 0 and above 1 (so less alive and more dead?).Therefore, to model a binary outcome using the machinery of linear modeling, we need to <b>transform</b> the outcome variable to a continuous and normally distributed outcome.</p>
 </section>
 </section>
-<section id="comparing-simple-regression-to-simple-binary-regression" class="level2" data-number="3.2">
-<h2 data-number="3.2" class="anchored" data-anchor-id="comparing-simple-regression-to-simple-binary-regression"><span class="header-section-number">3.2</span> Comparing Simple Regression to Simple Binary Regression</h2>
-<p>In simple regression, we are predicting the outcome (<span class="math inline">\(y_{{i}}\)</span>) with a linear (additive) combination of an intercept (<span class="math inline">\(\beta_0\)</span>) and one predictor variable (<span class="math inline">\(x\)</span>).</p>
-<p><span class="math display">\[ \hat{y}_{{i}} = \beta_0 + \beta_1 x \]</span> In simple binary regression, we are <b>still</b> predicting an outcome with a linear (additive) combination of intercept and one predictor variable. We use the term “simple” only because we have one predictor variable in this case.</p>
-<p><span class="math display">\[ \hat{\eta}_{i} = \beta_0 + \beta_1 x \]</span></p>
-<p>Note that the linearly additive feature that both simple regression and simple binary regression share is what makes these models related and interpretable.</p>
-<p>The main difference is why, in simple binary regression, did the outcome variable change from <span class="math inline">\(y_{{i}}\)</span> to <span class="math inline">\(\eta_{i}\)</span>? Because in binary regression, we are no longer predicting the binary outcome event (e.g., “yes/no”). Usually (but not always) we are predicting the <b> probability </b> of the binary event occurring. This means that <span class="math inline">\(\eta_{i}\)</span> is a probability that is bounded between 0 (“no” event) and 1 (“yes” event).</p>
-<p>The next section will relate <span class="math inline">\(y_{\hat{i}}\)</span> to <span class="math inline">\(\eta_{i}\)</span>.</p>
-<section id="link-function-logit" class="level3" data-number="3.2.1">
-<h3 data-number="3.2.1" class="anchored" data-anchor-id="link-function-logit"><span class="header-section-number">3.2.1</span> Link function: logit</h3>
-<p>We need to make a connection between the probability of an event (<span class="math inline">\(\eta_{i}\)</span>) to an event outcome (<span class="math inline">\(y_{{i}}\)</span>). This is possible in this way:</p>
-<ul>
-<li><p>The outcome <span class="math inline">\(y_{{i}}\)</span> for i = 1,…,<span class="math inline">\(n\)</span> events takes values zero or one with the probability of a 1 = <span class="math inline">\(p_i\)</span></p></li>
-<li><p>In other words, <span class="math inline">\(P(Y_i = 1)\)</span> = <span class="math inline">\(p_i\)</span>, or P is the probabilty of a 1 (e.g., “yes” happening).</p></li>
-</ul>
-<p>That is all just setup to define <span class="math inline">\(\eta_{i}\)</span>.</p>
-<ul>
-<li><span class="math inline">\(\eta_{i}= g(p_i)\)</span></li>
-</ul>
-<p>The variable <span class="math inline">\(g\)</span> is our “link function”. In this case, it is a function that transforms a probability (<span class="math inline">\(p_i\)</span>) into our <span class="math inline">\(\eta_{i}\)</span>. Therefore, we are trying to find the probability of an event occurring.</p>
-<p>In binary regression, our <span class="math inline">\(g\)</span> is the “logit function”, which is defined as:</p>
-<p><span class="math display">\[ \eta = log(p/(1-p)) \]</span> or, equivalently,</p>
-<p><span class="math display">\[ p = e^\eta/ (1 + e^\eta) \]</span></p>
+<section id="binary-events-with-a-binomial-distribution" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="binary-events-with-a-binomial-distribution"><span class="header-section-number">3.2</span> Binary Events with a Binomial Distribution</h2>
+<p>As mentioned earlier, in logistic regression we are modeling a binary events. When we can assume that 1) Binary events are independent of one another (i.e., one binary trial doesn’t affect another trial), and 2) The probability of the binary event happening versus not happening is fixed, then it turns out that binary events are best described by what’s called a <i>binomial distribution</i>. In theory, it is the optimal distribution for a binary event based on a principle called <i>Maximum Entropy</i>, but we will skip that theoretical explanation for now.</p>
+<p>A binomial distribution is described by only two parameters: <i>n</i> and <i>p</i>. The “n” parameter is the total number of trials/events, and “p” is the probability of a “success” (or the probability of the event happening versus not happening). Due to this feature of binomial distributions, we can expect the <i>mean</i> of a binary event to simply be the number of trials multiplied by the probability of the event occurring, or <span class="math inline">\(n * p\)</span>. For example, if we flip a coin 100 times and count the number of Heads, we can expect the average number of Heads after 100 flips to be <span class="math inline">\(n*p = 100 * 0.5 = 50\, Heads\)</span>.</p>
+<p>The important thing to know is that logistic regression’s goal is to model the “p” parameter, or the <b>probability of success</b>, of a binary distribution with a linear and additive combination of an intercept and slope of a predictor variable(s). But there’s an inherent problem with modeling probability with a linear model because probability is bounded from [0,1], and we already know that a linear model works best when the outcome is unbounded (and continuous).</p>
+<div class="callout callout-style-default callout-important callout-titled" title="Binary Outcomes vs Probability?">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Binary Outcomes vs Probability?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>At this point, we need to make a distinction between the outcome of a binary event and the probability of a binary event. Because logistic regression’s goal is modeling the probability of a binary event rather than the outcome of a binary event.</p>
+<p>The outcome of a binary event is the result of the trial – whether the event was a success or not. The way we define which one of two outcomes of a binary event is a “success” is arbitrary and depends on our goals. For example, if 0 = Dead, and 1 = Alive, the “success” or outcome we are concerned with is being alive.</p>
+<p>The probability of a binary event is <i>not</i> the result of the trial. It is the model’s estimation of the chance or likelihood of the “success” of the trial, i.e., the probability of one of the two events occurring. As a review, if the probability of one event = p, then 1-p is the probability of the other event.</p>
+</div>
+</div>
+</section>
+<section id="defining-the-logistic-regression-model-and-the-logit-link-function" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="defining-the-logistic-regression-model-and-the-logit-link-function"><span class="header-section-number">3.3</span> Defining the Logistic Regression Model and the Logit Link Function</h2>
+<p>As mentioned in the previous section, the logistic regression model takes into account that the outcome we are modeling is a binary outcome, and its goal is to model the probability of a binary event (since this is the parameter of the binomial distribution we are concerned with). Since a probability is a value that is bounded between [0,1], we need a way to modify the linear model to work with probability. We are motivated to do this because the linear model works best when the outcome it is modeling is a unbounded (and continuous), but probability is clearly bounded between [0,1].</p>
+<p>Let’s summarize the details of this model in a more compact way:</p>
+<p><span class="math display">\[ y_i \sim Binomial(n,p)\]</span> Here we are saying that our outcome variable is binomially distributed. This is not the part of the model that logistic regression is specifically concerned with – this is an assumption we are placing on the model knowing that the data is a binary outcome.</p>
+<p><span class="math display">\[ g(p) = \beta_0 + \beta_1 x_1\]</span> Here we are now defining how we use the simple logistic regression model. We call it simple because there is only one predictor variable (<span class="math inline">\(x_1\)</span>). The right side of the equation should be very familiar to us: it is the linear machinery of the model where we have <span class="math inline">\(\beta_0\)</span> (the intercept), and <span class="math inline">\(\beta_1\)</span> (the slope of the predictor variable).</p>
+<p>But the left side of this equation is unique to <b>generalized linear models</b>. First, we see that we are assigning <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> to estimate <span class="math inline">\(p\)</span>, which is the probability parameter of the binomial distribution. However, we also see that <span class="math inline">\(p\)</span> is inside a function called <span class="math inline">\(n\)</span>, which we now define as our <i>link function</i>.</p>
+<p>The link function will allow us to use the linear model (the right side of the equation that usually assumed a continuous and unbounded outcome) and estimate probability, <span class="math inline">\(p\)</span>, which is continuous and bounded.</p>
+<p>In logistic regression, our <span class="math inline">\(g\)</span> is the “logit function”, which is defined as:</p>
+<p><span class="math display">\[ g = log(p/(1-p)) \]</span> or, equivalently,</p>
+<p><span class="math display">\[ p = e^g/ (1 + e^g) \]</span></p>
 <p>When we use the logit link function with a linear predictor, we now can call this <i>“logistic regression”</i>.</p>
 <div class="callout callout-style-default callout-tip callout-titled" title="Takeaway: Link Functions">
 <div class="callout-header d-flex align-content-center">
@@ -354,12 +363,31 @@ Takeaway: Link Functions
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>When we use GLMs, we will be using many different link functions depending on the data. In the case of binary/logistic regression, all this function is trying to do is relate our linear predictors to a response outcome that is continuous and between some bounds (like 0 and 1). This is because if we <b>did not</b> do this, we are using the linear predictors to predictor some value that is continuous when it is <b>not</b> technically continuous, and the predictions can be out of bounds (so, when an event “yes” = 1, then the model can spit out a value like 1.53, even though this event is unreasonable). We also find that when using the appropriate link function, other problems, like the shape of residuals, gets fixed!</p>
+<p>When we use GLMs, we will be using many different link functions depending on the data. In the case of binary/logistic regression, all this function is trying to do is relate our linear predictors to a response outcome that is continuous and between some bounds (like 0 and 1). More generally, we need link functions because if we <b>did not</b> do this, we are using the linear predictors to predictor some value that is continuous when it may <b>not</b> technically continuous (like discrete values for binary variables), and the predictions can be out of bounds (like when an event “yes” = 1, then the model can spit out a value like 1.53, even though this event is unreasonable). We also find that when using the appropriate link function, other problems, like the shape of residuals, gets fixed!</p>
 </div>
 </div>
+<p>Before we fit our first logistic regression, let’s take a look at what is actually happening and why the <b>generalized</b> linear model is similar, but different, to the general linear model.</p>
 </section>
-<section id="probability-odds-and-log-odds" class="level3" data-number="3.2.2">
-<h3 data-number="3.2.2" class="anchored" data-anchor-id="probability-odds-and-log-odds"><span class="header-section-number">3.2.2</span> Probability, Odds, and Log Odds</h3>
+<section id="comparing-simple-regression-to-simple-binary-regression-may-delete" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="comparing-simple-regression-to-simple-binary-regression-may-delete"><span class="header-section-number">3.4</span> Comparing Simple Regression to Simple Binary Regression (MAY DELETE)</h2>
+<p>In simple regression, we are predicting the outcome (<span class="math inline">\(y_{{i}}\)</span>) with a linear (additive) combination of an intercept (<span class="math inline">\(\beta_0\)</span>) and one predictor variable (<span class="math inline">\(x\)</span>).</p>
+<p><span class="math display">\[ \hat{y}_{{i}} = \beta_0 + \beta_1 x \]</span> In simple logistic regression, we are <b>still</b> predicting an outcome with a linear (additive) combination of intercept and one predictor variable. We use the term “simple” only because we have one predictor variable in this case.</p>
+<p><span class="math display">\[ \hat{g}_{i} = \beta_0 + \beta_1 x \]</span></p>
+<p>Note that the linearly additive feature that both simple linear regression and simple logistic regression share is what makes these models related and interpretable.</p>
+<p>The main difference is why, in simple logistic regression, did the outcome variable change from <span class="math inline">\(y_{{i}}\)</span> to <span class="math inline">\(g_{i}\)</span>? Because in binary regression, we are no longer predicting the binary outcome event (e.g., “yes/no”). Usually (but not always) we are predicting the <b> probability </b> of the binary event occurring. This means that <span class="math inline">\(\eta_{i}\)</span> is a probability that is bounded between 0 (“no” event) and 1 (“yes” event).</p>
+<p>Now, we will relate <span class="math inline">\(y_{\hat{i}}\)</span> to <span class="math inline">\(g_{i}\)</span>.</p>
+<p>We need to make a connection between the probability of an event (<span class="math inline">\(g_{i}\)</span>) to an event outcome (<span class="math inline">\(y_{{i}}\)</span>). This is possible in this way:</p>
+<ul>
+<li><p>The outcome <span class="math inline">\(y_{{i}}\)</span> for i = 1,…,<span class="math inline">\(n\)</span> events takes values zero or one with the probability of a 1 = <span class="math inline">\(p_i\)</span></p></li>
+<li><p>In other words, <span class="math inline">\(P(Y_i = 1)\)</span> = <span class="math inline">\(p_i\)</span>, or P is the probability of a 1 (e.g., “yes” happening).</p></li>
+</ul>
+<p>That is all just setup to define <span class="math inline">\(g_{i}\)</span>.</p>
+<ul>
+<li><span class="math inline">\(\eta_{i}= g(p_i)\)</span></li>
+</ul>
+<p>The variable <span class="math inline">\(g\)</span> is our “link function”. In this case, it is a function that transforms a probability (<span class="math inline">\(p_i\)</span>) into our <span class="math inline">\(\eta_{i}\)</span>. Therefore, we are trying to find the probability of an event occurring.</p>
+<section id="probability-odds-and-log-odds" class="level3" data-number="3.4.1">
+<h3 data-number="3.4.1" class="anchored" data-anchor-id="probability-odds-and-log-odds"><span class="header-section-number">3.4.1</span> Probability, Odds, and Log Odds</h3>
 <p>When working with logistic regression, we have to be familiar with the model’s units, or frame of reference for its parameter estimates. When logistic regression models estimated, they are usually presented in log-odds, but, as we will see now, it is fairly straightforward to transform our units from log-odds to odds to probability.</p>
 <p>Note that we are doing these calculations here by hand solely as an exercise to familiarize ourselves with these units. This is not actually required when running logistic regressions. Indeed, like with <code>lm()</code>, we will be given results tables which calculate all of these for us.</p>
 <p>As an example, imagine flipping a coin 100 times. As an arbitrary decision, let’s consider the results of this binary event that when a coin lands on Heads, it is a Success. And when it lands on Tails, it is a failure. In this example, it lands Heads 60 times out of 100.</p>
@@ -403,15 +431,15 @@ Takeaway: Link Functions
 <p>Our data shows a log-odds of <span class="math inline">\(0.41\)</span>, which means it is more than 0, so we can see that it is more likely (in terms of log-odds) for someone to flip a Head than a Tail.</p>
 </section>
 </section>
-<section id="data-demonstration" class="level2" data-number="3.3">
-<h2 data-number="3.3" class="anchored" data-anchor-id="data-demonstration"><span class="header-section-number">3.3</span> Data Demonstration</h2>
+<section id="data-demonstration" class="level2" data-number="3.5">
+<h2 data-number="3.5" class="anchored" data-anchor-id="data-demonstration"><span class="header-section-number">3.5</span> Data Demonstration</h2>
 <p>The data for this chapter consists of some records of passengers on the Titanic. The question we will ask and answer with binary regression is if the amount of fare contributed in some way to the survival of passengers. Since <code>survived</code> is a binary outcome (yes or no), this relationship is best assessed with binary regression.</p>
 <ul>
 <li>Data: <a href="./titanic.csv" download=""> titanic.csv </a></li>
 </ul>
 </section>
-<section id="loading-the-packages-and-reading-in-data" class="level2" data-number="3.4">
-<h2 data-number="3.4" class="anchored" data-anchor-id="loading-the-packages-and-reading-in-data"><span class="header-section-number">3.4</span> Loading the Packages and Reading in Data</h2>
+<section id="loading-the-packages-and-reading-in-data" class="level2" data-number="3.6">
+<h2 data-number="3.6" class="anchored" data-anchor-id="loading-the-packages-and-reading-in-data"><span class="header-section-number">3.6</span> Loading the Packages and Reading in Data</h2>
 <p>In addition to our usual packages (<code>tidyverse</code>, <code>easystats</code>, and <code>ggeffects</code>), we will also need to load <code>DHARMa</code> and <code>qqplotr</code> in order to make our plots for our binary regression models.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Load packages</span></span>
@@ -492,8 +520,8 @@ Takeaway: Link Functions
 </tbody>
 </table>
 </section>
-<section id="prepare-data-exploratory-data-analysis" class="level2" data-number="3.5">
-<h2 data-number="3.5" class="anchored" data-anchor-id="prepare-data-exploratory-data-analysis"><span class="header-section-number">3.5</span> Prepare Data / Exploratory Data Analysis</h2>
+<section id="prepare-data-exploratory-data-analysis" class="level2" data-number="3.7">
+<h2 data-number="3.7" class="anchored" data-anchor-id="prepare-data-exploratory-data-analysis"><span class="header-section-number">3.7</span> Prepare Data / Exploratory Data Analysis</h2>
 <p>In order to use the <code>survived</code> variable in our analyses, we need to re-code the outcomes as integer numbers. Here, we will use the <code>mutate()</code> function from the <code>dplyr</code> package (which is a package that automatically loaded with <code>tidyverse</code>) to add a new column to our data which re-codes “Yes” = 1 and “No” = 0.</p>
 <p>Note that our choice of “Yes” = 1 and “No” = 0 is completely arbitrary. We could have just easily switched the coding scheme. However, it is important to understand that when “Yes” = 1 and “No” = 0, our model is predicting the likelihood of survival, and if it was the other way around (when Yes = 0 and No = 1), our model would be predicting the likelihood of not-surviving.</p>
 <div class="cell">
@@ -540,8 +568,8 @@ mutate() and data-wrangling
 <p>Our choice of data-wrangling functions are open to reprisal because there are many ways in data analysis and programming to do the same thing.</p>
 </div>
 </div>
-<section id="plotting-a-binary-outcome" class="level3" data-number="3.5.1">
-<h3 data-number="3.5.1" class="anchored" data-anchor-id="plotting-a-binary-outcome"><span class="header-section-number">3.5.1</span> Plotting a binary outcome</h3>
+<section id="plotting-a-binary-outcome" class="level3" data-number="3.7.1">
+<h3 data-number="3.7.1" class="anchored" data-anchor-id="plotting-a-binary-outcome"><span class="header-section-number">3.7.1</span> Plotting a binary outcome</h3>
 <p>Like always, it is important to plot the data prior to fitting any model. Here, we consider if there is some sort of relationship between <code>survived_b</code> and <code>fare</code>.</p>
 <p>Here, we first try a standard scatter plot. Since there are only two outcome values though, it’s hard to see any clear effect of surivavl based on <code>fare</code>.</p>
 <div class="cell">
@@ -654,7 +682,7 @@ mutate() and data-wrangling
 <p>From this breakdown, we can calculate our <i>probability, odds, and log-odds</i>.</p>
 <section id="probability-odds-and-log-odds-1" class="level3" data-number="5.1.1">
 <h3 data-number="5.1.1" class="anchored" data-anchor-id="probability-odds-and-log-odds-1"><span class="header-section-number">5.1.1</span> Probability, Odds, and Log Odds</h3>
-<p><u>Probability</u> The probabilty of survival is:</p>
+<p><u>Probability</u> The probability of survival is:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>p_survived <span class="ot">&lt;-</span> <span class="dv">342</span><span class="sc">/</span>(<span class="dv">342</span><span class="sc">+</span><span class="dv">545</span>)</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>p_survived</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -688,8 +716,10 @@ mutate() and data-wrangling
 </section>
 <section id="fitting-the-intercept-only-model" class="level3" data-number="5.1.2">
 <h3 data-number="5.1.2" class="anchored" data-anchor-id="fitting-the-intercept-only-model"><span class="header-section-number">5.1.2</span> Fitting the Intercept-Only Model</h3>
-<p>When we fit our binary regression, we now will use the <code>glm()</code> function which is similar to <code>lm()</code>, but has one extra input argument. Notice the “family” input argument, which requires which “family of distributions” to use and which “link function” choice.</p>
-<p>For binary regression, we supply the <b>binomial</b> distribution and the <b>logit</b> link function. Let’s fit our intercept-only model and consider the model parameters.</p>
+<p>When we fit our binary regression, we now will use the <code>glm()</code> function.</p>
+<p>We did a lot of work already with the <code>lm()</code> in the “Regression Recap”. The <code>glm()</code> function is in many ways the same as the <code>lm()</code> function. Even the syntax for how we write the equation is the same. In addition, we can use the same <code>model_parameters()</code> function to get our table of parameter estimates. Indeed, we will use the <code>glm()</code> function for the remainder of the rest of the online modules.</p>
+<p>But notice that the <code>glm()</code> function has one more input argument. This input argument is the “family” input argument, which requires which “family of distributions” to use and which “link function” choice.<br>
+For binary regression, we supply the <b>binomial</b> distribution and the <b>logit</b> link function. Let’s fit our intercept-only model and consider the model parameters.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>fit1 <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> survived_b <span class="sc">~</span> <span class="dv">1</span>, </span>
@@ -728,21 +758,55 @@ mutate() and data-wrangling
 <h3 data-number="5.1.3" class="anchored" data-anchor-id="paramter-table-interpretation"><span class="header-section-number">5.1.3</span> Paramter Table Interpretation</h3>
 <p>The first thing to notice in our intercept only model is that the estimate for our intercept is in <b>log-odds</b>. It is <b>not</b> in raw units (unlike in regular <code>lm()</code> models). The second thing to note is that the intercept value is <span class="math inline">\(-0.47\)</span> which is equal to the log-odds we calculated by hand!</p>
 <p>Therefore, the intercept only model is useful because, since there are no predictor variables, we can <b>interpret the intercept parameter as the overall log-odds of the outcome variable (defined as the log-odds of an event occurring).</b></p>
+<p>Notice that the log-odds value is negative. Since it is below 0, we can see that it is less likely (in terms of log-odds) for someone survive than die in the Titanic. Remember, this is because in the data we coded 0 = Dead and 1 = Alive, and a negative log odds means it is less likely that an event is a success (so, more likely to be dead than alive).</p>
+</section>
+<section id="exponentiate-for-odds" class="level3" data-number="5.1.4">
+<h3 data-number="5.1.4" class="anchored" data-anchor-id="exponentiate-for-odds"><span class="header-section-number">5.1.4</span> Exponentiate for Odds</h3>
+<p>We can reconsider this log-odds value in terms of odds when we add the extra input argument “exponentiate = TRUE” to the <code>model_paramters()</code> function.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit1, <span class="at">exponentiate =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Parameter</th>
+<th style="text-align: center;">Odds Ratio</th>
+<th style="text-align: center;">SE</th>
+<th style="text-align: center;">95% CI</th>
+<th style="text-align: center;">z</th>
+<th style="text-align: center;">p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: center;">0.63</td>
+<td style="text-align: center;">0.04</td>
+<td style="text-align: center;">(0.55, 0.72)</td>
+<td style="text-align: center;">-6.75</td>
+<td style="text-align: center;">&lt; .001</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Now, we can interpret the intercept only model estimate for our intercept in <b>odds</b>. Also note that the intercept value in odds is <span class="math inline">\(0.63\)</span> which is equal to the odds we calculated by hand!</p>
+<p>Therefore, with no predictor variables, we can <b>interpret the intercept parameter as the overall odds of the outcome variable as a success as <span class="math inline">\(0.63\)</span></b>, which is less than 1, meaning the odds of success is less likely than the odds of failure.</p>
 </section>
 </section>
 <section id="one-continuous-predictor" class="level2" data-number="5.2">
 <h2 data-number="5.2" class="anchored" data-anchor-id="one-continuous-predictor"><span class="header-section-number">5.2</span> One Continuous Predictor</h2>
 <p>Now, we investigate the question “Is there a relationship between the amount of fare and the log-odds/probability of survival?”.</p>
-<p>To do this, let’s use <code>glm()</code> to fit our first simple binary regression (a logistic regreesion with one predictor variable).</p>
+<p>To do this, let’s use <code>glm()</code> to fit our first simple binary regression (a logistic regression with one predictor variable).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>fit2 <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> survived_b <span class="sc">~</span> fare, </span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"logit"</span>), </span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> titanic2</span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Print parameters in logit (i.e., log-odds) units</span></span>
-<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit2) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>fit2 <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> survived_b <span class="sc">~</span> fare, </span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"logit"</span>), </span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> titanic2</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Print parameters in logit (i.e., log-odds) units</span></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit2) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
 <thead>
@@ -793,7 +857,7 @@ mutate() and data-wrangling
 <h3 data-number="5.2.2" class="anchored" data-anchor-id="parameter-table-interpretation-odds"><span class="header-section-number">5.2.2</span> Parameter Table Interpretation (Odds)</h3>
 <p>We can easily convert log-odds to odds. Given we know that it is a positive value, we can expect the odds of surviving to be more likely and therefore above 1. In order to convert from a log-odds to odds, we just need to take the exponent of the value (because if a log-odds value of 0 is equally likely, then <span class="math inline">\(e^1 = 0\)</span> where 1 is our reference for an equally likely event in odds). Let’s practice our conversion by hand.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="fl">0.02</span>) <span class="co">#convert log-odds to odds</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="fl">0.02</span>) <span class="co">#convert log-odds to odds</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1.020201</code></pre>
 </div>
@@ -804,8 +868,8 @@ mutate() and data-wrangling
 </blockquote>
 <p>Fortunately, we can actually transform the entire log-odds parameter table results into odds using the same <code>model_parameters()</code> function with the added input argument of “exponentiate”, like so:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Print parameters in odds </span></span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit2, <span class="at">exponentiate =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Print parameters in odds </span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit2, <span class="at">exponentiate =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
 <thead>
@@ -847,9 +911,9 @@ mutate() and data-wrangling
 <p>A convenient transformation is taking the log-odds and converting into probability. Then, our question becomes “Is there a relationship between the amount of fare and the probability of survival?”.</p>
 <p>We can assess this relationship with the <code>predict_response()</code> function. It outputs a plot with the Y-axis as “the probability of <code>survival_b</code>” and the X-axis as the predictor (in this case <code>fare</code>) in raw units.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict_response</span>(fit2, <span class="at">terms =</span> <span class="st">"fare"</span>) <span class="sc">|&gt;</span> <span class="fu">plot</span>(<span class="at">show_data =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict_response</span>(fit2, <span class="at">terms =</span> <span class="st">"fare"</span>) <span class="sc">|&gt;</span> <span class="fu">plot</span>(<span class="at">show_data =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="binary-regression_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid" width="672"></p>
+<p><img src="binary-regression_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>Again, the transformed outcome variable is the “probability of <code>survived_b</code>” (on the y-axis), so we can see that it is bounded between [0,100]. The logistic regression line also makes predictions between these bounds so we no longer have the model predicting unreasonable values/states. Lastly, we can now see how an increase in <code>fare</code> increases the probability of survival.</p>
@@ -873,14 +937,14 @@ Critical Thinking
 <p>“Is there a relationship between the amount of fare, age, and the log-odds/probability of survival?”</p>
 <p>When we have two predictors, we are now conducting a multiple logistic regression. Recall that multiple regression, in general, allows us to control for the effects of multiple predictors on the outcome, and we are left with the unique effect of a predictor when controlling for other predictors.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>fit3 <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> survived_b <span class="sc">~</span> fare <span class="sc">+</span> age, </span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"logit"</span>), </span>
-<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> titanic2</span>
-<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Print parameters in logit (i.e., log-odds) units</span></span>
-<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit3) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>fit3 <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> survived_b <span class="sc">~</span> fare <span class="sc">+</span> age, </span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"logit"</span>), </span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> titanic2</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Print parameters in logit (i.e., log-odds) units</span></span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit3) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
 <colgroup>
@@ -945,8 +1009,8 @@ Critical Thinking
 <h3 data-number="5.3.2" class="anchored" data-anchor-id="parameter-table-interpretation-odds-1"><span class="header-section-number">5.3.2</span> Parameter Table Interpretation (Odds)</h3>
 <p>We can also present the results in odds.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Print parameters in odds </span></span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit3, <span class="at">exponentiate =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Print parameters in odds </span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit3, <span class="at">exponentiate =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
 <thead>
@@ -1000,13 +1064,13 @@ Critical Thinking
 <section id="predicted-probability-1" class="level3" data-number="5.3.3">
 <h3 data-number="5.3.3" class="anchored" data-anchor-id="predicted-probability-1"><span class="header-section-number">5.3.3</span> Predicted Probability</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict_response</span>(fit3, <span class="at">terms =</span> <span class="st">"fare"</span>) <span class="sc">|&gt;</span> <span class="fu">plot</span>(<span class="at">show_data =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict_response</span>(fit3, <span class="at">terms =</span> <span class="st">"fare"</span>) <span class="sc">|&gt;</span> <span class="fu">plot</span>(<span class="at">show_data =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="binary-regression_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid" width="672"></p>
+<p><img src="binary-regression_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid" width="672"></p>
 </div>
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict_response</span>(fit3, <span class="at">terms =</span> <span class="st">"age"</span>) <span class="sc">|&gt;</span> <span class="fu">plot</span>(<span class="at">show_data =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict_response</span>(fit3, <span class="at">terms =</span> <span class="st">"age"</span>) <span class="sc">|&gt;</span> <span class="fu">plot</span>(<span class="at">show_data =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="binary-regression_files/figure-html/unnamed-chunk-24-2.png" class="img-fluid" width="672"></p>
+<p><img src="binary-regression_files/figure-html/unnamed-chunk-25-2.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>The plots for predicted probabilities is helpful for highlighting the different effects for <code>fare</code> and <code>age</code>. As we see, there is a decrease in the probability of surviving as age increases, and there is an increase in the probability of surviving as the amount of fare increases.</p>
@@ -1030,15 +1094,15 @@ Why not always use probability?
 <p>Let’s consider the question “Is there a relationship between the type of <code>class</code> accommodation and the log-odds/probability of surviving”?</p>
 <p>Remember, first we have to change our predictor variable to a factor (i.e., a dummy-coded variable), and then we can fit with <code>glm()</code>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>titanic2<span class="sc">$</span>class <span class="ot">&lt;-</span> <span class="fu">factor</span>(titanic2<span class="sc">$</span>class, <span class="at">levels =</span><span class="fu">c</span>(<span class="st">"1st"</span>,<span class="st">"2nd"</span>,<span class="st">"3rd"</span>))</span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>fit4 <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
-<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> survived_b <span class="sc">~</span> class, </span>
-<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"logit"</span>), </span>
-<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> titanic2</span>
-<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit4) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>titanic2<span class="sc">$</span>class <span class="ot">&lt;-</span> <span class="fu">factor</span>(titanic2<span class="sc">$</span>class, <span class="at">levels =</span><span class="fu">c</span>(<span class="st">"1st"</span>,<span class="st">"2nd"</span>,<span class="st">"3rd"</span>))</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>fit4 <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> survived_b <span class="sc">~</span> class, </span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"logit"</span>), </span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> titanic2</span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit4) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
 <thead>
@@ -1099,8 +1163,8 @@ Why not always use probability?
 <section id="estimating-means-and-plots" class="level3" data-number="5.4.2">
 <h3 data-number="5.4.2" class="anchored" data-anchor-id="estimating-means-and-plots"><span class="header-section-number">5.4.2</span> Estimating means and plots</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>gmeans1 <span class="ot">&lt;-</span> <span class="fu">estimate_means</span>(fit4, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"class"</span>)) </span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>gmeans1 <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>gmeans1 <span class="ot">&lt;-</span> <span class="fu">estimate_means</span>(fit4, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"class"</span>)) </span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>gmeans1 <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
 <caption>Estimated Marginal Means</caption>
@@ -1141,7 +1205,7 @@ Why not always use probability?
 <h3 data-number="5.4.3" class="anchored" data-anchor-id="parameter-table-interpretation-odds-2"><span class="header-section-number">5.4.3</span> Parameter Table Interpretation (Odds)</h3>
 <p>Like in other logistic regression models, we can convert to odds ratios with <code>model_parameters</code> and “exponentiate” input argument.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit4, <span class="at">exponentiate =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit4, <span class="at">exponentiate =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
 <thead>
@@ -1199,9 +1263,9 @@ Why not always use probability?
 <section id="predicted-probability-2" class="level3" data-number="5.4.4">
 <h3 data-number="5.4.4" class="anchored" data-anchor-id="predicted-probability-2"><span class="header-section-number">5.4.4</span> Predicted Probability</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict_response</span>(fit4, <span class="at">terms =</span> <span class="st">"class"</span>) <span class="sc">|&gt;</span> <span class="fu">plot</span>(<span class="at">show_data =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict_response</span>(fit4, <span class="at">terms =</span> <span class="st">"class"</span>) <span class="sc">|&gt;</span> <span class="fu">plot</span>(<span class="at">show_data =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="binary-regression_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid" width="672"></p>
+<p><img src="binary-regression_files/figure-html/unnamed-chunk-29-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>When the predicted probabilities are plotted, we can visualize the differences in probabilities of surviving between classes.</p>
@@ -1212,13 +1276,13 @@ Why not always use probability?
 <p>“Is there a relationship between the amount of fare, class, and the log-odds/probability of survival?”</p>
 <p>Again, multiple regression allows us to control for the effects of multiple predictors on the outcome, and we are left with the unique effect of a predictor when controlling for other predictors. In this case, the outcome variable will be <code>survived_b</code>, and the predictor variables will be <code>class</code> (categorical variable) and <code>age</code> (continuous variable).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>fit5 <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> survived_b <span class="sc">~</span> class <span class="sc">+</span> age, </span>
-<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"logit"</span>), </span>
-<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> titanic2</span>
-<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit5) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>fit5 <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> survived_b <span class="sc">~</span> class <span class="sc">+</span> age, </span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"logit"</span>), </span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> titanic2</span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit5) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
 <thead>
@@ -1289,7 +1353,7 @@ Why not always use probability?
 <section id="parameter-table-interpretation-odds-3" class="level3" data-number="5.5.2">
 <h3 data-number="5.5.2" class="anchored" data-anchor-id="parameter-table-interpretation-odds-3"><span class="header-section-number">5.5.2</span> Parameter Table Interpretation (Odds)</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit5, <span class="at">exponentiate =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit5, <span class="at">exponentiate =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
 <thead>
@@ -1358,9 +1422,9 @@ Why not always use probability?
 <section id="predicted-probabilities" class="level3" data-number="5.5.3">
 <h3 data-number="5.5.3" class="anchored" data-anchor-id="predicted-probabilities"><span class="header-section-number">5.5.3</span> Predicted Probabilities</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict_response</span>(fit5, <span class="at">terms =</span> <span class="st">"age"</span>) <span class="sc">|&gt;</span> <span class="fu">plot</span>(<span class="at">show_data =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict_response</span>(fit5, <span class="at">terms =</span> <span class="st">"age"</span>) <span class="sc">|&gt;</span> <span class="fu">plot</span>(<span class="at">show_data =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="binary-regression_files/figure-html/unnamed-chunk-31-1.png" class="img-fluid" width="672"></p>
+<p><img src="binary-regression_files/figure-html/unnamed-chunk-32-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>With predicted probabilities, while accounting for <code>class</code>, we can see the probability of surviving is decreasing with age.</p>
@@ -1368,8 +1432,8 @@ Why not always use probability?
 <section id="estimating-means-and-plots-1" class="level3" data-number="5.5.4">
 <h3 data-number="5.5.4" class="anchored" data-anchor-id="estimating-means-and-plots-1"><span class="header-section-number">5.5.4</span> Estimating Means and Plots</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>gmeans2 <span class="ot">&lt;-</span> <span class="fu">estimate_means</span>(fit5, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"class"</span>)) </span>
-<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>gmeans2 <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>gmeans2 <span class="ot">&lt;-</span> <span class="fu">estimate_means</span>(fit5, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"class"</span>)) </span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>gmeans2 <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
 <caption>Estimated Marginal Means</caption>
@@ -1412,13 +1476,13 @@ Why not always use probability?
 <h1 data-number="6"><span class="header-section-number">6</span> Assumptions</h1>
 <p>When we use logistic regression over regular linear regression, we benefit in terms of adhering to the assumptions of the linear model. We can see this benefit when we compare between the two models that have the same outcome and predictors.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_model</span>(fitlm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_model</span>(fitlm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="binary-regression_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid" width="672"></p>
+<p><img src="binary-regression_files/figure-html/unnamed-chunk-34-1.png" class="img-fluid" width="672"></p>
 </div>
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_model</span>(fit1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_model</span>(fit1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="binary-regression_files/figure-html/unnamed-chunk-33-2.png" class="img-fluid" width="672"></p>
+<p><img src="binary-regression_files/figure-html/unnamed-chunk-34-2.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 
