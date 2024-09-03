@@ -37,28 +37,25 @@ The general linear model assumes that residuals, or the differences between the 
 
 ### Continuous and Normally Distributed Outcome
 
-Since the outcome variable is binary, a quick histogram plot will show that it is not continuous (i.e., it is discrete). This is a scourge for the general linear model since it assumes continuous and normally distributed outcomes, and it will predict both intermediate states/values between the two possible outcomes <b>and</b> states/values above and below the two possible outcomes. For example, if 0 = Alive, and 1 = Dead, then the general linear model may predict a value between 0 and 1 (somewhere between alive and dead), or values below 0 and above 1 (so less alive and more dead?).
+Since the outcome variable is binary, a quick histogram plot will show that it is not continuous (i.e., it is discrete). This is a scourge for the general linear model since it assumes continuous and normally distributed outcomes, and it will predict both intermediate states/values between the two possible outcomes <b>and</b> states/values above and below the two possible outcomes. For example, if 0 = Alive, and 1 = Dead, then the general linear model may predict a value between 0 and 1 (somewhere between alive and dead), or values below 0 and above 1 (so less alive and more dead?).Therefore, to model a binary outcome using the machinery of linear modeling, we need to <b>transform</b> the outcome variable to a continuous and normally distributed outcome.
 
-Therefore, to model a binary outcome using the machinery of linear modeling, we need to <b>transform</b> the outcome variable to a continuous and normally distributed outcome. We do that with what's called a <i>link function</i>.  In other words, the link function will take the binary outcome variable and transform it to a continuous and more normally distributed outcome variable. By using a link function, we move from the general linear model to a <i>generalized linear model</i>. See more about link functions in the next section.
 
-Before we fit our first binary regression, let's take a look at what is actually happening and why the <b>generalized</b> linear model is similar, but different, to the general linear model. 
+## Binary Events with a Binomial Distribution
 
-## Comparing Simple Regression to Simple Binary Regression 
+As mentioned earlier, in logistic regression we are modeling a binary events. When we can assume that 1) Binary events are independent of one another (i.e., one binary trial doesn't affect another trial), and 2) The probability of the binary event happening versus not happening is fixed, then it turns out that binary events are best described by what's called a <i>binomial distribution</i>. In theory, it is the optimal distribution for a binary event based on a principle called <i>Maximum Entropy</i>, but we will skip that theoretical explanation for now. 
 
-In simple regression, we are predicting the outcome ($y_{{i}}$) with a linear (additive) combination of an intercept ($\beta_0$) and one predictor variable ($x$).
+A binomial distribution is described by only two parameters: <i>n</i> and <i>p</i>. The "n" parameter is the total number of trials/events, and "p" is the probability of a "success" (or the probability of the event happening versus not happening). Due to this feature of binomial distributions, we can expect the <i>mean</i> of a binary event to simply be the number of trials multiplied by the probability of the event occurring, or $n * p$. For example, if we flip a coin 100 times and count the number of Heads, we can expect the average number of Heads after 100 flips to be $n*p = 100 * 0.5 = 50\, Heads$. 
 
-$$ \hat{y}_{{i}} = \beta_0 + \beta_1 x $$
-In simple binary regression, we are <b>still</b> predicting an outcome with a linear (additive) combination of intercept and one predictor variable. We use the term "simple" only because we have one predictor variable in this case. 
+The important thing to know is that logistic regression's goal is to model the "p" parameter, or the <b>probability of success</b>, of a binary distribution with a linear and additive combination of an intercept and slope of a predictor variable(s). But there's an inherent problem with modeling probability with a linear model because probability is bounded from [0,1], and we already know that a linear model works best when the outcome is unbounded (and continuous).
 
-$$ \hat{\eta}_{i} = \beta_0 + \beta_1 x $$ 
+:::{.callout-important title="Binary Outcomes vs Probability?"}
+At this point, we need to make a distinction between the outcome of a binary event and the probability of a binary event. 
 
-Note that the linearly additive feature that both simple regression and simple binary regression share is what makes these models related and interpretable. 
+The outcome of a binary event is the result of the trial -- whether the event was a success or not. For example, if our goal is to count the number of Heads when flipping a coin. 
+:::
 
-The main difference is why, in simple binary regression, did the outcome variable change from $y_{{i}}$ to $\eta_{i}$? Because in binary regression, we are no longer predicting the binary outcome event (e.g., "yes/no"). Usually (but not always) we are predicting the <b> probability </b> of the binary event occurring. This means that $\eta_{i}$ is a probability that is bounded between 0 ("no" event) and 1 ("yes" event). 
 
-The next section will relate $y_{\hat{i}}$ to $\eta_{i}$.
-
-### Link function: logit 
+## Enter the Logit Link Function 
 
 We need to make a connection between the probability of an event ($\eta_{i}$) to an event outcome ($y_{{i}}$). This is possible in this way: 
 
@@ -86,6 +83,35 @@ When we use the logit link function with a linear predictor, we now can call thi
 When we use GLMs, we will be using many different link functions depending on the data. In the case of binary/logistic regression, all this function is trying to do is relate our linear predictors to a response outcome that is continuous and between some bounds (like 0 and 1). This is because if we <b>did not</b> do this, we are using the linear predictors to predictor some value that is continuous when it is <b>not</b> technically continuous, and the predictions can be out of bounds (so, when an event "yes" = 1, then the model can spit out a value like 1.53, even though this event is unreasonable). 
 We also find that when using the appropriate link function, other problems, like the shape of residuals, gets fixed! 
 :::
+
+
+
+## Defining the Logistic Regression Model 
+
+As mentioned in the previous section, the logistic regression model takes into account that the outcome we are modeling is a binary outcome. Let's summarize the details of this model in a more compact way: 
+
+$$ y_i \sim Binomial(n,p)$$
+
+
+
+We do that with what's called a <i>link function</i>.  In other words, the link function will take the binary outcome variable and transform it to a continuous and more normally distributed outcome variable. By using a link function, we move from the general linear model to a <i>generalized linear model</i>. See more about link functions in the next section.
+
+Before we fit our first binary regression, let's take a look at what is actually happening and why the <b>generalized</b> linear model is similar, but different, to the general linear model. 
+
+## Comparing Simple Regression to Simple Binary Regression 
+
+In simple regression, we are predicting the outcome ($y_{{i}}$) with a linear (additive) combination of an intercept ($\beta_0$) and one predictor variable ($x$).
+
+$$ \hat{y}_{{i}} = \beta_0 + \beta_1 x $$
+In simple binary regression, we are <b>still</b> predicting an outcome with a linear (additive) combination of intercept and one predictor variable. We use the term "simple" only because we have one predictor variable in this case. 
+
+$$ \hat{\eta}_{i} = \beta_0 + \beta_1 x $$ 
+
+Note that the linearly additive feature that both simple regression and simple binary regression share is what makes these models related and interpretable. 
+
+The main difference is why, in simple binary regression, did the outcome variable change from $y_{{i}}$ to $\eta_{i}$? Because in binary regression, we are no longer predicting the binary outcome event (e.g., "yes/no"). Usually (but not always) we are predicting the <b> probability </b> of the binary event occurring. This means that $\eta_{i}$ is a probability that is bounded between 0 ("no" event) and 1 ("yes" event). 
+
+The next section will relate $y_{\hat{i}}$ to $\eta_{i}$.
 
 
 ### Probability, Odds, and Log Odds ###
