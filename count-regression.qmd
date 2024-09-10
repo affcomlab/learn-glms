@@ -1,0 +1,104 @@
+---
+title: "count-regression"
+---
+
+## Binomial Regression with Bounded Counts
+
+When your outcome variable is a <i>bounded count variable</i>, it has a lower bound of 0 and a fixed upper bound. Specifically, each value of this variable represents the proportion of a success, or presence/endorsement, of that value; in other words, each value in that outcome variable can be thought of a binary proportion. We can use what's called a <i>weighted binomial regression</i> to model this bounded count variable.
+
+A bounded count variable is easiest to understand and identify with an example. Imagine a test that is made up of 10 questions. To obtain a score on this test, you count how many questions were answered correct out of the 10 questions. In this case, each specific question is made up of a binary event (correct or incorrect). So, the minimum score on this test is 0, and the maximum score on this test is 10. And when we have many people take this test, we get a distribution of scores that can represent the probability/proportion correct of this outcome variable. 
+
+Therefore, when we can represent the probability/proportion correct of a fixed upper bound of an outcome variable, based on the success/failure or presence/absence of each value in that outcome variable, we can update binary regression very easily as a <i>weighted binomial regression</i>. 
+
+
+## Data Demonstration 
+The data for this weighted binomial regression section features a bounded count variable in the form of a score on the Patient Health Questionnaire (PHQ-9). The score on this self-report questionnaire involves adding up the total number of points assigned to each of 9 questions (where each question is worth 3 points); therefore, the minimum score for any patient is 0, and the maximum score is 27 points. According to the PHQ-9, the higher the score, the more severe depression a patient has.
+
+The question we will ask and answer with weighted binomial regression is what can predict a high PHQ-9 score. First, we will consider as our main predictor variable the 
+
+-   Data: <a href="./depression.csv" download> depression.csv </a>
+
+## Loading the Packages and Reading in Data
+
+In addition to our usual packages (`tidyverse`, `easystats`, and `ggeffects`), we will also need to load `DHARMa` and `qqplotr` in order to make our plots for our weighted binary regression models. 
+
+```{r, warning = FALSE, message=FALSE}
+## Load packages
+library(tidyverse)
+library(easystats)
+library(ggeffects)
+library(DHARMa)
+library(qqplotr)
+
+## Read in data from file
+depression <- read_csv("depression.csv")
+depression
+
+```
+
+
+
+This data shows records for 700 patients screened with the PHQ-9 where each row is one patient.
+
+Here's a table of our variables in this dataset: 
+
+| Variable    | Description                     |     Values | Measurement |
+|-------------|:--------------------------------|-----------:|:-----------:|
+| `participant`       | Patient ID number                  | Integer |   Ordinal   |
+| `cohort`    | Patient Cohort Group ID |    Character |    Nominal    |
+| `age`    | Age of Patient |    Integer |    Scale    |
+| `gender`    | Gender of Patient |    Character |    Nominal    |
+| `phq9`    | Total Score on the PHQ-9         |   Integer |   Ordinal   |
+| `income_ratio` | Ratio of Income to Debt (Positive is more income than debt) | Double  | Scale |
+
+## Prepare Data / Exploratory Data Analysis
+
+For weighted binomial regression, in order to model the `phq9` score as the outcome variable, we need to re-code each `phq9` score for each patient as a weighted proportion out of the max score of 27. Here, we will use the `mutate()` function from the `dplyr` package (which is a package that automatically loaded with `tidyverse`) to add a new column to our data with the weighted PHQ-9 score as `phq9_p`. 
+
+```{r}
+depression2 <- 
+  depression |> 
+  mutate(
+    phq9_max = 27, # maximum possible score (can be same or different per row)
+    phq9_p = phq9 / phq9_max # proportion of maximum possible score per row
+  ) 
+
+depression2
+
+```
+
+
+### Plotting Relationships to PHQ-9
+
+Let's first plot to see any relationship between the `income_ratio` and the weighted PHQ-9 score (`phq9_p`).  We tend to see that more of the data points fall in the lower values of `income_ratio`. 
+
+```{r}
+ggplot(depression2, aes(x = income_ratio, y = phq9_p)) +
+  geom_point() + mytheme
+
+```
+
+
+## Fitting the Weighted Binomial Regression
+
+When we fit our weighted binomial regression, we now will use the `glm()` function.
+
+We did a lot of work already with the `lm()` in the "Regression Recap". The `glm()` function is in many ways the same as the `lm()` function. Even the syntax for how we write the equation is the same. In addition, we can use the same `model_parameters()` function to get our table of parameter estimates. Indeed, we will use the `glm()` function for the remainder of the rest of the online modules. 
+
+But for weighted binomial regression, notice that the `glm()` function has two more input arguments. These input arguments are the "family" input argument, which requires which "family of distributions" to use and which "link function" choice, and a "weights" argument, which is a column in the dataset that represents the max score for each proportion.   
+
+For weighted binary regression, we supply the <b>binomial</b> distribution and the <b>logit</b> link function into the "family" input argument, and `phq9_max` column name for the "weights" input argument.
+We then assess the results with `model_paramters()`. 
+
+```{r}
+fit2 <- glm(
+  formula = phq9_p ~ income_ratio,
+  family = binomial(link = "logit"),
+  weights = phq9_max,
+  data = depression2
+)
+
+model_parameters(fit2) |> print_md()
+
+```
+

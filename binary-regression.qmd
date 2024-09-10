@@ -341,7 +341,6 @@ Our data shows a log-odds of $-0.47$, which means it is less than 0, so we can s
 
 When we fit our binary regression, we now will use the `glm()` function.
 
-
 We did a lot of work already with the `lm()` in the "Regression Recap". The `glm()` function is in many ways the same as the `lm()` function. Even the syntax for how we write the equation is the same. In addition, we can use the same `model_parameters()` function to get our table of parameter estimates. Indeed, we will use the `glm()` function for the remainder of the rest of the online modules. 
 
 But notice that the `glm()` function has one more input argument. This input argument is the "family" input argument, which requires which "family of distributions" to use and which "link function" choice.  
@@ -630,6 +629,7 @@ With predicted probabilities, while accounting for `class`, we can see the proba
 gmeans2 <- estimate_means(fit5, by = c("class")) 
 gmeans2 |> print_md()
 ```
+
 
 # Assumptions
 
