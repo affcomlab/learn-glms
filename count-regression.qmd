@@ -4,11 +4,13 @@ title: "count-regression"
 
 ## Binomial Regression with Bounded Counts
 
-When your outcome variable is a <i>bounded count variable</i>, it has a lower bound of 0 and a fixed upper bound. Specifically, each value of this variable represents the proportion of a success, or presence/endorsement, of that value; in other words, each value in that outcome variable can be thought of a binary proportion. We can use what's called a <i>weighted binomial regression</i> to model this bounded count variable.
+When your outcome variable is a <i>bounded count variable</i>, it has a lower bound of 0 and a fixed upper bound. Specifically, each value of this variable represents the proportion of a success, or presence/endorsement, of that value; in other words, each value in that outcome variable can be thought of as a binary proportion. We can use what's called a <i>weighted binomial regression</i> to model this bounded count variable.
 
 A bounded count variable is easiest to understand and identify with an example. Imagine a test that is made up of 10 questions. To obtain a score on this test, you count how many questions were answered correct out of the 10 questions. In this case, each specific question is made up of a binary event (correct or incorrect). So, the minimum score on this test is 0, and the maximum score on this test is 10. And when we have many people take this test, we get a distribution of scores that can represent the probability/proportion correct of this outcome variable. 
 
 Therefore, when we can represent the probability/proportion correct of a fixed upper bound of an outcome variable, based on the success/failure or presence/absence of each value in that outcome variable, we can update binary regression very easily as a <i>weighted binomial regression</i>. 
+
+Also, in this treatment of the data, the items are <b>interchangeable</b> in terms of their order. So like in our example of a test that is made up of 10 questions, if the final score for one test-taker is a 5/10, we do not care which 5 questions were correct -- this person's score is treated as any 5 questions correct out of 10. This plays a role in how we interpret the model results later. 
 
 
 ## Data Demonstration 
@@ -36,7 +38,11 @@ depression
 
 ```
 
-
+```{r, warning=FALSE,echo=FALSE}
+mytheme <- theme_bw(
+  base_size = 12
+)
+```
 
 This data shows records for 700 patients screened with the PHQ-9 where each row is one patient.
 
@@ -70,7 +76,7 @@ depression2
 
 ### Plotting Relationships to PHQ-9
 
-Let's first plot to see any relationship between the `income_ratio` and the weighted PHQ-9 score (`phq9_p`).  We tend to see that more of the data points fall in the lower values of `income_ratio`. 
+Let's first plot to see any relationship between the `income_ratio` and the weighted PHQ-9 score (`phq9_p`).  We tend to see that more of the data points fall in the lower values of `income_ratio` which suggests a negative relationship between income ratio and depression severity; in other words, the higher the income ratio, the less the score on the `phq9_p` (and less depression severity).
 
 ```{r}
 ggplot(depression2, aes(x = income_ratio, y = phq9_p)) +
@@ -88,6 +94,7 @@ We did a lot of work already with the `lm()` in the "Regression Recap". The `glm
 But for weighted binomial regression, notice that the `glm()` function has two more input arguments. These input arguments are the "family" input argument, which requires which "family of distributions" to use and which "link function" choice, and a "weights" argument, which is a column in the dataset that represents the max score for each proportion.   
 
 For weighted binary regression, we supply the <b>binomial</b> distribution and the <b>logit</b> link function into the "family" input argument, and `phq9_max` column name for the "weights" input argument.
+
 We then assess the results with `model_paramters()`. 
 
 ```{r}
@@ -102,3 +109,47 @@ model_parameters(fit2) |> print_md()
 
 ```
 
+
+### Parameter Table Interpretation (Log-odds)
+
+Again, the parameter table output from a model fit with `glm()` looks very similar to parameter table outputs from models fit with `lm()`. But there is a <b>big</b> difference -- in `glm()` models, we are no longer working in the same raw units! 
+
+This difference is apparent in the second column of the output table: "Log-Odds". Because we fit a logistic regression with a logit function, the parameter values are in "log-odds" unit. Technically, when `income_ratio` is in log-odds units, we can only say:
+
+> For every one 1 unit increase in `income_ratio`, there is a 0.15 decrease in the log-odds of having a higher PHQ-9 score (and greater chance of having severe depression)
+
+Although this is technically true, it isn't at first clear what "0.15 unit increase in log-odds of `phq9_p` is. It is at this point one may want to convert log-odds to probability. But before we do that, let's interpret the $-0.15$ log-odds value: 
+
+-   If log-odds $ = -0.15$, then it is less than 0, meaning it is less likely to have a higher PHQ-9 score (than a lower PHQ-9 score) when we use `income_ratio` as a predictor.
+
+-   This effect is also statistically significant from 0 ($p<0.001$). Remember, with log-odds, a value of 0 means it is equally likely for an event to occur or not occur. In this case, since it is significantly less than 0, we can say it is more likely to not have a symptom than have a symptom (i.e. score less on the PHQ-9 than score more) when predicted by `income_ratio`. 
+
+- As mentioned before, with weighted binomial regression the values of the outcome variable are interchangeable, so our parameter results speak in reference to obtaining <i>one</i> value difference on the outcome variable. Therefore, when log-odds $ = -0.15$, that is in reference to decreasing (because it is negative) the outcome variable score by one value lower. 
+
+### Parameter Table Interpretation (Odds)
+
+We can also present the results in odds by using the "exponentiate" input argument. 
+
+```{r}
+model_parameters(fit2, exponentiate = TRUE) |> print_md()
+```
+
+
+Now that we are in odds, we can adjust our previous interpretation of the `fare` parameter for odds:
+
+> For every one unit increase in `income_ratio`, there is a 0.14 increase, or a 14% decrease, in the odds of having a higher PHQ-9 score.[^2]
+ 
+Recall that when odds $=1$, that means both events are equally likely to happen. So when the odds read a value like $0.86$, then we only consider the differences from 1 as meaningful. In this case, that increase is 0.14, or 14%, from our baseline value of 1.
+
+### Predicted Probability
+
+A convenient transformation is taking the log-odds and converting into probability. Then, our question becomes "Is there a relationship between income ratio and the probability of scoring one value different on the PHQ-9?".
+
+We can assess this relationship with the `predict_response()` function. It outputs a plot with the Y-axis as "the probability of `PHQ-9`" and the X-axis as the predictor (in this case `income_ratio`) in raw units.  
+
+```{r, warning=FALSE,message=FALSE}
+predict_response(fit2, terms = "income_ratio") |> plot(show_data = TRUE)
+
+```
+
+Again, the transformed outcome variable is the "probability of `survived_b`" (on the y-axis), so we can see that it is bounded between [0,100]. The logistic regression line also makes predictions between these bounds so we no longer have the model predicting unreasonable values/states. Lastly, we can now see how an increase in `income_ratio` decrease the probability of scoring one value lower on the PHQ-9.  

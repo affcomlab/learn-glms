@@ -28,5 +28,8 @@
   },
   "binary-regression.qmd": {
     "binary-regression.html": "9eddc91d"
+  },
+  "count-regression.qmd": {
+    "count-regression.html": "14170a41"
   }
 }
