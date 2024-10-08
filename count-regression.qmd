@@ -14,7 +14,7 @@ Also, in this treatment of the data, the items are <b>interchangeable</b> in ter
 
 
 ## Data Demonstration 
-<span style="background-color: #FFFF00">Marked text
+<span style="background-color: #FFFF00">
 The data for this weighted binomial regression section features a bounded count variable in the form of a score on the Patient Health Questionnaire (PHQ-9). The score on this self-report questionnaire involves adding up the total number of points assigned to each of 9 questions (where each question is worth 3 points); therefore, the minimum score for any patient is 0, and the maximum score is 27 points. According to the PHQ-9, the higher the score, the more severe depression a patient has.
 
 Notice that when talking about the score for any patient who takes this questionnaire, we are only concerned with the final score out of 27 points, and we do not make a big deal about any one question on the exam, or the order of the questions. So, we are treating the items on this questionnaire as interchangeable. 
@@ -50,7 +50,7 @@ mytheme <- theme_bw(
 )
 ```
 
-This data shows records for 700 patients screened with the PHQ-9 where each row is one patient.
+This data shows records for 297 patients screened with the DCL-9 where each row is one participant.
 
 Here's a table of our variables in this dataset: 
 
@@ -64,7 +64,7 @@ Here's a table of our variables in this dataset:
 
 ## Prepare Data / Exploratory Data Analysis
 
-For weighted binomial regression, in order to model the `phq9` score as the outcome variable, we need to re-code each `phq9` score for each patient as a weighted proportion out of the max score of 27. Here, we will use the `mutate()` function from the `dplyr` package (which is a package that automatically loaded with `tidyverse`) to add a new column to our data with the weighted PHQ-9 score as `phq9_p`. We also created a column called `phq9_max` to note the max score, which is 27 points, that any one participant can have on the PHQ-9.
+For weighted binomial regression, in order to model the DCL-9 score as the outcome variable, we need to re-code each DCL score for each participant as a weighted proportion out of the max score of 9. Here, we will use the `mutate()` function from the `dplyr` package (which is a package that automatically loaded with `tidyverse`) to add a three new columns to our data: the first will be `dcl_max` which is the max score (9) any one participant can have on the DCL-9, the second is `dcl_sum` which is the total sum score across all DCL-9 questions, and the third column is `dcl9_p`, which is hte weighted proportion, or fraction, for a participant out of max score of 9.
 
 ```{r}
 # depression2 <- 
@@ -79,6 +79,7 @@ depression2 <-
   mutate(
     dcl_max = 9, 
     dcl_sum = rowSums(pick(dcl_1:dcl_9)),
+    dcl9_p = dcl_sum / dcl_max
   )
 
 depression2
@@ -88,10 +89,10 @@ depression2
 
 ### Plotting Relationships to DCL-9
 
-Let's first plot to see any relationship between the `income_ratio` and the weighted PHQ-9 score (`phq9_p`).  We tend to see that more of the data points, especially at higher PHQ-9 scores, fall in the lower values of `income_ratio` which suggests a negative relationship between income ratio and depression severity; in other words, the higher the income ratio, the less the score on the `phq9_p` (and less depression severity).
+Let's first plot to see any relationship between the `support` and the weighted DCL-9 score (`dcl9_p`).  We tend to see that more of the data points, especially at higher DCL-9 scores, fall in the higher values of `support` which suggests a positive relationship between support and depression severity; in other words, the higher the support, the higher the score on the DCL-9 (and more depression symptoms). While this may seem visually counter-intuitive, note that it is possible that most people in our sample may have depression symptoms despite having support, and that the plot is misleading (especially since the amount of `dcl9_p` scores are visually about the same across the higher levels of `support`). 
 
 ```{r}
-ggplot(depression2, aes(x = income_ratio, y = phq9_p)) +
+ggplot(depression2, aes(x = support, y = dcl9_p)) +
   geom_point() + mytheme
 
 ```
@@ -108,17 +109,17 @@ We did a lot of work already with the `lm()` in the "Regression Recap". The `glm
 
 But for weighted binomial regression, notice that the `glm()` function has two more input arguments. These input arguments are the "family" input argument, which requires which "family of distributions" to use and which "link function" choice, and a "weights" argument, which is a column in the dataset that represents the max score for each proportion. 
 
-For weighted binary regression, we supply the <b>binomial</b> distribution and the <b>logit</b> link function into the "family" input argument, and `phq9_max` column name for the "weights" input argument.
+For weighted binary regression, we supply the <b>binomial</b> distribution and the <b>logit</b> link function into the "family" input argument, and `dcl9_max` column name for the "weights" input argument.
 
-As mentioned before, we will consider the effect of `income_ratio` 
+As mentioned before, we will consider the effect of `support`.  
 
 We then assess the results with `model_paramters()`. 
 
 ```{r}
 fit2 <- glm(
-  formula = phq9_p ~ income_ratio,
+  formula = dcl9_p ~ support,
   family = binomial(link = "logit"),
-  weights = phq9_max,
+  weights = dcl_max,
   data = depression2
 )
 
@@ -131,17 +132,17 @@ model_parameters(fit2) |> print_md()
 
 Again, the parameter table output from a model fit with `glm()` looks very similar to parameter table outputs from models fit with `lm()`. But there is a <b>big</b> difference -- in `glm()` models, we are no longer working in the same raw units! 
 
-This difference is clear in the second column of the output table: "Log-Odds". Because we fit a logistic regression with a logit function, the parameter values are in "log-odds" unit. Technically, when `income_ratio` is in log-odds units, we can only say:
+This difference is clear in the second column of the output table: "Log-Odds". Because we fit a logistic regression with a logit function, the parameter values are in "log-odds" unit. Technically, when `support` is in log-odds units, we can only say:
 
-> For every one 1 unit increase in `income_ratio`, there is a 0.15 decrease in the log-odds of having a one-unit higher PHQ-9 score (and greater chance of having severe depression)
+> For every one 1 unit increase in `support`, there is a 0.52 decrease in the log-odds of having a one-unit higher DCL-9 score. 
 
-Although this is technically true, it isn't at first clear what it means to have a "0.15 unit increase in log-odds of `phq9_p`". Let's interpret the $-0.15$ log-odds value: 
+Although this is technically true, it isn't at first clear what it means to have a "0.52 unit decrease in log-odds of `dcl9_p`". Let's interpret the $-0.52$ log-odds value: 
 
--   If log-odds $ = -0.15$, then it is less than 0, meaning it is more likely to have a lower PHQ-9 score (than a higher PHQ-9 score) when we use `income_ratio` as a predictor.
+-   If log-odds $ = -0.52$, then it is less than 0, meaning it is more likely to have a lower DCL-9 score (than a higher DCL-9 score) when we use `support` as a predictor.
 
--   This effect is also statistically significant from 0 ($p<0.001$). Remember, with log-odds, a value of 0 means it is equally likely for an event to occur or not occur. In this case, since it is significantly less than 0, we can say it is more likely to not have a symptom than have a symptom (i.e. score less on the PHQ-9 than score more) when predicted by `income_ratio`. 
+-   This effect is also statistically significant from 0 ($p<0.001$). Remember, with log-odds, a value of 0 means it is equally likely for an event to occur or not occur. In this case, since it is significantly less than 0, we can say it is more likely to not have a symptom than have a symptom (i.e. score less on the DCL-9 than score more) when predicted by `support`. 
 
-- As mentioned before, with weighted binomial regression the values of the outcome variable are interchangeable, so our parameter results speak in reference to obtaining <i>one</i> value difference on the outcome variable. Therefore, when log-odds $= -0.15$, that is in reference to decreasing (because it is negative) the outcome variable score by one value lower. 
+- As mentioned before, with weighted binomial regression the values of the outcome variable are interchangeable, so our parameter results speak in reference to obtaining <i>one</i> value difference on the outcome variable. Therefore, when log-odds $= -0.52$, that is in reference to decreasing (because it is negative) the outcome variable score by one value lower. 
 
 ### Parameter Table Interpretation (Odds)
 
@@ -151,13 +152,13 @@ We can also present the results in odds ratios by using the "exponentiate" input
 model_parameters(fit2, exponentiate = TRUE) |> print_md()
 ```
 
-Now that we are in odds, we can adjust our previous interpretation of the `income_ratio` parameter for odds:
+Now that we are in odds, we can adjust our previous interpretation of the `support` parameter for odds:
 
-> For every one unit increase in `income_ratio`, there is a 0.14 decrease, or a 14% decrease, in the odds of having a one-unit higher PHQ-9 score.
+> For every one unit increase in `support`, there is a 0.40 decrease, or a 40% decrease, in the odds of having a one-unit higher DCL-9 score.
  
-Recall that when odds $=1$, that means both events are equally likely to happen. So when the odds read a value like $0.86$, then we only consider the differences from 1 as meaningful. In this case, that is a decrease of 0.14, or 14%, from our baseline value of 1.
+Recall that when odds $=1$, that means both events are equally likely to happen. So for example, here we read an odds value of $0.60$, then we only consider the differences from 1 as meaningful. In this case, that is a decrease of 0.40, or 40%, from our baseline value of 1.
 
-Also from the output table, we know the significance values in odds and we can now say that the effect of `income_ratio` in the decrease of odds is statistically significant from <b>1</b>, $p<0.001$ [^1]
+Also from the output table, we know the significance values in odds and we can now say that the effect of `support` in the decrease of odds is statistically significant from <b>1</b>, $p<0.001$ [^1]
 
 [^1]: When the parameter table is in odds, the significance test is applied to see differences from an odds value of 1. This is because, again, an odds value of 1 means that an event occurring versus not occurring is equally likely. 
 
@@ -165,35 +166,42 @@ A lot of fields, like medicine, prefer to output and report their logistic regre
 
 ### Predicted Probability
 
-A convenient transformation is taking the log-odds and converting into probability. Then, our question becomes "Is there a relationship between income ratio and the probability of scoring one value different on the PHQ-9?".
+A convenient transformation is taking the log-odds and converting into probability. Then, our question becomes "Is there a relationship between support and the probability of scoring one value different on the DCL-9?".
 
-We can assess this relationship with the `predict_response()` function. It outputs a plot with the Y-axis as "the probability of `PHQ-9`" and the X-axis as the predictor (in this case `income_ratio`) in raw units, and it overlays the predicted probability on top of the data.
+We can assess this relationship with the `predict_response()` function. It outputs a plot with the Y-axis as "the probability of `DCL-9`" and the X-axis as the predictor (in this case `support`) in raw units, and it overlays the predicted probability on top of the data.
 
 ```{r, warning=FALSE,message=FALSE}
-predict_response(fit2, terms = "income_ratio") |> plot(show_data = TRUE)
+predict_response(fit2, terms = "support") |> plot(show_data = TRUE)
 
 ```
 
-Again, the transformed outcome variable is the "probability of `survived_b`" (on the y-axis), so we can see that it is bounded between [0,100]. The logistic regression line also makes predictions between these bounds so we no longer have the model predicting unreasonable values/states which would happen if we didn't consider using the `glm()` function. Lastly, we can now see how an increase in `income_ratio` decrease the probability of scoring one score lower on the PHQ-9.
+Again, the transformed outcome variable is the "probability of `dcl9_p`" (on the y-axis), so we can see that it is bounded between [0,100]. The logistic regression line also makes predictions between these bounds so we no longer have the model predicting unreasonable values/states which would happen if we didn't consider using the `glm()` function. Lastly, we can now see how an increase in `suppport` leads to a decrease in the probability of scoring one score lower on the DCL-9.
 
+Also notice that our prediction line is more in agreement with the general intuition that the higher support one has, the less depression symptoms one may have. This is more clear now that the model can pick apart this relationship that would be hard to see if we only relied on a solely visual inspection.
+
+::: {.callout-tip title="Why not always use probability?"}
+Although working with probabilities seems to be more easily understandable, we cannot have parameter estimates in probabilities. Therefore, results are often communicated in logits or odds since we can have estimates, uncertainty values (like standard deviations), and significance tests applied to them. 
+:::
+
+<span style="background-color: #FFFF00">
 ## Two Continous Predictors 
 
-"Is there a relationship between the income ratio, age, and the score on the PHQ-9?"
+"Is there a relationship between the support, age, and the score on the PHQ-9?"
 
 When we have two predictors, we are now conducting a multiple weighted binomial (logistic) regression. Recall that multiple regression, in general, allows us to control for the effects of multiple predictors on the outcome, and we are left with the unique effect of a predictor when controlling for other predictors. 
 
 Once again, let's fit this model with the `glm()` function. 
 
 ```{r}
-fit3 <- glm(
-  formula = phq9_p ~ income_ratio + age, 
-  family = binomial(link = "logit"),
-  weights = phq9_max,
-  data = depression2
-)
-
-## Print parameters in logit (i.e., log-odds) units
-model_parameters(fit3) |> print_md()
+# fit3 <- glm(
+#   formula = phq9_p ~ income_ratio + age, 
+#   family = binomial(link = "logit"),
+#   weights = phq9_max,
+#   data = depression2
+# )
+# 
+# ## Print parameters in logit (i.e., log-odds) units
+# model_parameters(fit3) |> print_md()
 
 ```
 
@@ -212,7 +220,7 @@ Remember, in log-odds, if the value is positive, it is more likely for the event
 We can also present the results in odds. 
 ```{r}
 ## Print parameters in odds 
-model_parameters(fit3, exponentiate = TRUE) |> print_md()
+# model_parameters(fit3, exponentiate = TRUE) |> print_md()
 ```
 
 When the parameter table is in odds, we can now say the following: 
@@ -229,28 +237,27 @@ At this point, it is interesting to consider that the higher the `income_ratio` 
 
 
 ```{r, warning=FALSE,message=FALSE}
-predict_response(fit3, terms = "income_ratio") |> plot(show_data = TRUE)
-predict_response(fit3, terms = "age") |> plot(show_data = TRUE)
+# predict_response(fit3, terms = "income_ratio") |> plot(show_data = TRUE)
+# predict_response(fit3, terms = "age") |> plot(show_data = TRUE)
 ```
 The plots for predicted probabilities is helpful for highlighting the different effects for `income_ratio` and `age` on the probability of obtaining a one-unit higher score on the PHQ-9. As we see, there is a decrease in the probability of a higher score as `income_ratio` increases, and there is an increase in the probability of surviving as `age` increases. 
 
-::: {.callout-tip title="Why not always use probability?"}
-Although working with probabilities seems to be more easily understandable, we cannot have parameter estimates in probabilities. Therefore, results are often communicated in logits or odds since we can have estimates, uncertainty values (like standard deviations), and significance tests applied to them. 
-:::
+
+</span> 
 
 ## One Dummy Coded Predictor 
 
-Let's consider the question "Is there a relationship between gender and the log-odds/probability of scoring one-unit higher on the PHQ-9?" 
+Let's consider the question "Is there a relationship between gender and the log-odds/probability of scoring one-unit higher on the DCL-9?" 
 
 Remember, first we have to change our predictor variable to a factor (i.e., a dummy-coded variable), and then we can fit with `glm()`. 
 
 ```{r}
-depression2$gender <- factor(depression2$gender, levels = c("Female","Male")) #change to factor
+depression2$gender <- factor(depression2$gender, levels = c(0,1), labels = c("Female","Male")) #change to factor
 
 fit4 <- glm(
-  formula = phq9_p ~ gender, 
+  formula = dcl9_p ~ gender, 
   family = binomial(link = "logit"), 
-  weights = phq9_max,
+  weights = dcl_max,
   data = depression2
 )
 
@@ -262,11 +269,11 @@ model_parameters(fit4) |> print_md()
 
 Remember, although we are performing a weighted binomial (logistic) regression, it is still dummy-coded so our parameters estimates are given relative to the first category of the predictor variable.  In this case, the females are the reference group.
 
-> The intercept is the average log-odds of scoring one unit higher on the PHQ-9 for the females. In this case, females have a -1.70 log-odds of scoring one unit higher on the PHQ-9, which means it is less likely for them to score one unit higher on the PHQ-9 (since it is a log odds less than 0)
+> The intercept is the average log-odds of scoring one unit higher on the DCL-9 for females. In this case, females have a 0.29 log-odds of scoring one unit higher on the DCL-9, which means it is more likely for them to score one unit higher on the DCL-9 (since it is a log odds greater than 0)
 
-> Men have a 0.52 decrease in the log-odds of scoring one unit higher on the PHQ-9 relative to women (i.e., they have a worse chance of scoring higher). 
+> Men have a 0.24 increase in the log-odds of scoring one unit higher on the PHQ-9 relative to women (i.e., they have greater chance of scoring higher). 
 
-> There was a significant difference in the log-odds women from 0, $p<0.001$. The difference between women and men was significant, $p<0.001$. 
+> There was a significant difference in the log-odds women from 0, $p<0.001$. The difference between women and men was significant, $p<0.01$. 
 
 ### Estimating means and plots 
 
@@ -284,13 +291,13 @@ Like in other logistic regression models, we can convert to odds ratios with `mo
 model_parameters(fit4, exponentiate = TRUE) |> print_md()
 ```
 
-> The intercept is the average odds of scoring one-unit higher on the PHQ-9 for women. In this case, women have a 0.82 decrease, or 82% decrease, in the odds of surviving. 
+> The intercept is the average odds of scoring one-unit higher on the PHQ-9 for women. In this case, women have a base odds of 1.32 for scoring higher on the DCL-9. Since it is greater than 1, it is more likely for someone to score one-unit higher. 
 
-> Men have a 0.41 decrease, or 41% decrease, in the odds of scoring one-unit higher on the PHQ-9 relative to women (i.e., they have a worse at scoring higher on PHQ-9). This is because 1 - 0.59 = 0.41.
+> Men have a 0.27 increase, or 27% increase, in the odds of scoring one-unit higher on the PHQ-9 relative to women (i.e., they have a greater chance at scoring higher on DCL-9). This is because 1.27 - 1 = 0.27.
 
-> There was a significant difference for women in the odds ratio from 1, $p<0.001$. The difference between women and men was also significant, $p<0.001$.
+> There was a significant difference for women in the odds ratio from 1, $p<0.001$. The difference between women and men was also significant, $p<0.01$.
 
-In other words, both log-odds and odds ratio show that men have a decrease chance of scoring one-unit higher on the PHQ-9 relative to women meaning they are less likley to have severe depression scores than women.  
+In other words, both log-odds and odds ratio show that men have a increased chance of scoring one-unit higher on the DCL-9 relative to women meaning they are more likely to score for more depression symptoms than women. 
 
 ### Predicted Probability
 
@@ -307,14 +314,14 @@ When the predicted probabilities are plotted, we can visualize the differences i
 Again, multiple regression allows us to control for the effects of multiple predictors on the outcome, and we are left with the unique effect of a predictor when controlling for other predictors. In this case, the outcome variable will be `phq9_p`, and the predictor variables will be `gender` (categorical variable) and `income_ratio` (continuous variable). 
 
 ```{r}
-fit5 <- glm(
-  formula = phq9_p ~ gender + income_ratio, 
-  family = binomial(link = "logit"), 
-  weights = phq9_max,
-  data = depression2
-)
-
-model_parameters(fit5) |> print_md()
+# fit5 <- glm(
+#   formula = phq9_p ~ gender + income_ratio, 
+#   family = binomial(link = "logit"), 
+#   weights = phq9_max,
+#   data = depression2
+# )
+# 
+# model_parameters(fit5) |> print_md()
 ```
 
 ### Paramter Table Interpretation (Log-odds)
@@ -333,7 +340,7 @@ model_parameters(fit5) |> print_md()
 We can also consider the results in odds ratio by using the "exponentiate" argument in `model_paramters()`. 
 
 ```{r}
-model_parameters(fit5, exponentiate = TRUE) |> print_md()
+#model_parameters(fit5, exponentiate = TRUE) |> print_md()
 ```
 
 > The intercept is the average odds of scoring higher on the PHQ-9 for women, while accounting for the effect of `income_ratio`. In this case, women have a average odds of 0.24 indiciating that they are less likely to score higher on the PHQ-9 (since it is a log odds ratio than 1).
