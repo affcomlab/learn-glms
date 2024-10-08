@@ -433,7 +433,7 @@ model_parameters(fit2, exponentiate = TRUE) |> print_md()
 
 Knowing the significance values in odds, we can now say that the effect of `fare` in the increase of odds is statistically significant from <b>1</b>, $p<0.001$ [^3]
 
-[^3]: When the paramter table is in odds, the significance test is applied to see differences from an odds value of 1. This is because, again, an odds value of 1 means that an event occuring versus not occuring is equally likely. 
+[^3]: When the parameter table is in odds, the significance test is applied to see differences from an odds value of 1. This is because, again, an odds value of 1 means that an event occurring versus not occurring is equally likely. 
 
 A lot of fields, like medicine, prefer to output and report their logistic regression values in odds. 
 
@@ -494,7 +494,7 @@ When the parameter table is in odds, we can now say the following:
 
 > For every one unit increase in `fare`, there is a 0.02 increase, or 2.0% increase, in the odds of surviving when controlling for the effect of `age`. The unique (i.e., partial) effect of `fare` is significantly different from 0, $p<0.01$.  
 
-> For every one unit increase in 'age', there is a 0.02 decrease, or 2.0% decrease, in the odds of surviving when controlling for the effect of `fare`.  The unique (i.e., partial) effect of `age` is significantly different from 0, $p<0.01$.
+> For every one unit increase in `age`, there is a 0.02 decrease, or 2.0% decrease, in the odds of surviving when controlling for the effect of `fare`.  The unique (i.e., partial) effect of `age` is significantly different from 0, $p<0.01$.
 
 Remember, in odds, if the value greater than 1, it is more likely for the event to occur, and if it less than 1, it is more likely for the event to not occur. 
 

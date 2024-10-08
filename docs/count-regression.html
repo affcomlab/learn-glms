@@ -226,10 +226,32 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#plotting-relationships-to-phq-9" id="toc-plotting-relationships-to-phq-9" class="nav-link" data-scroll-target="#plotting-relationships-to-phq-9"><span class="header-section-number">4.4.1</span> Plotting Relationships to PHQ-9</a></li>
   </ul></li>
-  <li><a href="#fitting-the-weighted-binomial-regression" id="toc-fitting-the-weighted-binomial-regression" class="nav-link" data-scroll-target="#fitting-the-weighted-binomial-regression"><span class="header-section-number">4.5</span> Fitting the Weighted Binomial Regression</a>
+  <li><a href="#fitting-the-weighted-binomial-regression-models" id="toc-fitting-the-weighted-binomial-regression-models" class="nav-link" data-scroll-target="#fitting-the-weighted-binomial-regression-models"><span class="header-section-number">5</span> Fitting the Weighted Binomial Regression Models</a>
   <ul class="collapse">
-  <li><a href="#parameter-table-interpretation-log-odds" id="toc-parameter-table-interpretation-log-odds" class="nav-link" data-scroll-target="#parameter-table-interpretation-log-odds"><span class="header-section-number">4.5.1</span> Parameter Table Interpretation (Log-odds)</a></li>
-  <li><a href="#parameter-table-interpretation-odds" id="toc-parameter-table-interpretation-odds" class="nav-link" data-scroll-target="#parameter-table-interpretation-odds"><span class="header-section-number">4.5.2</span> Parameter Table Interpretation (Odds)</a></li>
+  <li><a href="#one-continous-predictor" id="toc-one-continous-predictor" class="nav-link" data-scroll-target="#one-continous-predictor"><span class="header-section-number">5.1</span> One Continous Predictor</a>
+  <ul class="collapse">
+  <li><a href="#parameter-table-interpretation-log-odds" id="toc-parameter-table-interpretation-log-odds" class="nav-link" data-scroll-target="#parameter-table-interpretation-log-odds"><span class="header-section-number">5.1.1</span> Parameter Table Interpretation (Log-odds)</a></li>
+  <li><a href="#parameter-table-interpretation-odds" id="toc-parameter-table-interpretation-odds" class="nav-link" data-scroll-target="#parameter-table-interpretation-odds"><span class="header-section-number">5.1.2</span> Parameter Table Interpretation (Odds)</a></li>
+  <li><a href="#predicted-probability" id="toc-predicted-probability" class="nav-link" data-scroll-target="#predicted-probability"><span class="header-section-number">5.1.3</span> Predicted Probability</a></li>
+  </ul></li>
+  <li><a href="#two-continous-predictors" id="toc-two-continous-predictors" class="nav-link" data-scroll-target="#two-continous-predictors"><span class="header-section-number">5.2</span> Two Continous Predictors</a>
+  <ul class="collapse">
+  <li><a href="#parameter-table-interpretation-log-odds-1" id="toc-parameter-table-interpretation-log-odds-1" class="nav-link" data-scroll-target="#parameter-table-interpretation-log-odds-1"><span class="header-section-number">5.2.1</span> Parameter Table Interpretation (Log-odds)</a></li>
+  <li><a href="#parameter-table-interpretation-odds-1" id="toc-parameter-table-interpretation-odds-1" class="nav-link" data-scroll-target="#parameter-table-interpretation-odds-1"><span class="header-section-number">5.2.2</span> Parameter Table Interpretation (Odds)</a></li>
+  <li><a href="#predicted-probability-1" id="toc-predicted-probability-1" class="nav-link" data-scroll-target="#predicted-probability-1"><span class="header-section-number">5.2.3</span> Predicted Probability</a></li>
+  </ul></li>
+  <li><a href="#one-dummy-coded-predictor" id="toc-one-dummy-coded-predictor" class="nav-link" data-scroll-target="#one-dummy-coded-predictor"><span class="header-section-number">5.3</span> One Dummy Coded Predictor</a>
+  <ul class="collapse">
+  <li><a href="#parameter-table-interpretation-log-odds-2" id="toc-parameter-table-interpretation-log-odds-2" class="nav-link" data-scroll-target="#parameter-table-interpretation-log-odds-2"><span class="header-section-number">5.3.1</span> Parameter Table Interpretation (Log-odds)</a></li>
+  <li><a href="#estimating-means-and-plots" id="toc-estimating-means-and-plots" class="nav-link" data-scroll-target="#estimating-means-and-plots"><span class="header-section-number">5.3.2</span> Estimating means and plots</a></li>
+  <li><a href="#parameter-table-interpretation-odds-2" id="toc-parameter-table-interpretation-odds-2" class="nav-link" data-scroll-target="#parameter-table-interpretation-odds-2"><span class="header-section-number">5.3.3</span> Parameter Table Interpretation (Odds)</a></li>
+  <li><a href="#predicted-probability-2" id="toc-predicted-probability-2" class="nav-link" data-scroll-target="#predicted-probability-2"><span class="header-section-number">5.3.4</span> Predicted Probability</a></li>
+  </ul></li>
+  <li><a href="#one-dummy-coded-predictor-and-one-continous-predictor" id="toc-one-dummy-coded-predictor-and-one-continous-predictor" class="nav-link" data-scroll-target="#one-dummy-coded-predictor-and-one-continous-predictor"><span class="header-section-number">5.4</span> One Dummy Coded Predictor and One Continous Predictor</a>
+  <ul class="collapse">
+  <li><a href="#paramter-table-interpretation-log-odds" id="toc-paramter-table-interpretation-log-odds" class="nav-link" data-scroll-target="#paramter-table-interpretation-log-odds"><span class="header-section-number">5.4.1</span> Paramter Table Interpretation (Log-odds)</a></li>
+  <li><a href="#parameter-table-interpretation-odds-ratio" id="toc-parameter-table-interpretation-odds-ratio" class="nav-link" data-scroll-target="#parameter-table-interpretation-odds-ratio"><span class="header-section-number">5.4.2</span> Parameter Table Interpretation (Odds Ratio)</a></li>
+  </ul></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://www.github.com/affcomlab/learn-glms/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
@@ -256,16 +278,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="binomial-regression-with-bounded-counts" class="level2" data-number="4.1">
 <h2 data-number="4.1" class="anchored" data-anchor-id="binomial-regression-with-bounded-counts"><span class="header-section-number">4.1</span> Binomial Regression with Bounded Counts</h2>
-<p>When your outcome variable is a <i>bounded count variable</i>, it has a lower bound of 0 and a fixed upper bound. Specifically, each value of this variable represents the proportion of a success, or presence/endorsement, of that value; in other words, each value in that outcome variable can be thought of a binary proportion. We can use what’s called a <i>weighted binomial regression</i> to model this bounded count variable.</p>
+<p>When your outcome variable is a <i>bounded count variable</i>, it has a lower bound of 0 and a fixed upper bound. Specifically, each value of this variable represents the proportion of a success, or presence/endorsement, of that value; in other words, each value in that outcome variable can be thought of as a binary proportion. We can use what’s called a <i>weighted binomial regression</i> to model this bounded count variable.</p>
 <p>A bounded count variable is easiest to understand and identify with an example. Imagine a test that is made up of 10 questions. To obtain a score on this test, you count how many questions were answered correct out of the 10 questions. In this case, each specific question is made up of a binary event (correct or incorrect). So, the minimum score on this test is 0, and the maximum score on this test is 10. And when we have many people take this test, we get a distribution of scores that can represent the probability/proportion correct of this outcome variable.</p>
 <p>Therefore, when we can represent the probability/proportion correct of a fixed upper bound of an outcome variable, based on the success/failure or presence/absence of each value in that outcome variable, we can update binary regression very easily as a <i>weighted binomial regression</i>.</p>
+<p>Also, in this treatment of the data, the items are <b>interchangeable</b> in terms of their order. So like in our example of a test that is made up of 10 questions, if the final score for one test-taker is a 5/10, we do not care which 5 questions were correct – this person’s score is treated as any 5 questions correct out of 10. This plays a role in how we interpret the model results later.</p>
 </section>
 <section id="data-demonstration" class="level2" data-number="4.2">
 <h2 data-number="4.2" class="anchored" data-anchor-id="data-demonstration"><span class="header-section-number">4.2</span> Data Demonstration</h2>
-<p>The data for this weighted binomial regression section features a bounded count variable in the form of a score on the Patient Health Questionnaire (PHQ-9). The score on this self-report questionnaire involves adding up the total number of points assigned to each of 9 questions (where each question is worth 3 points); therefore, the minimum score for any patient is 0, and the maximum score is 27 points. According to the PHQ-9, the higher the score, the more severe depression a patient has.</p>
-<p>The question we will ask and answer with weighted binomial regression is what can predict a high PHQ-9 score. First, we will consider as our main predictor variable the</p>
+<p><span style="background-color: #FFFF00">Marked text The data for this weighted binomial regression section features a bounded count variable in the form of a score on the Patient Health Questionnaire (PHQ-9). The score on this self-report questionnaire involves adding up the total number of points assigned to each of 9 questions (where each question is worth 3 points); therefore, the minimum score for any patient is 0, and the maximum score is 27 points. According to the PHQ-9, the higher the score, the more severe depression a patient has.</span></p>
+<p>Notice that when talking about the score for any patient who takes this questionnaire, we are only concerned with the final score out of 27 points, and we do not make a big deal about any one question on the exam, or the order of the questions. So, we are treating the items on this questionnaire as interchangeable.</p>
+<p>The question we will ask and answer with weighted binomial regression is what can predict a high PHQ-9 score. First, we will consider as our main predictor variable the <code>income_ratio</code> variable where the higher the amount of this ratio, the more income one has relative to debt.</p>
 <ul>
-<li>Data: <a href="./depression.csv" download=""> depression.csv </a></li>
+<li>Data: <a href="./depression.csv" download=""> depression.csv </a> </li>
 </ul>
 </section>
 <section id="loading-the-packages-and-reading-in-data" class="level2" data-number="4.3">
@@ -358,7 +382,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="prepare-data-exploratory-data-analysis" class="level2" data-number="4.4">
 <h2 data-number="4.4" class="anchored" data-anchor-id="prepare-data-exploratory-data-analysis"><span class="header-section-number">4.4</span> Prepare Data / Exploratory Data Analysis</h2>
-<p>For weighted binomial regression, in order to model the <code>phq9</code> score as the outcome variable, we need to re-code each <code>phq9</code> score for each patient as a weighted proportion out of the max score of 27. Here, we will use the <code>mutate()</code> function from the <code>dplyr</code> package (which is a package that automatically loaded with <code>tidyverse</code>) to add a new column to our data with the weighted PHQ-9 score as <code>phq9_p</code>.</p>
+<p>For weighted binomial regression, in order to model the <code>phq9</code> score as the outcome variable, we need to re-code each <code>phq9</code> score for each patient as a weighted proportion out of the max score of 27. Here, we will use the <code>mutate()</code> function from the <code>dplyr</code> package (which is a package that automatically loaded with <code>tidyverse</code>) to add a new column to our data with the weighted PHQ-9 score as <code>phq9_p</code>. We also created a column called <code>phq9_max</code> to note the max score, which is 27 points, that any one participant can have on the PHQ-9.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>depression2 <span class="ot">&lt;-</span> </span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  depression <span class="sc">|&gt;</span> </span>
@@ -387,22 +411,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <section id="plotting-relationships-to-phq-9" class="level3" data-number="4.4.1">
 <h3 data-number="4.4.1" class="anchored" data-anchor-id="plotting-relationships-to-phq-9"><span class="header-section-number">4.4.1</span> Plotting Relationships to PHQ-9</h3>
-<p>Let’s first plot to see any relationship between the <code>income_ratio</code> and the weighted PHQ-9 score (<code>phq9_p</code>). We tend to see that more of the data points fall in the lower values of <code>income_ratio</code> which suggests a negative relationship between income ratio and depression severity; in other words, the higher the income ratio, the less the score on the <code>phq9_p</code> (and less depression severity).</p>
+<p>Let’s first plot to see any relationship between the <code>income_ratio</code> and the weighted PHQ-9 score (<code>phq9_p</code>). We tend to see that more of the data points, especially at higher PHQ-9 scores, fall in the lower values of <code>income_ratio</code> which suggests a negative relationship between income ratio and depression severity; in other words, the higher the income ratio, the less the score on the <code>phq9_p</code> (and less depression severity).</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(depression2, <span class="fu">aes</span>(<span class="at">x =</span> income_ratio, <span class="at">y =</span> phq9_p)) <span class="sc">+</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> mytheme</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="count-regression_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
+<p><img src="count-regression_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </section>
 </section>
-<section id="fitting-the-weighted-binomial-regression" class="level2" data-number="4.5">
-<h2 data-number="4.5" class="anchored" data-anchor-id="fitting-the-weighted-binomial-regression"><span class="header-section-number">4.5</span> Fitting the Weighted Binomial Regression</h2>
+<section id="fitting-the-weighted-binomial-regression-models" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Fitting the Weighted Binomial Regression Models</h1>
+<section id="one-continous-predictor" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="one-continous-predictor"><span class="header-section-number">5.1</span> One Continous Predictor</h2>
 <p>When we fit our weighted binomial regression, we now will use the <code>glm()</code> function.</p>
 <p>We did a lot of work already with the <code>lm()</code> in the “Regression Recap”. The <code>glm()</code> function is in many ways the same as the <code>lm()</code> function. Even the syntax for how we write the equation is the same. In addition, we can use the same <code>model_parameters()</code> function to get our table of parameter estimates. Indeed, we will use the <code>glm()</code> function for the remainder of the rest of the online modules.</p>
 <p>But for weighted binomial regression, notice that the <code>glm()</code> function has two more input arguments. These input arguments are the “family” input argument, which requires which “family of distributions” to use and which “link function” choice, and a “weights” argument, which is a column in the dataset that represents the max score for each proportion.</p>
-<p>For weighted binary regression, we supply the <b>binomial</b> distribution and the <b>logit</b> link function into the “family” input argument, and <code>phq9_max</code> column name for the “weights” input argument. We then assess the results with <code>model_paramters()</code>.</p>
+<p>For weighted binary regression, we supply the <b>binomial</b> distribution and the <b>logit</b> link function into the “family” input argument, and <code>phq9_max</code> column name for the “weights” input argument.</p>
+<p>As mentioned before, we will consider the effect of <code>income_ratio</code></p>
+<p>We then assess the results with <code>model_paramters()</code>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>fit2 <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> phq9_p <span class="sc">~</span> income_ratio,</span>
@@ -445,22 +473,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 </div>
 </div>
-<section id="parameter-table-interpretation-log-odds" class="level3" data-number="4.5.1">
-<h3 data-number="4.5.1" class="anchored" data-anchor-id="parameter-table-interpretation-log-odds"><span class="header-section-number">4.5.1</span> Parameter Table Interpretation (Log-odds)</h3>
+<section id="parameter-table-interpretation-log-odds" class="level3" data-number="5.1.1">
+<h3 data-number="5.1.1" class="anchored" data-anchor-id="parameter-table-interpretation-log-odds"><span class="header-section-number">5.1.1</span> Parameter Table Interpretation (Log-odds)</h3>
 <p>Again, the parameter table output from a model fit with <code>glm()</code> looks very similar to parameter table outputs from models fit with <code>lm()</code>. But there is a <b>big</b> difference – in <code>glm()</code> models, we are no longer working in the same raw units!</p>
-<p>This difference is apparent in the second column of the output table: “Log-Odds”. Because we fit a logistic regression with a logit function, the parameter values are in “log-odds” unit. Technically, when <code>income_ratio</code> is in log-odds units, we can only say:</p>
+<p>This difference is clear in the second column of the output table: “Log-Odds”. Because we fit a logistic regression with a logit function, the parameter values are in “log-odds” unit. Technically, when <code>income_ratio</code> is in log-odds units, we can only say:</p>
 <blockquote class="blockquote">
-<p>For every one 1 unit increase in <code>income_ratio</code>, there is a 0.15 decrease in the log-odds of having a higher PHQ-9 score (and greater chance of having severe depression)</p>
+<p>For every one 1 unit increase in <code>income_ratio</code>, there is a 0.15 decrease in the log-odds of having a one-unit higher PHQ-9 score (and greater chance of having severe depression)</p>
 </blockquote>
-<p>Although this is technically true, it isn’t at first clear what “0.15 unit increase in log-odds of <code>phq9_p</code> is. It is at this point one may want to convert log-odds to probability. But before we do that, let’s interpret the <span class="math inline">\(-0.15\)</span> log-odds value:</p>
+<p>Although this is technically true, it isn’t at first clear what it means to have a “0.15 unit increase in log-odds of <code>phq9_p</code>”. Let’s interpret the <span class="math inline">\(-0.15\)</span> log-odds value:</p>
 <ul>
-<li><p>If log-odds $ = -0.15$, then it is less than 0, meaning it is less likely to have a higher PHQ-9 score (than a lower PHQ-9 score) when we use <code>income_ratio</code> as a predictor.</p></li>
+<li><p>If log-odds $ = -0.15$, then it is less than 0, meaning it is more likely to have a lower PHQ-9 score (than a higher PHQ-9 score) when we use <code>income_ratio</code> as a predictor.</p></li>
 <li><p>This effect is also statistically significant from 0 (<span class="math inline">\(p&lt;0.001\)</span>). Remember, with log-odds, a value of 0 means it is equally likely for an event to occur or not occur. In this case, since it is significantly less than 0, we can say it is more likely to not have a symptom than have a symptom (i.e.&nbsp;score less on the PHQ-9 than score more) when predicted by <code>income_ratio</code>.</p></li>
+<li><p>As mentioned before, with weighted binomial regression the values of the outcome variable are interchangeable, so our parameter results speak in reference to obtaining <i>one</i> value difference on the outcome variable. Therefore, when log-odds <span class="math inline">\(= -0.15\)</span>, that is in reference to decreasing (because it is negative) the outcome variable score by one value lower.</p></li>
 </ul>
 </section>
-<section id="parameter-table-interpretation-odds" class="level3" data-number="4.5.2">
-<h3 data-number="4.5.2" class="anchored" data-anchor-id="parameter-table-interpretation-odds"><span class="header-section-number">4.5.2</span> Parameter Table Interpretation (Odds)</h3>
-<p>We can also present the results in odds by using the “exponentiate” input argument.</p>
+<section id="parameter-table-interpretation-odds" class="level3" data-number="5.1.2">
+<h3 data-number="5.1.2" class="anchored" data-anchor-id="parameter-table-interpretation-odds"><span class="header-section-number">5.1.2</span> Parameter Table Interpretation (Odds)</h3>
+<p>We can also present the results in odds ratios by using the “exponentiate” input argument.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit2, <span class="at">exponentiate =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -496,14 +525,496 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 </div>
 </div>
-<p>Now that we are in odds, we can adjust our previous interpretation of the <code>fare</code> parameter for odds:</p>
+<p>Now that we are in odds, we can adjust our previous interpretation of the <code>income_ratio</code> parameter for odds:</p>
 <blockquote class="blockquote">
-<p>For every one unit increase in <code>income_ratio</code>, there is a 0.14 increase, or a 14% decrease, in the odds of having a higher PHQ-9 score.[^2]</p>
+<p>For every one unit increase in <code>income_ratio</code>, there is a 0.14 decrease, or a 14% decrease, in the odds of having a one-unit higher PHQ-9 score.</p>
 </blockquote>
-<p>Recall that when odds <span class="math inline">\(=1\)</span>, that means both events are equally likely to happen. So when the odds read a value like <span class="math inline">\(0.86\)</span>, then we only consider the differences from 1 as meaningful. In this case, that increase is 0.14, or 14%, from our baseline value of 1.</p>
+<p>Recall that when odds <span class="math inline">\(=1\)</span>, that means both events are equally likely to happen. So when the odds read a value like <span class="math inline">\(0.86\)</span>, then we only consider the differences from 1 as meaningful. In this case, that is a decrease of 0.14, or 14%, from our baseline value of 1.</p>
+<p>Also from the output table, we know the significance values in odds and we can now say that the effect of <code>income_ratio</code> in the decrease of odds is statistically significant from <b>1</b>, <span class="math inline">\(p&lt;0.001\)</span> <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<p>A lot of fields, like medicine, prefer to output and report their logistic regression values in odds.</p>
+</section>
+<section id="predicted-probability" class="level3" data-number="5.1.3">
+<h3 data-number="5.1.3" class="anchored" data-anchor-id="predicted-probability"><span class="header-section-number">5.1.3</span> Predicted Probability</h3>
+<p>A convenient transformation is taking the log-odds and converting into probability. Then, our question becomes “Is there a relationship between income ratio and the probability of scoring one value different on the PHQ-9?”.</p>
+<p>We can assess this relationship with the <code>predict_response()</code> function. It outputs a plot with the Y-axis as “the probability of <code>PHQ-9</code>” and the X-axis as the predictor (in this case <code>income_ratio</code>) in raw units, and it overlays the predicted probability on top of the data.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict_response</span>(fit2, <span class="at">terms =</span> <span class="st">"income_ratio"</span>) <span class="sc">|&gt;</span> <span class="fu">plot</span>(<span class="at">show_data =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="count-regression_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Again, the transformed outcome variable is the “probability of <code>survived_b</code>” (on the y-axis), so we can see that it is bounded between [0,100]. The logistic regression line also makes predictions between these bounds so we no longer have the model predicting unreasonable values/states which would happen if we didn’t consider using the <code>glm()</code> function. Lastly, we can now see how an increase in <code>income_ratio</code> decrease the probability of scoring one score lower on the PHQ-9.</p>
+</section>
+</section>
+<section id="two-continous-predictors" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="two-continous-predictors"><span class="header-section-number">5.2</span> Two Continous Predictors</h2>
+<p>“Is there a relationship between the income ratio, age, and the score on the PHQ-9?”</p>
+<p>When we have two predictors, we are now conducting a multiple weighted binomial (logistic) regression. Recall that multiple regression, in general, allows us to control for the effects of multiple predictors on the outcome, and we are left with the unique effect of a predictor when controlling for other predictors.</p>
+<p>Once again, let’s fit this model with the <code>glm()</code> function.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>fit3 <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> phq9_p <span class="sc">~</span> income_ratio <span class="sc">+</span> age, </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"logit"</span>),</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">weights =</span> phq9_max,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> depression2</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="do">## Print parameters in logit (i.e., log-odds) units</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit3) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 18%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 30%">
+<col style="width: 11%">
+<col style="width: 11%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Parameter</th>
+<th style="text-align: center;">Log-Odds</th>
+<th style="text-align: center;">SE</th>
+<th style="text-align: center;">95% CI</th>
+<th style="text-align: center;">z</th>
+<th style="text-align: center;">p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: center;">-1.94</td>
+<td style="text-align: center;">0.07</td>
+<td style="text-align: center;">(-2.07, -1.81)</td>
+<td style="text-align: center;">-29.09</td>
+<td style="text-align: center;">&lt; .001</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">income ratio</td>
+<td style="text-align: center;">-0.16</td>
+<td style="text-align: center;">0.02</td>
+<td style="text-align: center;">(-0.19, -0.13)</td>
+<td style="text-align: center;">-9.67</td>
+<td style="text-align: center;">&lt; .001</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">age</td>
+<td style="text-align: center;">6.95e-03</td>
+<td style="text-align: center;">1.28e-03</td>
+<td style="text-align: center;">(4.45e-03, 9.46e-03)</td>
+<td style="text-align: center;">5.43</td>
+<td style="text-align: center;">&lt; .001</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<section id="parameter-table-interpretation-log-odds-1" class="level3" data-number="5.2.1">
+<h3 data-number="5.2.1" class="anchored" data-anchor-id="parameter-table-interpretation-log-odds-1"><span class="header-section-number">5.2.1</span> Parameter Table Interpretation (Log-odds)</h3>
+<p>When the parameter table is in log-odds, we can now say the following:</p>
+<blockquote class="blockquote">
+<p>For every one unit increase in <code>income_ratio</code>, there is a 0.16 decrease in the log-odds of having a one-unit higher PHQ-9 score (and greater chance of having severe depression) while controlling for the effect of <code>age</code>. The unique (i.e., partial) effect of <code>income_ratio</code> is significantly different from 0, <span class="math inline">\(p&lt;0.001\)</span>.</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>For every one unit increase in <code>age</code>, there is a 6.95e^-3 increase (because it is positive) in the log-odds of having a one-unit higher PHQ-9 score (and a greater chacne of having severe depression) when controlling for the effect of <code>income_ratio</code>. The unique (i.e., partial) effect of <code>age</code> is significantly different from 0, <span class="math inline">\(p&lt;0.01\)</span>.</p>
+</blockquote>
+<p>Remember, in log-odds, if the value is positive, it is more likely for the event to occur, and if it is negative, it is more likely for the event to not occur.</p>
+</section>
+<section id="parameter-table-interpretation-odds-1" class="level3" data-number="5.2.2">
+<h3 data-number="5.2.2" class="anchored" data-anchor-id="parameter-table-interpretation-odds-1"><span class="header-section-number">5.2.2</span> Parameter Table Interpretation (Odds)</h3>
+<p>We can also present the results in odds.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Print parameters in odds </span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit3, <span class="at">exponentiate =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Parameter</th>
+<th style="text-align: center;">Odds Ratio</th>
+<th style="text-align: center;">SE</th>
+<th style="text-align: center;">95% CI</th>
+<th style="text-align: center;">z</th>
+<th style="text-align: center;">p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: center;">0.14</td>
+<td style="text-align: center;">9.57e-03</td>
+<td style="text-align: center;">(0.13, 0.16)</td>
+<td style="text-align: center;">-29.09</td>
+<td style="text-align: center;">&lt; .001</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">income ratio</td>
+<td style="text-align: center;">0.85</td>
+<td style="text-align: center;">0.01</td>
+<td style="text-align: center;">(0.83, 0.88)</td>
+<td style="text-align: center;">-9.67</td>
+<td style="text-align: center;">&lt; .001</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">age</td>
+<td style="text-align: center;">1.01</td>
+<td style="text-align: center;">1.29e-03</td>
+<td style="text-align: center;">(1.00, 1.01)</td>
+<td style="text-align: center;">5.43</td>
+<td style="text-align: center;">&lt; .001</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>When the parameter table is in odds, we can now say the following:</p>
+<blockquote class="blockquote">
+<p>For every one unit increase in <code>income_ratio</code>, there is a 0.15 decrease, or 15.0% decrease, in the odds ratio of having a one-unit higher PHQ-9 score when controlling for the effect of <code>age</code>. The unique (i.e., partial) effect of <code>fare</code> is significantly different from 0, <span class="math inline">\(p&lt;0.01\)</span>.</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>For every one unit increase in <code>age</code>, there is a 0.01 increase, or 1.0% increase, in the odds ratio of having a one-unit higher PHQ-9 score when controlling for the effect of <code>income_ratio</code>. The unique (i.e., partial) effect of <code>age</code> is significantly different from 0, <span class="math inline">\(p&lt;0.001\)</span>.</p>
+</blockquote>
+<p>Remember, in odds, if the value greater than 1, it is more likely for the event to occur, and if it less than 1, it is more likely for the event to not occur.</p>
+<p>At this point, it is interesting to consider that the higher the <code>income_ratio</code> amount, then the lower the chance of a one-unit increase of scores on the PHQ-9, whereas the higher the <code>age</code>, then the higher the chance of a one-unit increase on the PHQ-9</p>
+</section>
+<section id="predicted-probability-1" class="level3" data-number="5.2.3">
+<h3 data-number="5.2.3" class="anchored" data-anchor-id="predicted-probability-1"><span class="header-section-number">5.2.3</span> Predicted Probability</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict_response</span>(fit3, <span class="at">terms =</span> <span class="st">"income_ratio"</span>) <span class="sc">|&gt;</span> <span class="fu">plot</span>(<span class="at">show_data =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="count-regression_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict_response</span>(fit3, <span class="at">terms =</span> <span class="st">"age"</span>) <span class="sc">|&gt;</span> <span class="fu">plot</span>(<span class="at">show_data =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="count-regression_files/figure-html/unnamed-chunk-10-2.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>The plots for predicted probabilities is helpful for highlighting the different effects for <code>income_ratio</code> and <code>age</code> on the probability of obtaining a one-unit higher score on the PHQ-9. As we see, there is a decrease in the probability of a higher score as <code>income_ratio</code> increases, and there is an increase in the probability of surviving as <code>age</code> increases.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Why not always use probability?">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Why not always use probability?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Although working with probabilities seems to be more easily understandable, we cannot have parameter estimates in probabilities. Therefore, results are often communicated in logits or odds since we can have estimates, uncertainty values (like standard deviations), and significance tests applied to them.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="one-dummy-coded-predictor" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="one-dummy-coded-predictor"><span class="header-section-number">5.3</span> One Dummy Coded Predictor</h2>
+<p>Let’s consider the question “Is there a relationship between gender and the log-odds/probability of scoring one-unit higher on the PHQ-9?”</p>
+<p>Remember, first we have to change our predictor variable to a factor (i.e., a dummy-coded variable), and then we can fit with <code>glm()</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>depression2<span class="sc">$</span>gender <span class="ot">&lt;-</span> <span class="fu">factor</span>(depression2<span class="sc">$</span>gender, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Female"</span>,<span class="st">"Male"</span>)) <span class="co">#change to factor</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>fit4 <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> phq9_p <span class="sc">~</span> gender, </span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"logit"</span>), </span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">weights =</span> phq9_max,</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> depression2</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit4) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Parameter</th>
+<th style="text-align: center;">Log-Odds</th>
+<th style="text-align: center;">SE</th>
+<th style="text-align: center;">95% CI</th>
+<th style="text-align: center;">z</th>
+<th style="text-align: center;">p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: center;">-1.70</td>
+<td style="text-align: center;">0.03</td>
+<td style="text-align: center;">(-1.75, -1.64)</td>
+<td style="text-align: center;">-61.23</td>
+<td style="text-align: center;">&lt; .001</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">gender (Male)</td>
+<td style="text-align: center;">-0.52</td>
+<td style="text-align: center;">0.05</td>
+<td style="text-align: center;">(-0.61, -0.43)</td>
+<td style="text-align: center;">-11.56</td>
+<td style="text-align: center;">&lt; .001</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<section id="parameter-table-interpretation-log-odds-2" class="level3" data-number="5.3.1">
+<h3 data-number="5.3.1" class="anchored" data-anchor-id="parameter-table-interpretation-log-odds-2"><span class="header-section-number">5.3.1</span> Parameter Table Interpretation (Log-odds)</h3>
+<p>Remember, although we are performing a weighted binomial (logistic) regression, it is still dummy-coded so our parameters estimates are given relative to the first category of the predictor variable. In this case, the females are the reference group.</p>
+<blockquote class="blockquote">
+<p>The intercept is the average log-odds of scoring one unit higher on the PHQ-9 for the females. In this case, females have a -1.70 log-odds of scoring one unit higher on the PHQ-9, which means it is less likely for them to score one unit higher on the PHQ-9 (since it is a log odds less than 0)</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>Men have a 0.52 decrease in the log-odds of scoring one unit higher on the PHQ-9 relative to women (i.e., they have a worse chance of scoring higher).</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>There was a significant difference in the log-odds women from 0, <span class="math inline">\(p&lt;0.001\)</span>. The difference between women and men was significant, <span class="math inline">\(p&lt;0.001\)</span>.</p>
+</blockquote>
+</section>
+<section id="estimating-means-and-plots" class="level3" data-number="5.3.2">
+<h3 data-number="5.3.2" class="anchored" data-anchor-id="estimating-means-and-plots"><span class="header-section-number">5.3.2</span> Estimating means and plots</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>gmeans1 <span class="ot">&lt;-</span> <span class="fu">estimate_means</span>(fit4, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"gender"</span>)) </span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>gmeans1 <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<caption>Estimated Marginal Means</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">gender</th>
+<th style="text-align: right;">Probability</th>
+<th style="text-align: left;">SE</th>
+<th style="text-align: left;">95% CI</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Female</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: left;">3.63e-03</td>
+<td style="text-align: left;">(0.15, 0.16)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Male</td>
+<td style="text-align: right;">0.10</td>
+<td style="text-align: left;">3.14e-03</td>
+<td style="text-align: left;">(0.09, 0.10)</td>
+</tr>
+</tbody>
+</table>
+<p>Marginal means estimated at gender</p>
+</div>
+</div>
+</section>
+<section id="parameter-table-interpretation-odds-2" class="level3" data-number="5.3.3">
+<h3 data-number="5.3.3" class="anchored" data-anchor-id="parameter-table-interpretation-odds-2"><span class="header-section-number">5.3.3</span> Parameter Table Interpretation (Odds)</h3>
+<p>Like in other logistic regression models, we can convert to odds ratios with <code>model_parameters</code> and “exponentiate” input argument.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit4, <span class="at">exponentiate =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 21%">
+<col style="width: 18%">
+<col style="width: 15%">
+<col style="width: 21%">
+<col style="width: 12%">
+<col style="width: 12%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Parameter</th>
+<th style="text-align: center;">Odds Ratio</th>
+<th style="text-align: center;">SE</th>
+<th style="text-align: center;">95% CI</th>
+<th style="text-align: center;">z</th>
+<th style="text-align: center;">p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: center;">0.18</td>
+<td style="text-align: center;">5.07e-03</td>
+<td style="text-align: center;">(0.17, 0.19)</td>
+<td style="text-align: center;">-61.23</td>
+<td style="text-align: center;">&lt; .001</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">gender (Male)</td>
+<td style="text-align: center;">0.59</td>
+<td style="text-align: center;">0.03</td>
+<td style="text-align: center;">(0.54, 0.65)</td>
+<td style="text-align: center;">-11.56</td>
+<td style="text-align: center;">&lt; .001</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<blockquote class="blockquote">
+<p>The intercept is the average odds of scoring one-unit higher on the PHQ-9 for women. In this case, women have a 0.82 decrease, or 82% decrease, in the odds of surviving.</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>Men have a 0.41 decrease, or 41% decrease, in the odds of scoring one-unit higher on the PHQ-9 relative to women (i.e., they have a worse at scoring higher on PHQ-9). This is because 1 - 0.59 = 0.41.</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>There was a significant difference for women in the odds ratio from 1, <span class="math inline">\(p&lt;0.001\)</span>. The difference between women and men was also significant, <span class="math inline">\(p&lt;0.001\)</span>.</p>
+</blockquote>
+<p>In other words, both log-odds and odds ratio show that men have a decrease chance of scoring one-unit higher on the PHQ-9 relative to women meaning they are less likley to have severe depression scores than women.</p>
+</section>
+<section id="predicted-probability-2" class="level3" data-number="5.3.4">
+<h3 data-number="5.3.4" class="anchored" data-anchor-id="predicted-probability-2"><span class="header-section-number">5.3.4</span> Predicted Probability</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict_response</span>(fit4, <span class="at">terms =</span> <span class="st">"gender"</span>) <span class="sc">|&gt;</span> <span class="fu">plot</span>(<span class="at">show_data =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="count-regression_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>When the predicted probabilities are plotted, we can visualize the differences in probabilities of women versus men.</p>
+</section>
+</section>
+<section id="one-dummy-coded-predictor-and-one-continous-predictor" class="level2" data-number="5.4">
+<h2 data-number="5.4" class="anchored" data-anchor-id="one-dummy-coded-predictor-and-one-continous-predictor"><span class="header-section-number">5.4</span> One Dummy Coded Predictor and One Continous Predictor</h2>
+<p>“Is there a relationship between the income ratio, gender, and the log-odds/probability of scoring one-unit higher on the PHQ-9?”</p>
+<p>Again, multiple regression allows us to control for the effects of multiple predictors on the outcome, and we are left with the unique effect of a predictor when controlling for other predictors. In this case, the outcome variable will be <code>phq9_p</code>, and the predictor variables will be <code>gender</code> (categorical variable) and <code>income_ratio</code> (continuous variable).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>fit5 <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> phq9_p <span class="sc">~</span> gender <span class="sc">+</span> income_ratio, </span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"logit"</span>), </span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">weights =</span> phq9_max,</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> depression2</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit5) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Parameter</th>
+<th style="text-align: center;">Log-Odds</th>
+<th style="text-align: center;">SE</th>
+<th style="text-align: center;">95% CI</th>
+<th style="text-align: center;">z</th>
+<th style="text-align: center;">p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: center;">-1.44</td>
+<td style="text-align: center;">0.04</td>
+<td style="text-align: center;">(-1.52, -1.36)</td>
+<td style="text-align: center;">-36.59</td>
+<td style="text-align: center;">&lt; .001</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">gender (Male)</td>
+<td style="text-align: center;">-0.51</td>
+<td style="text-align: center;">0.05</td>
+<td style="text-align: center;">(-0.59, -0.42)</td>
+<td style="text-align: center;">-11.18</td>
+<td style="text-align: center;">&lt; .001</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">income ratio</td>
+<td style="text-align: center;">-0.14</td>
+<td style="text-align: center;">0.02</td>
+<td style="text-align: center;">(-0.18, -0.11)</td>
+<td style="text-align: center;">-8.81</td>
+<td style="text-align: center;">&lt; .001</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<section id="paramter-table-interpretation-log-odds" class="level3" data-number="5.4.1">
+<h3 data-number="5.4.1" class="anchored" data-anchor-id="paramter-table-interpretation-log-odds"><span class="header-section-number">5.4.1</span> Paramter Table Interpretation (Log-odds)</h3>
+<blockquote class="blockquote">
+<p>The intercept is the average log-odds of scoring higher on the PHQ-9 for women, while accounting for the effect of <code>income_ratio</code>. In this case, women have a average log odds of -1.44 indiciating that they are less likely to score higher on the PHQ-9 (since it is a log odds less than 0).</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>Men have a 0.54 decrease in the log-odds of suriving relative to women while accounting for the effect of <code>income_ratio</code> (i.e., they have a worse chance of scoring higher so they have less chance of being severely depressed).</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>Because the intercept was significant, there was a significant difference between for women in the log odds versus 0, <span class="math inline">\(p&lt;0.001\)</span>. In addition, the difference in log-odds between men and women was significant, <span class="math inline">\(p&lt;0.001\)</span>.</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>Lastly, while controlling for the effect of <code>gender</code>, a one unit increase in <code>income_ratio</code> was significantly related to a 0.14 decrease in the log-odds of scoring one-unit higher on the PHQ-9.</p>
+</blockquote>
+</section>
+<section id="parameter-table-interpretation-odds-ratio" class="level3" data-number="5.4.2">
+<h3 data-number="5.4.2" class="anchored" data-anchor-id="parameter-table-interpretation-odds-ratio"><span class="header-section-number">5.4.2</span> Parameter Table Interpretation (Odds Ratio)</h3>
+<p>We can also consider the results in odds ratio by using the “exponentiate” argument in <code>model_paramters()</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit5, <span class="at">exponentiate =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 21%">
+<col style="width: 18%">
+<col style="width: 15%">
+<col style="width: 21%">
+<col style="width: 12%">
+<col style="width: 12%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Parameter</th>
+<th style="text-align: center;">Odds Ratio</th>
+<th style="text-align: center;">SE</th>
+<th style="text-align: center;">95% CI</th>
+<th style="text-align: center;">z</th>
+<th style="text-align: center;">p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: center;">0.24</td>
+<td style="text-align: center;">9.32e-03</td>
+<td style="text-align: center;">(0.22, 0.26)</td>
+<td style="text-align: center;">-36.59</td>
+<td style="text-align: center;">&lt; .001</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">gender (Male)</td>
+<td style="text-align: center;">0.60</td>
+<td style="text-align: center;">0.03</td>
+<td style="text-align: center;">(0.55, 0.66)</td>
+<td style="text-align: center;">-11.18</td>
+<td style="text-align: center;">&lt; .001</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">income ratio</td>
+<td style="text-align: center;">0.87</td>
+<td style="text-align: center;">0.01</td>
+<td style="text-align: center;">(0.84, 0.89)</td>
+<td style="text-align: center;">-8.81</td>
+<td style="text-align: center;">&lt; .001</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<blockquote class="blockquote">
+<p>The intercept is the average odds of scoring higher on the PHQ-9 for women, while accounting for the effect of <code>income_ratio</code>. In this case, women have a average odds of 0.24 indiciating that they are less likely to score higher on the PHQ-9 (since it is a log odds ratio than 1).</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>Men have a 0.40 (because 1 - 0.60 = 0.40) decrease in the odds of suriving relative to women while accounting for the effect of <code>income_ratio</code> (i.e., they have a worse chance of scoring higher so they have less chance of being severely depressed).</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>Because the intercept was significant, there was a significant difference between for women in the odds versus 1, <span class="math inline">\(p&lt;0.001\)</span>. In addition, the difference in odds ratio between men and women was significant, <span class="math inline">\(p&lt;0.001\)</span>.</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>Lastly, while controlling for the effect of <code>gender</code>, a one unit increase in <code>income_ratio</code> was significantly related to a 0.13 decrease in the odds of scoring one-unit higher on the PHQ-9.</p>
+</blockquote>
 
 
 </section>
+</section>
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>When the parameter table is in odds, the significance test is applied to see differences from an odds value of 1. This is because, again, an odds value of 1 means that an event occurring versus not occurring is equally likely.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
 </section>
 
 </main> <!-- /main -->
