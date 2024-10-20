@@ -254,8 +254,9 @@ ggplot(titanic2, aes(x = fare, y = survived)) +
   geom_boxplot() + mytheme
 ```
 
-# Fitting the General Linear Model (Not Recommended)
+# Models Without Interactions 
 
+## Less Correct: the General Linear Model  
 Before we fit the binary regression, it would be worthwhile to try fitting the less appropriate regular general linear model. We'll use our old friend `lm()` to assess the relationship between the outcome variable `survived_b` with the predictor variable `fare`. For more information on general linear modeling, we covered these topics in our <b>Regression Recap</b> chapter. 
 
 ```{r}
@@ -289,7 +290,7 @@ Yikes! As you can see, the dots <b>do not</b> fall along the line. Once this or 
 
 So now, finally, we fit our first GLM.
 
-# Fitting the Logistic Regression Models 
+## More Correct: the Generalized Linear Model 
 
 
 ## One Continuous Predictor 
@@ -504,32 +505,58 @@ model_parameters(fit5) |> print_md()
 ```
 ### Paramter Table Interpretation (Log-odds)
 
+Again, the parameter table output from a model fit with `glm()` looks very similar to parameter table outputs from models fit with `lm()`. But there is a <b>big</b> difference -- in `glm()` models, we are no longer working in the same raw units! 
+
+This difference is apparent in the second column of the output table: "Log-Odds". Because we fit a logistic regression with a logit function, the parameter values are in "log-odds" unit. 
+
+Due to the nature of the dummy coded categorical variable `class`, we will assess the parameters from each level of that variable first. 
+
 > The intercept is the average log-odds of surviving for the "1st Class" category while accounting for the effect of `age`. In this case, members of the "1st Class" have a average log odds of 2.10 indiciating that passengers in the 1st Class are more likely to survive than not survive.
+
+-   Remember, with log-odds, a value of 0 means it is equally likely for an event to occur or not occur.  Here, since the log-odds is greater than 0, it is more likely for the event that is labeled a "success" (in this case, more likely to survive) to happen than the event that is labeled a "failure". 
 
 > The members of the "2nd Class" have a 1.04 decrease in the log-odds of suriving relative to the "1st Class" while accounting for the effect of `age` (i.e., they have a worse chance of surviving). 
 
 > The members of the "3rd Class" have 2.29 decrease in the log-odds of suriving relative to the "1st Class" while accounting for the effect of `age`. (i.e., they have a worse chance of surviving). 
 
+-   Notice how these comparisons are all in reference to the first class. Again, this is due to the nature of the dummy coded categorical variable. 
+
 > Because the intercept was significant, There was a significant difference between the "1st Class" and 0, $p<0.001$. Because each class was significant, The difference between each class and the "1st Class" was significant, $p<0.001$. 
 
-> Lastly, while controlling for the effect of `class`, a one unit increase in age was significantly related to a 0.04 decrease in the log-odds of survival. 
+> Lastly, while controlling for the effect of `class`, a one unit increase in `age` was significantly related to a 0.04 decrease in the log-odds of survival. 
+
+-   We now turn our attention to the continuous variable `age`. If log-odds of `age` is $ = -0.04$, then it is the case that we can say it is less likely for someone to survive the Titanic with an increase in age. 
+
+-   This effect (age) is also statistically significant from 0 ($p<0.001$). 
 
 ### Parameter Table Interpretation (Odds)
 
+We can easily convert log-odds to odds. In order to convert from a log-odds to odds, we just need to take the exponentiate the parameter value.
+
+-   Recall that when odds $=1$, that means both events are equally likely to happen. So when the odds read a value like $1.02$, then we only consider the differences from 1 as meaningful. In this case, that increase is 0.02, or 2%, from our baseline value of 1. 
+
+Fortunately, we can actually transform the entire log-odds parameter table results into odds using the same `model_parameters()` function with the added input argument of "exponentiate", like so: 
 
 ```{r}
 model_parameters(fit5, exponentiate = TRUE) |> print_md()
 ```
+Due to the nature of the dummy coded categorical variable `class`, we will assess the parameters from each level of that variable first. 
 
 > The intercept is the average odds of surviving for the "1st Class" category while accounting for the effect of `age`. In this case, members of the "1st Class" have a average odds of 8.16 indiciating that passengers in the 1st Class are more likely to survive.
 
-> The members of the "2nd Class" have a 0.35, or 35% decrease, in the odds of suriving relative to the "1st Class" while accounting for the effect of `age` (i.e., they have a worse chance of surviving). 
+-   Here, since the odds is greater than 1, it is more likely for the event that is labeled a "success" (in this case, more likely to survive) to happen than the event that is labeled a "failure". 
 
-> The members of the "3rd Class" have 0.10 decrease, or 10% decrease, in the odds of suriving relative to the "1st Class" while accounting for the effect of `age`. (i.e., they have a worse chance of surviving). 
+> The members of the "2nd Class" have a 0.65, or 65% decrease, in the odds of suriving relative to the "1st Class" while accounting for the effect of `age` (i.e., they have a worse chance of surviving). It is a decrease because we are talking in odds and the value is less than 1. And we interpret that value as 0.65 because 1 - 0.35 = 0.65.
 
-> There was a significant difference between the "1st Class" and 1, $p<0.01$. The difference between each class and the "1st Class" was significant, $p<0.01$. 
+> The members of the "3rd Class" have 0.90 decrease, or 90% decrease, in the odds of suriving relative to the "1st Class" while accounting for the effect of `age`. (i.e., they have a worse chance of surviving).  It is a decrease because we are talking in odds and the value is less than 1. And we interpret that value as 0.90 because 1 - 0.10 = 0.90.
 
-> Lastly, while accounting for the effect of `class`, a one unit increase in age was significantly related to a 0.04 decrease, or 4% decrease, in the odds of survival. 
+-   Notice how these comparisons are all in reference to the first class. Again, this is due to the nature of the dummy coded categorical variable. 
+
+> There was a significant difference between the "1st Class" and 1, $p<0.01$. The difference between each class and the "1st Class" was significant, $p<0.01$.
+
+-   When the parameter table is in odds, the significance test is applied to see differences from an odds value of 1. This is because, again, an odds value of 1 means that an event occurring versus not occurring is equally likely. 
+
+> Lastly, while accounting for the effect of `class`, a one unit increase in age was significantly related to a 0.04 decrease, or 4% decrease, in the odds of survival.  It is a decrease because we are talking in odds and the value is less than 1. And we interpret that value as 0.04 because 1 - 0.96 = 0.04. 
 
 ### Predicted Probabilities 
 
