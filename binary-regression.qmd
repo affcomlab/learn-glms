@@ -33,23 +33,25 @@ Link Function: A function that transforms the outcome variable into a continuous
 
 ### Shape of Residuals
 
-The general linear model assumes that residuals, or the differences between the observed and predicted values of data, are <b>normally distributed</b>. If the residuals are not normally distributed, the model will not make valid inferences or ** (possibly)** predictions. 
+The general linear model assumes that residuals, or the differences between the observed and predicted values of data, are <b>normally distributed</b>. If the residuals are not normally distributed, the model is likely to make invalid inferences or predictions. 
 
 ### Continuous and Normally Distributed Outcome
 
-Since the outcome variable is binary, a quick histogram plot will show that it is not continuous (i.e., it is discrete). This is a scourge for the general linear model since it assumes continuous and normally distributed outcomes, and it will predict both intermediate states/values between the two possible outcomes <b>and</b> states/values above and below the two possible outcomes. For example, if 0 = Alive, and 1 = Dead, then the general linear model may predict a value between 0 and 1 (somewhere between alive and dead), or values below 0 and above 1 (so less alive and more dead?).Therefore, to model a binary outcome using the machinery of linear modeling, we need to <b>transform</b> the outcome variable to a continuous and normally distributed outcome.
+Since the outcome variable is binary, a quick histogram plot will show that it is not continuous (i.e., it is discrete). This is a scourge for the general linear model since it assumes continuous and normally distributed outcomes, and it will predict both intermediate states/values between the two possible outcomes <b>and</b> states/values above and below the two possible outcomes. 
+
+For example, if 0 = Alive, and 1 = Dead, then the general linear model may predict a value between 0 and 1 (somewhere between alive and dead), or values below 0 and above 1 (so less alive and more dead?).Therefore, to model a binary outcome using the machinery of linear modeling, we need to <b>transform</b> the outcome variable to a continuous and normally distributed outcome.
 
 
 ## Binary Events with a Binomial Distribution
 
 As mentioned earlier, in logistic regression we are modeling a binary events. When we can assume that 1) Binary events are independent of one another (i.e., one binary trial doesn't affect another trial), and 2) The probability of the binary event happening versus not happening is fixed, then it turns out that binary events are best described by what's called a <i>binomial distribution</i>. In theory, it is the optimal distribution for a binary event based on a principle called <i>Maximum Entropy</i>, but we will skip that theoretical explanation for now. 
 
-A binomial distribution is described by only two parameters: <i>n</i> and <i>p</i>. The "n" parameter is the total number of trials/events, and "p" is the probability of a "success" (or the probability of the event happening versus not happening). Due to this feature of binomial distributions, we can expect the <i>mean</i> of a binary event to simply be the number of trials multiplied by the probability of the event occurring, or $n * p$. For example, if we flip a coin 100 times and count the number of Heads, we can expect the average number of Heads after 100 flips to be $n*p = 100 * 0.5 = 50\, Heads$. 
+A binomial distribution is described by only two parameters: <i>n</i> and <i>p</i>. The "n" parameter is the total number of trials/events, and "p" is the probability of a "success" (or the probability of the event happening versus not happening). Due to this feature of binomial distribution, we can expect the <i>mean</i> of a binary event to simply be the number of trials multiplied by the probability of the event occurring, or $n * p$. For example, if we flip a coin 100 times and count the number of Heads, we can expect the average number of Heads after 100 flips to be $n*p = 100 * 0.5 = 50\, Heads$. 
 
-The important thing to know is that logistic regression's goal is to model the "p" parameter, or the <b>probability of success</b>, of a binary distribution with a linear and additive combination of an intercept and slope of a predictor variable(s). But there's an inherent problem with modeling probability with a linear model because probability is bounded from [0,1], and we already know that a linear model works best when the outcome is unbounded (and continuous).
+The important thing to know is that logistic regression's goal is to model the "p" parameter, or the <b>probability of success</b>, of a binary distribution with a linear and additive combination of an intercept and slope of a predictor variable(s). But there's an inherent problem with modeling probability with a linear model because probability is bounded from [0,1], and we already know that a linear model works best when the outcome is unbounded (and continuous). 
 
 :::{.callout-important title="Binary Outcomes vs Probability?"}
-At this point, we need to make a distinction between the outcome of a binary event and the probability of a binary event. Because logistic regression's goal is modeling the probability of a binary event rather than the outcome of a binary event.
+At this point, we need to make a distinction between the outcome of a binary event and the probability of a binary event. Because logistic regression's goal is to model the probability of a binary event rather than the outcome of a binary event.
 
 The outcome of a binary event is the result of the trial -- whether the event was a success or not. The way we define which one of two outcomes of a binary event is a "success" is arbitrary and depends on our goals. For example, if 0 = Dead, and 1 = Alive, the "success" or outcome we are concerned with is being alive. 
 
@@ -67,11 +69,11 @@ $$ y_i \sim Binomial(n,p)$$
 Here we are saying that our outcome variable is binomially distributed. This is not the part of the model that logistic regression is specifically concerned with -- this is an assumption we are placing on the model knowing that the data is a binary outcome.
 
 $$ g(p) = \beta_0 + \beta_1 x_1$$
-Here we are now defining how we use the simple logistic regression model. We call it simple because there is only one predictor variable ($x_1$). The right side of the equation should be very familiar to us: it is the linear machinery of the model where we have $\beta_0$ (the intercept), and $\beta_1$ (the slope of the predictor variable). 
+Here we are now defining how we use the simple logistic regression model. We call it simple because there is only one predictor variable ($x_1$). The right side of the equation should be very familiar to us: it is a linear model where we have $\beta_0$ (the intercept), and $\beta_1$ (the slope of the predictor variable). 
 
-But the left side of this equation is unique to <b>generalized linear models</b>. First, we see that we are assigning $\beta_0$ and $\beta_1$ to estimate $p$, which is the probability parameter of the binomial distribution. However, we also see that $p$ is inside a function called $n$, which we now define as our <i>link function</i>. 
+But the left side of this equation is unique to <b>generalized linear models</b>. First, we see that we are assigning $\beta_0$ and $\beta_1$ to estimate $p$, which is the probability parameter of the binomial distribution. However, we also see that $p$ is inside a function called $g$, which we now define as our <i>link function</i>. 
 
-The link function will allow us to use the linear model (the right side of the equation that usually assumed a continuous and unbounded outcome) and estimate probability, $p$, which is continuous and bounded. 
+The link function will allow us to use the linear model (the right side of the equation that is usually assumed with a continuous and unbounded outcome) to estimate probability, $p$, which is continuous and bounded. 
 
 In logistic regression, our $g$ is the "logit function", which is defined as: 
 
@@ -83,7 +85,7 @@ $$ p = e^g/ (1 + e^g) $$
 When we use the logit link function with a linear predictor, we now can call this <i>"logistic regression"</i>. 
 
 :::{.callout-tip title="Takeaway: Link Functions"}
-When we use GLMs, we will be using many different link functions depending on the data. In the case of binary/logistic regression, all this function is trying to do is relate our linear predictors to a response outcome that is continuous and between some bounds (like 0 and 1). More generally, we need link functions because if we <b>did not</b> do this, we are using the linear predictors to predictor some value that is continuous when it may  <b>not</b> technically continuous (like discrete values for binary variables), and the predictions can be out of bounds (like when an event "yes" = 1, then the model can spit out a value like 1.53, even though this event is unreasonable). 
+When we use GLMs, we will be using many different link functions depending on the data. In the case of binary/logistic regression, all this function is trying to do is relate our linear predictors to a response outcome that is continuous and between some bounds (like 0 and 1). More generally, we need link functions because if we <b>did not</b> do this, we are using the linear predictors to predictor some value that is continuous when it may <b>not</b> continuous (like discrete values for binary variables), and the predictions can be out of bounds (like when an event "yes" = 1, then the model can spit out a value like 1.53, even though this event is unreasonable). 
 We also find that when using the appropriate link function, other problems, like the shape of residuals, gets fixed! 
 :::
 
