@@ -229,6 +229,13 @@ titanic2 #print
 
 Re-coding these strings/characters into discrete numbers is important for the model's mathematics to work. 
 
+In addition, we will turn `sex` into a factor with the reference group as being females. 
+
+```{r}
+titanic2$sex <- factor(titanic2$sex, levels =  c("female","male"))
+```
+
+
 ::: {.callout-tip title="mutate() and data-wrangling"}
 `mutate()` is a function from `dplyr` that adds a column to the dataframe (the object that holds the data). This isn't the only way to accomplish our goal of re-coding `survived`, but it is a fairly elegant, easy, and straightforward way to do so. The trick is to remember that `mutate()` adds a column to the existing dataframe with the same number of rows as the existing dataframe. 
 
@@ -237,271 +244,88 @@ Our choice of data-wrangling functions are open to reprisal because there are ma
 
 ### Plotting a binary outcome 
 
-Like always, it is important to plot the data prior to fitting any model. Here, we consider if there is some sort of relationship between `survived_b` and `fare`. 
+Like always, it is important to plot the data prior to fitting any model. Here, we consider if there is some sort of bivariate relationship between `survived_b` and `fare`, and `survived_b` and `sex`. 
 
-Here, we first try a standard scatter plot. Since there are only two outcome values though, it's hard to see any clear effect of surivavl based on `fare`.  
+Here, we first try a scatter plots to assess a relationship between `surived_b` and `fare`. Since there are only two outcome values though, it's hard to see any clear effect of survival based on `fare`.   
 
 ```{r}
 ggplot(titanic2, aes(x = fare, y = survived_b)) +
   geom_point() + mytheme
 
 ```
-
-Next, we try a box plot. The box plot helps clarify what the scatter plot can't easily show: there seems to be some effect of fare on survival, such that the higher the fare, the more mass/points are in having survived the titanic. We will explore this relationship in our regression models.  
+Next, we try a box plot using the original `survived` variable (so it is discrete again). The box plot helps clarify what the scatter plot can't easily show: there seems to be some effect of fare on survival, such that the higher the fare, the more mass/points are in having survived the titanic. We will explore this relationship in our regression models.  
 
 ```{r}
 ggplot(titanic2, aes(x = fare, y = survived)) +
   geom_boxplot() + mytheme
 ```
-
-# Models Without Interactions 
-
-## Less Correct: the General Linear Model  
-Before we fit the binary regression, it would be worthwhile to try fitting the less appropriate regular general linear model. We'll use our old friend `lm()` to assess the relationship between the outcome variable `survived_b` with the predictor variable `fare`. For more information on general linear modeling, we covered these topics in our <b>Regression Recap</b> chapter. 
+Now, let's do a barplot for `sex` and `survived`. It seems that there is an effect on survival due to sex such that females were more likely to survive than males. 
 
 ```{r}
-#simple linear regression
-fitlm <- lm(
-  formula = survived_b ~ fare,
+ggplot(titanic2, aes(fill= sex, x = survived)) +
+  geom_bar() + mytheme
+```
+
+# Models Without Interaction Terms
+
+First, let's take a look at the case for models with one dummy coded categorical predictor variable and one continuous predictor without any interaction term.  
+
+## Less Correct: the General Linear Model  
+Before we fit the binary regression, it would be worthwhile to try fitting the less appropriate regular general linear model. We'll use our old friend `lm()` to assess the relationship between the outcome variable `survived_b` with the predictor variables `fare` and `sex`. For more information on general linear modeling, we covered these topics in our <b>Regression Recap</b> chapter. 
+
+```{r}
+fitlm1 <- lm(
+  formula = survived_b ~ sex + fare,
   data = titanic2
 )
 
-model_parameters(fitlm) |> print_md()
+model_parameters(fitlm1) |> print_md()
 ```
 
-As the results show, we have a significant effect of `fare`, such that a 1 unit increase in `fare` increases the chance of survival by a small amount (0.00251 units of "survival"). Despite the challenge of interpreting what units of survival are, it is worth nothing that the regular `lm()` "worked" in that it was able to produce an estimate. 
+As the results show, we have a significant partial effect of `fare`, such that a 1 unit increase in `fare` increases the chance of survival by a small amount (0.00251 units of "survival") while controlling for `sex`. In addition, we see significant effects of our dummy coded `sex` variable both as the intercept difference from 0 being significant (i.e., the reference group being females with an average survival of 0.67 units), and a significant difference between males and females (i.e, a decrease of 0.52 survival units for males). Despite the challenge of interpreting what units of survival are, it is worth nothing that the regular `lm()` "worked" in that it was able to produce an estimate. 
 
-However, it doesn't mean that the model is the best model to use and this is evident when we plot the predictions using the `predict_response()` function. 
+However, it doesn't mean that the model is the best model to use and this is evident when we plot the predictions using the `predict_response()` function for `fare`. 
 
 ```{r}
-predict_response(fitlm, terms = "fare") |> plot(show_data = TRUE)
+predict_response(fitlm1, terms = "fare") |> plot(show_data = TRUE)
 ```
-Notice that although the data points are only either 0 or 1 (binary), the regression line takes intermediate values between 0 and 1, and extreme values above and below 0 and 1! For example, if a passenger paid \$100, then the outcome value would be ~0.55, which is halfway between alive and dead! We can't have passengers somewhat between alive/dead, or more or less alive/dead! 
+Notice that although the data points are only either 0 or 1 (binary), the regression line takes intermediate values between 0 and 1, and extreme values above 1! For example, if a passenger paid \$100, then the outcome value would be ~0.25, which is somewhere between alive and dead! We can't have passengers somewhat between alive/dead, or more or less alive/dead! 
 
-If that wasn't enough to deter one from using the general linear model for binary responses, taking a look at a plot of the residuals, using `check_residuals()` [^1], should be telling. 
+### Checking Assumptions
+
+When we fit a model, we always want to see if there were any violations in the assumptions. When using the general linear model via the `lm()` function for binary responses, taking a look at a plot of the residuals, using `check_residuals()` [^1], should be concerning.  
 
 [^1]: `check_residuals()` requires the package `qqplotr` to be installed. 
 
 ```{r}
 ## Check residuals
-check_residuals(fitlm) |> plot() # looks bad
+check_residuals(fitlm1) |> plot() # looks bad
 ```
 Yikes! As you can see, the dots <b>do not</b> fall along the line. Once this or any other assumption of the general linear model are not met, this is a clear sign that parts of the model may not be trustworthy. Specifically, in this case of the non-uniformity of residuals, there is terrible violation to the model's uncertainty estimates; therefore, while the predictions may be okay, we can (and should) do better.
 
 So now, finally, we fit our first GLM.
 
-## More Correct: the Generalized Linear Model 
+## More Correct: the Generalized Linear Model
 
+Now let's compare our modeling of the same variables using binary/logistic regression on the interpretation of estimates and adherence to model assumptions.
 
-## One Continuous Predictor 
+"Is there a relationship between the amount of fare, sex, and the log-odds of survival?"
 
-Now, we investigate the question "Is there a relationship between the amount of fare and the log-odds/probability of survival?". 
+Again, because we have multiple predictors, multiple regression allows us to control for the effects of multiple predictors on the outcome, and we are left with the unique effect of a predictor when controlling for other predictors. In this case, the outcome variable will be `survived_b`, and the predictor variables will be `sex` (categorical variable) and `fare` (continuous variable). 
 
-To do this, let's use `glm()` to fit our first simple binary regression (a logistic regression with one predictor variable). 
+We did a lot of work already with the `lm()` in the "Regression Recap". The `glm()` function is in many ways the same as the `lm()` function. Even the syntax for how we write the equation is the same. In addition, we can use the same `model_parameters()` function to get our table of parameter estimates. Indeed, we will use the `glm()` function for the remainder of the rest of the online modules. 
+
+But notice that the `glm()` function has one more input argument. This input argument is the "family" input argument, which requires which "family of distributions" to use and which "link function" choice.  For binary regression, we supply the <b>binomial</b> distribution and the <b>logit</b> link function. 
 
 ```{r}
-fit2 <- glm(
-  formula = survived_b ~ fare, 
+
+fit1 <- glm(
+  formula = survived_b ~ sex + fare, 
   family = binomial(link = "logit"), 
   data = titanic2
 )
 
-## Print parameters in logit (i.e., log-odds) units
-model_parameters(fit2) |> print_md()
-
-```
-
-### Parameter Table Interpretation (Log-odds)
-
-Again, the parameter table output from a model fit with `glm()` looks very similar to parameter table outputs from models fit with `lm()`. But there is a <b>big</b> difference -- in `glm()` models, we are no longer working in the same raw units! 
-
-This difference is apparent in the second column of the output table: "Log-Odds". Because we fit a logistic regression with a logit function, the parameter values are in "log-odds" unit. Technically, when `fare` is in log-odds units, we can only say:
-
-> For every one 1 unit increase in `fare`, there is a 0.02 increase in the log-odds of surviving.
-
-Although this is technically true, it isn't at first clear what "0.02 unit increase in log-odds of `fare`" is. It is at this point one may want to convert log-odds to probability. But before we do that, let's interpret the $0.02$ log-odds value: 
-
--   If log-odds $ = 0.02$, then it is the case that we can say it is more likely for someone to survive the Titanic with an <b>increase</b> in the amount of paid fare.  
-
--   This effect is also statistically significant from 0 ($p<0.001$). Remember, with log-odds, a value of 0 means it is equally likely for an event to occur or not occur. 
-
-### Parameter Table Interpretation (Odds)
-
-We can easily convert log-odds to odds. Given we know that it is a positive value, we can expect the odds of surviving to be more likely and therefore above 1. In order to convert from a log-odds to odds, we just need to take the exponent of the value (because if a log-odds value of 0 is equally likely, then $e^1 = 0$ where 1 is our reference for an equally likely event in odds). Let's practice our conversion by hand. 
-
-```{r}
-exp(0.02) #convert log-odds to odds
-```
-
-Now that we are in odds, we can adjust our previous interpretation of the `fare` parameter for odds:
-
-> For every one unit increase in `fare`, there is a 0.020 increase, or a 2.0% increase, in the odds of surviving.[^2]
-
-[^2]: Recall that when odds $=1$, that means both events are equally likely to happen. So when the odds read a value like $1.02$, then we only consider the differences from 1 as meaningful. In this case, that increase is 0.02, or 2%, from our baseline value of 1.
-
-Fortunately, we can actually transform the entire log-odds parameter table results into odds using the same `model_parameters()` function with the added input argument of "exponentiate", like so: 
-
-```{r}
-## Print parameters in odds 
-model_parameters(fit2, exponentiate = TRUE) |> print_md()
-```
-
-Knowing the significance values in odds, we can now say that the effect of `fare` in the increase of odds is statistically significant from <b>1</b>, $p<0.001$ [^3]
-
-[^3]: When the parameter table is in odds, the significance test is applied to see differences from an odds value of 1. This is because, again, an odds value of 1 means that an event occurring versus not occurring is equally likely. 
-
-A lot of fields, like medicine, prefer to output and report their logistic regression values in odds. 
-
-### Predicted Probability
-
-A convenient transformation is taking the log-odds and converting into probability. Then, our question becomes "Is there a relationship between the amount of fare and the probability of survival?".
-
-We can assess this relationship with the `predict_response()` function. It outputs a plot with the Y-axis as "the probability of `survival_b`" and the X-axis as the predictor (in this case `fare`) in raw units.  
-
-```{r, warning=FALSE,message=FALSE}
-predict_response(fit2, terms = "fare") |> plot(show_data = TRUE)
-
-```
-
-Again, the transformed outcome variable is the "probability of `survived_b`" (on the y-axis), so we can see that it is bounded between [0,100]. The logistic regression line also makes predictions between these bounds so we no longer have the model predicting unreasonable values/states. Lastly, we can now see how an increase in `fare` increases the probability of survival.  
-
-::: {.callout-tip title="Critical Thinking"}
-While the plot above looks very convincing that paying a `fare` over $400 seems to ensure 100% probability of survival, this model only has <i>one</i> predictor variable. There are a lot of other variables that are not accounted for. Certainly, we would need to consider other variables that may impact survival rates other than fare, and, at the very least, it would be quite surprising if only 'fare` ensured survival. 
-:::
-
-## Two Continuous Predictors
-
-"Is there a relationship between the amount of fare, age, and the log-odds/probability of survival?"
-
-When we have two predictors, we are now conducting a multiple logistic regression. Recall that multiple regression, in general, allows us to control for the effects of multiple predictors on the outcome, and we are left with the unique effect of a predictor when controlling for other predictors. 
-
-```{r}
-fit3 <- glm(
-  formula = survived_b ~ fare + age, 
-  family = binomial(link = "logit"), 
-  data = titanic2
-)
-
-## Print parameters in logit (i.e., log-odds) units
-model_parameters(fit3) |> print_md()
-
-```
-
-### Parameter Table Interpretation (Log-odds)
-
-When the parameter table is in log-odds, we can now say the following: 
-
-> For every one unit increase in `fare`, there is a 0.02 increase in the log-odds of surviving when controlling for the effect of `age`. The unique (i.e., partial) effect of `fare` is significantly different from 0, $p<0.01$.  
-
-> For every one unit increase in 'age', there is a 0.02 decrease in the log-odds of surviving when controlling for the effect of `fare`.  The unique (i.e., partial) effect of `age` is significantly different from 0, $p<0.01$.
-
-Remember, in log-odds, if the value is positive, it is more likely for the event to occur, and if it is negative, it is more likely for the event to not occur. 
-
-### Parameter Table Interpretation (Odds)
-
-We can also present the results in odds. 
-```{r}
-## Print parameters in odds 
-model_parameters(fit3, exponentiate = TRUE) |> print_md()
-```
-
-When the parameter table is in odds, we can now say the following: 
-
-> For every one unit increase in `fare`, there is a 0.02 increase, or 2.0% increase, in the odds of surviving when controlling for the effect of `age`. The unique (i.e., partial) effect of `fare` is significantly different from 0, $p<0.01$.  
-
-> For every one unit increase in `age`, there is a 0.02 decrease, or 2.0% decrease, in the odds of surviving when controlling for the effect of `fare`.  The unique (i.e., partial) effect of `age` is significantly different from 0, $p<0.01$.
-
-Remember, in odds, if the value greater than 1, it is more likely for the event to occur, and if it less than 1, it is more likely for the event to not occur. 
-
-
-### Predicted Probability 
-
-```{r, warning=FALSE,message=FALSE}
-predict_response(fit3, terms = "fare") |> plot(show_data = TRUE)
-predict_response(fit3, terms = "age") |> plot(show_data = TRUE)
-```
-The plots for predicted probabilities is helpful for highlighting the different effects for `fare` and `age`. As we see, there is a decrease in the probability of surviving as age increases, and there is an increase in the probability of surviving as the amount of fare increases. 
-
-::: {.callout-tip title="Why not always use probability?"}
-Although working with probabilities seems to be more easily understandable, we cannot have parameter estimates in probabilities. Therefore, results are often communicated in logits or odds since we can have estimates, uncertainty values (like standard deviations), and significance tests applied to them. 
-:::
-
-## One Dummy Coded Predictor 
-
-Let's consider the question "Is there a relationship between the type of `class` accommodation and the log-odds/probability of surviving"? 
-
-Remember, first we have to change our predictor variable to a factor (i.e., a dummy-coded variable), and then we can fit with `glm()`. 
-
-```{r}
-titanic2$class <- factor(titanic2$class, levels =c("1st","2nd","3rd"))
-
-fit4 <- glm(
-  formula = survived_b ~ class, 
-  family = binomial(link = "logit"), 
-  data = titanic2
-)
-
-model_parameters(fit4) |> print_md()
-```
-
-### Parameter Table Interpretation (Log-odds)
-
-Remember, although we are performing a logistic regression, it is still dummy-coded so our parameters estimates are given relative to the first category of the predictor variable.  In this case, the "1st Class" is the reference group.
-
-> The intercept is the average log-odds of surviving for the "1st Class" category. In this case, members of the "1st Class" have a 0.53 increase in the log-odds of surviving. 
-
-> The members of the "2nd Class" have a 0.64 decrease in the log-odds of suriving relative to the "1st Class" (i.e., they have a worse chance of surviving). 
-
-> The members of the "3rd Class" have 1.66 decrease in the log-odds of suriving relative to the "1st Class".
-
-> There was a significant difference between the "1st Class" and 0, $p<0.01$. The difference between each class and the "1st Class" was significant, $p<0.01$. 
-
-
-### Estimating means and plots 
-
-```{r}
-gmeans1 <- estimate_means(fit4, by = c("class")) 
-gmeans1 |> print_md()
-```
-
-### Parameter Table Interpretation (Odds)
-
-Like in other logistic regression models, we can convert to odds ratios with `model_parameters` and "exponentiate" input argument. 
-
-```{r}
-model_parameters(fit4, exponentiate = TRUE) |> print_md()
-```
-
-> The intercept is the average odds of surviving for the "1st Class" category. In this case, members of the "1st Class" have a 0.70 increase, or 70% increase, in the odds of surviving. 
-
-> The members of the "2nd Class" have a 0.47 decrease, or 47% decrease, in the odds of suriving relative to the "1st Class" (i.e., they have a worse chance of surviving). This is because 1 - 0.53 = 0.47.
-
-> The members of the "3rd Class" have 0.81 decrease, or 81% decrease, in the log-odds of suriving relative to the "1st Class" (i.e., they have a worse chance of surviving). Again, this is because 1 - 0.19 = 0.81. 
-
-> There was a significant difference between the "1st Class" and 1, $p<0.01$. The difference between each class and the "1st Class" was significant, $p<0.01$. 
-
-### Predicted Probability
-
-```{r, warning=FALSE,message=FALSE}
-predict_response(fit4, terms = "class") |> plot(show_data = TRUE)
-```
-
-When the predicted probabilities are plotted, we can visualize the differences in probabilities of surviving between classes. 
-
-## One Dummy Coded and One Continuous Predictor 
-
-"Is there a relationship between the amount of fare, class, and the log-odds/probability of survival?"
-
-Again, multiple regression allows us to control for the effects of multiple predictors on the outcome, and we are left with the unique effect of a predictor when controlling for other predictors. In this case, the outcome variable will be `survived_b`, and the predictor variables will be `class` (categorical variable) and `age` (continuous variable). 
-
-```{r}
-fit5 <- glm(
-  formula = survived_b ~ class + age, 
-  family = binomial(link = "logit"), 
-  data = titanic2
-)
-
-model_parameters(fit5) |> print_md()
+model_parameters(fit1) |> print_md()
 ```
 ### Paramter Table Interpretation (Log-odds)
 
@@ -509,25 +333,23 @@ Again, the parameter table output from a model fit with `glm()` looks very simil
 
 This difference is apparent in the second column of the output table: "Log-Odds". Because we fit a logistic regression with a logit function, the parameter values are in "log-odds" unit. 
 
-Due to the nature of the dummy coded categorical variable `class`, we will assess the parameters from each level of that variable first. 
+Due to the nature of the dummy coded categorical variable `sex`, we will assess the parameters from each level of that variable first. 
 
-> The intercept is the average log-odds of surviving for the "1st Class" category while accounting for the effect of `age`. In this case, members of the "1st Class" have a average log odds of 2.10 indiciating that passengers in the 1st Class are more likely to survive than not survive.
+> The intercept is the average log-odds of surviving for female passengers while accounting for the effect of `fare`. In this case, female passengers who paid no fare have an average log odds of 0.65 indiciating that female passengers are more likely to survive than not survive.
 
 -   Remember, with log-odds, a value of 0 means it is equally likely for an event to occur or not occur.  Here, since the log-odds is greater than 0, it is more likely for the event that is labeled a "success" (in this case, more likely to survive) to happen than the event that is labeled a "failure". 
 
-> The members of the "2nd Class" have a 1.04 decrease in the log-odds of suriving relative to the "1st Class" while accounting for the effect of `age` (i.e., they have a worse chance of surviving). 
+> Male passengers have a 2.42 decrease in the log-odds of suriving relative to the female passengers while accounting for the effect of `fare` (i.e., they have a worse chance of surviving). 
 
-> The members of the "3rd Class" have 2.29 decrease in the log-odds of suriving relative to the "1st Class" while accounting for the effect of `age`. (i.e., they have a worse chance of surviving). 
+-   Notice how these comparisons are all in reference to the females. Again, this is due to the nature of the dummy coded categorical variable. 
 
--   Notice how these comparisons are all in reference to the first class. Again, this is due to the nature of the dummy coded categorical variable. 
+> Because the intercept was significant, there was a significant difference between the estimate of female passengers and 0, $p<0.001$. Because "sex[male]" was significant, the difference between female and male passengers was significant, $p<0.001$. 
 
-> Because the intercept was significant, There was a significant difference between the "1st Class" and 0, $p<0.001$. Because each class was significant, The difference between each class and the "1st Class" was significant, $p<0.001$. 
+> Lastly, while controlling for the effect of `sex`, a one unit increase in `fare` was significantly related to a 0.01 increase in the log-odds of survival. 
 
-> Lastly, while controlling for the effect of `class`, a one unit increase in `age` was significantly related to a 0.04 decrease in the log-odds of survival. 
+-   We now turn our attention to the continuous variable `fare`. If log-odds of `fare` is $ = 0.01$, then it is the case that we can say it is more likely for someone to survive the Titanic with an increase in fare paid. 
 
--   We now turn our attention to the continuous variable `age`. If log-odds of `age` is $ = -0.04$, then it is the case that we can say it is less likely for someone to survive the Titanic with an increase in age. 
-
--   This effect (age) is also statistically significant from 0 ($p<0.001$). 
+-   This effect (fare) is also statistically significant from 0 ($p<0.001$). 
 
 ### Parameter Table Interpretation (Odds)
 
@@ -538,47 +360,253 @@ We can easily convert log-odds to odds. In order to convert from a log-odds to o
 Fortunately, we can actually transform the entire log-odds parameter table results into odds using the same `model_parameters()` function with the added input argument of "exponentiate", like so: 
 
 ```{r}
-model_parameters(fit5, exponentiate = TRUE) |> print_md()
+model_parameters(fit1, exponentiate = TRUE) |> print_md()
 ```
-Due to the nature of the dummy coded categorical variable `class`, we will assess the parameters from each level of that variable first. 
+Due to the nature of the dummy coded categorical variable `sex`, we will assess the parameters from each level of that variable first. 
 
-> The intercept is the average odds of surviving for the "1st Class" category while accounting for the effect of `age`. In this case, members of the "1st Class" have a average odds of 8.16 indiciating that passengers in the 1st Class are more likely to survive.
+> The intercept is the average odds of surviving for female passengers category while accounting for the effect of `fare`. In this case, female passengers have a average odd ratio of 1.91 indiciating that female passengers are more likely to survive.
 
 -   Here, since the odds is greater than 1, it is more likely for the event that is labeled a "success" (in this case, more likely to survive) to happen than the event that is labeled a "failure". 
 
-> The members of the "2nd Class" have a 0.65, or 65% decrease, in the odds of suriving relative to the "1st Class" while accounting for the effect of `age` (i.e., they have a worse chance of surviving). It is a decrease because we are talking in odds and the value is less than 1. And we interpret that value as 0.65 because 1 - 0.35 = 0.65.
+> Male passengers have a 0.91, or 91% decrease, in the odds of suriving relative female passenger while accounting for the effect of `fare` (i.e., they have a worse chance of surviving). It is a decrease because we are talking in odds and the value is less than 1. And we interpret that value as 0.91 because 1 - 0.09 = 0.91.
 
-> The members of the "3rd Class" have 0.90 decrease, or 90% decrease, in the odds of suriving relative to the "1st Class" while accounting for the effect of `age`. (i.e., they have a worse chance of surviving).  It is a decrease because we are talking in odds and the value is less than 1. And we interpret that value as 0.90 because 1 - 0.10 = 0.90.
+-   Notice how these comparisons are all in reference to female passengers. Again, this is due to the nature of the dummy coded categorical variable. 
 
--   Notice how these comparisons are all in reference to the first class. Again, this is due to the nature of the dummy coded categorical variable. 
-
-> There was a significant difference between the "1st Class" and 1, $p<0.01$. The difference between each class and the "1st Class" was significant, $p<0.01$.
+> There was a significant difference between the estimate of female passengers and 1, $p<0.001$. The difference between the odds of female and male passengers was also significant, $p<0.001$.
 
 -   When the parameter table is in odds, the significance test is applied to see differences from an odds value of 1. This is because, again, an odds value of 1 means that an event occurring versus not occurring is equally likely. 
 
-> Lastly, while accounting for the effect of `class`, a one unit increase in age was significantly related to a 0.04 decrease, or 4% decrease, in the odds of survival.  It is a decrease because we are talking in odds and the value is less than 1. And we interpret that value as 0.04 because 1 - 0.96 = 0.04. 
+> Lastly, while accounting for the effect of `sex`, a one unit increase in `fare` was significantly related to a 0.01 increase, or 1% increase, in the odds of survival.  It is an increase because we are talking in odds and the value is more than 1. And we interpret that value as 0.01 because 1 - 1.01 = 0.01. 
 
 ### Predicted Probabilities 
 
+A convenient transformation is taking the log-odds and converting into probability. Then, our question becomes "Is there a relationship between the sex, fare, and the probability of survival?".
+
+We can assess this relationship with the `predict_response()` function. It outputs a plot with the Y-axis as "the probability of `survival_b`" and the X-axis as the predictor (in this case `fare`) in raw units. 
+
+With predicted probabilities, while accounting for `sex`, we can see the probability of surviving is increasing with fare amount. 
+
 ```{r, warning=FALSE,message=FALSE}
-predict_response(fit5, terms = "age") |> plot(show_data = TRUE)
-```
-With predicted probabilities, while accounting for `class`, we can see the probability of surviving is decreasing with age. 
-
-### Estimating Means and Plots 
-```{r}
-gmeans2 <- estimate_means(fit5, by = c("class")) 
-gmeans2 |> print_md()
+predict_response(fit1, terms = "fare") |> plot(show_data = TRUE)
 ```
 
+We can also plot the predicted probabilities of `sex` while accounting for the effect of `fare`. 
 
-# Assumptions
+```{r, warning=FALSE,message=FALSE}
+predict_response(fit1, terms = "sex") |> plot(show_data = TRUE)
+```
+When the predicted probabilities are plotted, we can visualize the differences in probabilities of surviving between sexes. 
 
-When we use logistic regression over regular linear regression, we benefit in terms of adhering to the assumptions of the linear model. We can see this benefit when we compare between the two models that have the same outcome and predictors. 
+Additionally, we can see the exact probability value for each class with the `estimate_means()` function. 
 
 ```{r}
-check_model(fitlm)
+gmeans1 <- estimate_means(fit1, by = c("sex")) 
+gmeans1 |> print_md()
+```
+
+::: {.callout-tip title="Why not always use probability?"}
+Although working with probabilities seems to be more easily understandable, we cannot have parameter estimates in probabilities. Therefore, results are often communicated in logits or odds since we can have estimates, uncertainty values (like standard deviations), and significance tests applied to them. 
+:::
+
+### Checking Assumptions 
+
+When we use logistic regression over regular linear regression, we benefit in terms of adhering to the assumptions of the linear model. First, let's see if our residuals are better when we used the GLM.
+
+As we can see, compared to our residuals plot using `lm()`, our `glm()` logistic model conforms to the uniformity of residuals assumptions way better. 
+
+```{r}
+## Check residuals
+check_residuals(fit1) |> plot() # looks way better
+```
+
+Overall, we can see the benefit of the `glm()` against the `lm()` when we compare between the two models that have the same outcome and predictors. 
+
+```{r}
+check_model(fitlm1)
 check_model(fit1)
 ```
 
+COMPARE THE PPP CHECKS BETWEEN THE MODELS? 
 
+
+# Models With Interaction Terms 
+Now, let's take a look at the case for more complex models with one dummy coded categorical predictor variable and two continuous predictors with an interaction term.
+
+## Less Correct: The General Linear Model
+Again, before we fit the binary regression, it would be worthwhile to try fitting the less appropriate regular general linear model. We'll use our old friend `lm()` to assess the relationship between the outcome variable `survived_b` with the predictor variables `sex`, `fare`, and `age`. For more information on general linear modeling, we covered these topics in our <b>Regression Recap</b> chapter. 
+
+Here, we will focus our example with an interaction between `sex` and `age`. 
+
+```{r}
+fitlm2 <- lm(
+  formula = survived_b ~ sex + fare + age + sex:age,
+  data = titanic2
+)
+
+model_parameters(fitlm2) |> print_md()
+```
+
+
+As the results show, we have a significant effect of `fare`, such that a 1 unit increase in `fare` increases the chance of survival by a small amount (0.00158 units of "survival") while controlling for `sex` and `age`. In addition, we see significant effects of our dummy coded `sex` variable both as the intercept difference from 0 being significant (i.e., the reference group being females with an average survival of 0.58 units), and a significant difference between males and females (i.e, a decrease of 0.33 survival units for males). There is also a significant partial effect of `age` while controlling `fare` and `sex`, and a significant `sex`x`age` interaction term.
+
+Despite the challenge of interpreting what units of survival are, it is worth nothing that the regular `lm()` "worked" in that it was able to produce an estimate. 
+
+However, it doesn't mean that the model is the best model to use and this is evident when we plot the predictions using the `predict_response()` function for `fare`. 
+
+```{r}
+predict_response(fitlm2, terms = "fare") |> plot(show_data = TRUE)
+```
+
+Notice that although the data points are only either 0 or 1 (binary), the regression line takes intermediate values between 0 and 1, and extreme values above 1! For example, if a passenger paid \$100, then the outcome value would be ~0.80, which is somewhere between alive and dead! We can't have passengers somewhat between alive/dead, or more or less alive/dead! 
+
+
+### Checking Assumptions
+
+When we fit a model, we always want to see if there were any violations in the assumptions. When using the general linear model via the `lm()` function for binary responses, taking a look at a plot of the residuals, using `check_residuals()` [^1], should be concerning.  
+
+[^1]: `check_residuals()` requires the package `qqplotr` to be installed. 
+
+```{r}
+## Check residuals
+check_residuals(fitlm2) |> plot() # looks bad
+```
+Yikes! As you can see, the dots <b>do not</b> fall along the line. Once this or any other assumption of the general linear model are not met, this is a clear sign that parts of the model may not be trustworthy. Specifically, in this case of the non-uniformity of residuals, there is terrible violation to the model's uncertainty estimates; therefore, while the predictions may be okay, we can (and should) do better.
+
+## More Correct: the Generalized Linear Model 
+
+Now let's compare our modeling of the same variables using binary/logistic regression on the interpretation of estimates and adherence to model assumptions.
+
+"Is there a relationship between the amount of fare, sex, and the log-odds of survival?"
+
+Again, because we have multiple predictors, multiple regression allows us to control for the effects of multiple predictors on the outcome, and we are left with the unique effect of a predictor when controlling for other predictors. In this case, the outcome variable will be `survived_b`, and the predictor variables will be `sex` (categorical variable), `fare` (continuous variable), and `age` (continuous variable).
+
+We did a lot of work already with the `lm()` in the "Regression Recap". The `glm()` function is in many ways the same as the `lm()` function. Even the syntax for how we write the equation is the same. In addition, we can use the same `model_parameters()` function to get our table of parameter estimates. Indeed, we will use the `glm()` function for the remainder of the rest of the online modules. 
+
+But notice that the `glm()` function has one more input argument. This input argument is the "family" input argument, which requires which "family of distributions" to use and which "link function" choice.  For binary regression, we supply the <b>binomial</b> distribution and the <b>logit</b> link function. 
+
+
+```{r}
+fit2 <- glm(
+  formula = survived_b ~ sex + fare + age + sex:age, 
+  family = binomial(link = "logit"), 
+  data = titanic2
+)
+
+model_parameters(fit2) |> print_md()
+```
+### Paramter Table Interpretation (Log-odds)
+
+Again, the parameter table output from a model fit with `glm()` looks very similar to parameter table outputs from models fit with `lm()`. But there is a <b>big</b> difference -- in `glm()` models, we are no longer working in the same raw units! 
+
+This difference is apparent in the second column of the output table: "Log-Odds". Because we fit a logistic regression with a logit function, the parameter values are in "log-odds" unit. 
+
+Due to the nature of the dummy coded categorical variable `sex`, we will assess the parameters from each level of that variable first. 
+
+> The intercept is the average log-odds of surviving for female passengers while accounting for the simple effects of `fare` and `age`. In this case, female passengers at 0 years old and no fare have an average log odds of 0.18 indiciating that female passengers are more likely to survive than not survive.
+
+-   Remember, with log-odds, a value of 0 means it is equally likely for an event to occur or not occur.  Here, since the log-odds is greater than 0, it is more likely for the event that is labeled a "success" (in this case, more likely to survive) to happen than the event that is labeled a "failure". 
+
+> Male passengers have a 1.26 decrease in the log-odds of suriving relative to the female passengers while accounting for the simple effects of `fare` and `age` (i.e., they have a worse chance of surviving). 
+
+-   Notice how these comparisons are all in reference to the females. Again, this is due to the nature of the dummy coded categorical variable. 
+
+> Because the intercept was not significant, there was no significant difference between the estimate of female passengers and 0. Because "sex[male]" was significant, the difference between female and male passengers was significant, $p<0.001$. 
+
+> While controlling for the simple effects of `sex` and `age`, a one unit increase in `fare` was significantly related to a 0.01 increase in the log-odds of survival. 
+
+> While controlling for the simple effects of `sex` and `fare`, a one unit increase in `age` was significantly related to a 0.02 increase in the log-odds of survival. 
+
+-   We now turn our attention to the continuous variable `fare` and `age`. Both estimates are positive (greater than 0), so it is the case that we can say it is more likely for someone to survive the Titanic with an increase in fare paid and age. 
+
+-   This simple effect (fare) is also statistically significant from 0 ($p<0.001$). 
+
+-   This simple effect (age) is not statistically significant from 0 ($p=0.08$).
+
+> The `sex`x`age` interaction term was statistically significant ($p<0.001$). So, the slope of age will decrease in log odds by 0.04 for male passengers, and the male-female difference will decrease in log odds by 0.04 for every unit increase in age. 
+
+### Parameter Table Interpretation (Odds)
+
+We can easily convert log-odds to odds. In order to convert from a log-odds to odds, we just need to take the exponentiate the parameter value.
+
+-   Recall that when odds $=1$, that means both events are equally likely to happen. So when the odds read a value like $1.02$, then we only consider the differences from 1 as meaningful. In this case, that increase is 0.02, or 2%, from our baseline value of 1. 
+
+Fortunately, we can actually transform the entire log-odds parameter table results into odds using the same `model_parameters()` function with the added input argument of "exponentiate", like so: 
+
+```{r}
+model_parameters(fit2, exponentiate = TRUE) |> print_md()
+```
+> The intercept is the average odds ratio of surviving for female passengers while accounting for the simple effects of `fare` and `age`. In this case, female passengers at 0 years old and no fare have an average odds of 1.19 indiciating that female passengers are more likely to survive than not survive.
+
+-   Here, since the odds is greater than 1, it is more likely for the event that is labeled a "success" (in this case, more likely to survive) to happen than the event that is labeled a "failure". 
+
+> Male passengers have a 0.72 decrease, or 72% decrease, in the odds of suriving relative to the female passengers while accounting for the simple effects of `fare` and `age` (i.e., they have a worse chance of surviving). It is a decrease because we are talking in odds and the value is less than 1. And we interpret that value as 0.72 because 1 - 0.28 = 0.72.
+
+-   Notice how these comparisons are all in reference to the females. Again, this is due to the nature of the dummy coded categorical variable. 
+
+> Because the intercept was not significant, there was no significant difference between the estimate of female passengers and 0. Because "sex[male]" was significant, the difference in odds between female and male passengers was significant, $p<0.001$. 
+
+> While controlling for the simple effects of `sex` and `age`, a one unit increase in `fare` was significantly related to a 0.01 increase, or 1% increase, in the odds of survival. It is an increase because we are talking in odds and the value is greater than 1. And we interpret that value as 0.01 because 1.01 - 1 = 0.01.
+
+> While controlling for the simple effects of `sex` and `fare`, a one unit increase in `age` was significantly related to a 0.02 increase, or 2% increase, in the odds of survival. It is an increase because we are talking in odds and the value is greater than 1. And we interpret that value as 0.02 because 1.02 - 1 = 0.02.
+
+-   We now turn our attention to the continuous variable `fare` and `age`. Both estimates are positive (greater than 0), so it is the case that we can say it is more likely for someone to survive the Titanic with an increase in fare paid and age. 
+
+-   This simple effect (fare) is also statistically significant from 0 ($p<0.001$). 
+
+-   This simple effect (age) is not statistically significant from 0 ($p=0.08$).
+
+> The `sex`x`age` interaction term was statistically significant ($p<0.001$). So, the slope of age will decrease in odds by 0.04, or 4% decrease, for male passengers, and the male-female difference will decrease in odds by 0.04, or 4% decrease, for every unit increase in age. 
+
+### Predicted Probabilities 
+
+A convenient transformation is taking the log-odds and converting into probability. Then, our question becomes "Is there a relationship between the sex, fare, age, and the probability of survival?".
+
+For models with an interaction term, we can assess the interaction term with the `ggpredict()` function. It can be used to visualize the interaction term with a marginal effects, or "spotlight", plot. Here, we can see the differing probabilities of survival for each sex by age while accounting for the effect of `fare`. 
+
+```{r}
+plot (ggpredict(
+  model = fit2, 
+  terms = c("age", "sex")
+))
+```
+
+We can also assess this probabilities with the `predict_response()` function. It outputs a plot with the Y-axis as "the probability of `survival_b`" and the X-axis as the predictor (in this case `fare`) in raw units. 
+
+With predicted probabilities, while accounting for `sex` and `age`, we can see the probability of surviving is increasing with fare amount. 
+
+```{r, warning=FALSE,message=FALSE}
+predict_response(fit2, terms = "fare") |> plot(show_data = TRUE)
+```
+
+We can also plot the predicted probabilities of `sex` while accounting for the effect of `fare` and `age`. 
+
+```{r, warning=FALSE,message=FALSE}
+predict_response(fit2, terms = "sex") |> plot(show_data = TRUE)
+```
+When the predicted probabilities are plotted, we can visualize the differences in probabilities of surviving between each sexes. 
+
+Additionally, we can see the exact probability value for each class with the `estimate_means()` function. 
+
+```{r}
+gmeans1 <- estimate_means(fit2, by = c("sex")) 
+gmeans1 |> print_md()
+```
+
+### Checking Assumptions
+
+When we use logistic regression over regular linear regression, we benefit in terms of adhering to the assumptions of the linear model. First, let's see if our residuals are better when we used the GLM.
+
+As we can see, compared to our residuals plot using `lm()`, our `glm()` logistic model conforms to the uniformity of residuals assumptions way better. 
+
+```{r}
+## Check residuals
+check_residuals(fit2) |> plot() # looks way better
+```
+
+
+Overall, we can see the benefit of the `glm()` against the `lm()` when we compare between the two models that have the same outcome and predictors. 
+
+```{r}
+check_model(fitlm2)
+check_model(fit2)
+```

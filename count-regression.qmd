@@ -56,7 +56,7 @@ Here's a table of our variables in this dataset:
 
 | Variable    | Description                     |     Values | Measurement |
 |-------------|:--------------------------------|-----------:|:-----------:|
-| `gender`       | Gender of Participant  (0 = Female, 1 = Male)     | Integer |   Ordinal   |
+| `sex`       | Sex of Participant  (0 = Female, 1 = Male)     | Integer |   Ordinal   |
 | `children`    | Has Children (0 = no, 1 = yes) |    Integer |    Nominal    |
 | `finances`    | Amount of Money Per Month (0 = not enough, 1 = just enough, 2 = some extra) |    Integer |    Ordinal    |
 | `support`    | Amount of Social Support  | Double | Scale      |
@@ -86,8 +86,62 @@ depression2
 
 ```
 
+In addition, we will change all the discrete variables to factors. 
 
-### Plotting Relationships to DCL-9
+```{r}
+depression2$sex <- factor(depression2$sex, levels = c(0,1), 
+                          labels = c("Female","Male"))
+depression2$children <- factor(depression2$children, levels = c(0,1), 
+                               labels = c("NoChildren","Children"))
+
+depression2$finances <- factor(depression2$finances, levels = c(0,1,2),
+                               labels= c("NotENough","Enough","SomeExtra"))
+                               
+
+```
+
+
+
+### Dealing with Missingness
+It is worth noting that in this toy data set, the max score for any participant is always going to be "9" because there is no missing data. If there is missing data, the max score for any one row may be different. We can still use weighted binomial regression with bounded counts with data with missing values if we adjust the max score for any rows with missing values. 
+
+
+Let's load in the same DCL data set but with missing values in DCL scores in each row. 
+
+```{r}
+## Read in data from file
+depression_m <- read_csv("depression_checklist_m.csv")
+depression_m
+```
+
+When there is missing NA values for scores in our measure, we can slightly adjust our code to reflect a different max score for each row (thus, the weight for each row is different).
+
+```{r}
+depression3 <- 
+  depression_m |>
+  mutate(
+    dcl_max = rowSums(!is.na(pick(dcl_1:dcl_9))), 
+    dcl_sum = rowSums(pick(dcl_1:dcl_9),na.rm = TRUE),
+    dcl9_p = dcl_sum / dcl_max
+  )
+depression3 
+```
+```{r, warning=FALSE,echo=FALSE}
+mytheme <- theme_bw(
+  base_size = 12
+)
+```
+
+
+### Plotting Relationships in DCL-9
+
+First let's consider the shape of the distribution of the counts/scores. 
+
+```{r}
+ggplot(depression2, aes(x = dcl_sum)) +
+  geom_bar() + mytheme
+```
+
 
 Let's first plot to see any relationship between the `support` and the weighted DCL-9 score (`dcl9_p`).  We tend to see that more of the data points, especially at higher DCL-9 scores, fall in the higher values of `support` which suggests a positive relationship between support and depression severity; in other words, the higher the support, the higher the score on the DCL-9 (and more depression symptoms). While this may seem visually counter-intuitive, note that it is possible that most people in our sample may have depression symptoms despite having support, and that the plot is misleading (especially since the amount of `dcl9_p` scores are visually about the same across the higher levels of `support`). 
 
@@ -97,9 +151,29 @@ ggplot(depression2, aes(x = support, y = dcl9_p)) +
 
 ```
 
+# Models Without Interaction Terms
+
+First, let's take a look at the case for models with one dummy coded categorical predictor variable and one continuous predictor without any interaction term.  
+
+## Less Correct: the General Linear Model
+
+Before we fit the binary regression, it would be worthwhile to try fitting the less appropriate regular general linear model. We'll use our old friend `lm()` to assess the relationship between the outcome variable `dcl9_p` with the predictor variables `support` and `sex`. For more information on general linear modeling, we covered these topics in our <b>Regression Recap</b> chapter.
+
+```{r}
+fitlm1 <- lm(
+  formula = dcl_sum ~ sex + support,
+  data = depression2
+)
+
+model_parameters(fitlm1) |> print_md()
+
+```
+
+
+
+
 
 # Fitting the Weighted Binomial Regression Models
-
 
 ## One Continous Predictor
 
@@ -116,17 +190,25 @@ As mentioned before, we will consider the effect of `support`.
 We then assess the results with `model_paramters()`. 
 
 ```{r}
-fit2 <- glm(
-  formula = dcl9_p ~ support,
-  family = binomial(link = "logit"),
-  weights = dcl_max,
-  data = depression2
-)
-
-model_parameters(fit2) |> print_md()
+# fit1 <- glm(
+#   formula = dcl9_p ~ sex + support,
+#   family = binomial(link = "logit"),
+#   weights = dcl_max,
+#   data = depression2
+# )
+# 
+# model_parameters(fit1) |> print_md()
 
 ```
 
+```{r}
+# fit1 <- glmmTMB( 
+#   formula = dcl9_p ~ sex + support,
+#   family = betabinomial(link = "logit"),
+#   weights = dcl_max,
+#   data = depression2
+# )
+```
 
 ### Parameter Table Interpretation (Log-odds)
 
@@ -142,14 +224,14 @@ Although this is technically true, it isn't at first clear what it means to have
 
 -   This effect is also statistically significant from 0 ($p<0.001$). Remember, with log-odds, a value of 0 means it is equally likely for an event to occur or not occur. In this case, since it is significantly less than 0, we can say it is more likely to not have a symptom than have a symptom (i.e. score less on the DCL-9 than score more) when predicted by `support`. 
 
-- As mentioned before, with weighted binomial regression the values of the outcome variable are interchangeable, so our parameter results speak in reference to obtaining <i>one</i> value difference on the outcome variable. Therefore, when log-odds $= -0.52$, that is in reference to decreasing (because it is negative) the outcome variable score by one value lower. 
+- As mentioned before, with weighted binomial regression the values of the outcome variable are interchangeable, so our parameter results speak in reference to obtaining <i>one</i> value difference on the outcome variable. In other words, we are estimating the likelihood of endorsing any single symptom of depression. Therefore, when log-odds $= -0.52$, that is in reference to decreasing (because it is negative) the outcome variable score by one value lower. 
 
 ### Parameter Table Interpretation (Odds)
 
 We can also present the results in odds ratios by using the "exponentiate" input argument. 
 
 ```{r}
-model_parameters(fit2, exponentiate = TRUE) |> print_md()
+#model_parameters(fit2, exponentiate = TRUE) |> print_md()
 ```
 
 Now that we are in odds, we can adjust our previous interpretation of the `support` parameter for odds:
@@ -171,7 +253,7 @@ A convenient transformation is taking the log-odds and converting into probabili
 We can assess this relationship with the `predict_response()` function. It outputs a plot with the Y-axis as "the probability of `DCL-9`" and the X-axis as the predictor (in this case `support`) in raw units, and it overlays the predicted probability on top of the data.
 
 ```{r, warning=FALSE,message=FALSE}
-predict_response(fit2, terms = "support") |> plot(show_data = TRUE)
+#predict_response(fit2, terms = "support") |> plot(show_data = TRUE)
 
 ```
 
@@ -252,16 +334,16 @@ Let's consider the question "Is there a relationship between gender and the log-
 Remember, first we have to change our predictor variable to a factor (i.e., a dummy-coded variable), and then we can fit with `glm()`. 
 
 ```{r}
-depression2$gender <- factor(depression2$gender, levels = c(0,1), labels = c("Female","Male")) #change to factor
-
-fit4 <- glm(
-  formula = dcl9_p ~ gender, 
-  family = binomial(link = "logit"), 
-  weights = dcl_max,
-  data = depression2
-)
-
-model_parameters(fit4) |> print_md()
+# depression2$gender <- factor(depression2$gender, levels = c(0,1), labels = c("Female","Male")) #change to factor
+# 
+# fit4 <- glm(
+#   formula = dcl9_p ~ gender, 
+#   family = binomial(link = "logit"), 
+#   weights = dcl_max,
+#   data = depression2
+# )
+# 
+# model_parameters(fit4) |> print_md()
 ```
 
 
@@ -278,8 +360,8 @@ Remember, although we are performing a weighted binomial (logistic) regression, 
 ### Estimating means and plots 
 
 ```{r}
-gmeans1 <- estimate_means(fit4, by = c("gender")) 
-gmeans1 |> print_md()
+# gmeans1 <- estimate_means(fit4, by = c("gender")) 
+# gmeans1 |> print_md()
 ```
 
 
@@ -288,7 +370,7 @@ gmeans1 |> print_md()
 Like in other logistic regression models, we can convert to odds ratios with `model_parameters` and "exponentiate" input argument. 
 
 ```{r}
-model_parameters(fit4, exponentiate = TRUE) |> print_md()
+# model_parameters(fit4, exponentiate = TRUE) |> print_md()
 ```
 
 > The intercept is the average odds of scoring one-unit higher on the PHQ-9 for women. In this case, women have a base odds of 1.32 for scoring higher on the DCL-9. Since it is greater than 1, it is more likely for someone to score one-unit higher. 
@@ -302,7 +384,7 @@ In other words, both log-odds and odds ratio show that men have a increased chan
 ### Predicted Probability
 
 ```{r, warning=FALSE,message=FALSE}
-predict_response(fit4, terms = "gender") |> plot(show_data = TRUE)
+# predict_response(fit4, terms = "gender") |> plot(show_data = TRUE)
 ```
 
 When the predicted probabilities are plotted, we can visualize the differences in probabilities of women versus men. 

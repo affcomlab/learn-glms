@@ -1,0 +1,5 @@
+---
+title: "unbounded-count-regression"
+---
+
+When modeling count data, you aren't always sure if there is an upper bound to the count. 

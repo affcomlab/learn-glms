@@ -31,5 +31,8 @@
   },
   "count-regression.qmd": {
     "count-regression.html": "14170a41"
+  },
+  "unbounded-count-regression.qmd": {
+    "unbounded-count-regression.html": "5f1fd391"
   }
 }

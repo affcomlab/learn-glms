@@ -64,7 +64,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./linear-models.html" rel="next">
+<link href="./unbounded-count-regression.html" rel="next">
 <link href="./binary-regression.html" rel="prev">
 <link href="./cover.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js"></script>
@@ -176,14 +176,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./unbounded-count-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">unbounded-count-regression</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./linear-models.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Linear models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Linear models</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./summary.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Summary</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Summary</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -224,30 +230,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#loading-the-packages-and-reading-in-data" id="toc-loading-the-packages-and-reading-in-data" class="nav-link" data-scroll-target="#loading-the-packages-and-reading-in-data"><span class="header-section-number">4.3</span> Loading the Packages and Reading in Data</a></li>
   <li><a href="#prepare-data-exploratory-data-analysis" id="toc-prepare-data-exploratory-data-analysis" class="nav-link" data-scroll-target="#prepare-data-exploratory-data-analysis"><span class="header-section-number">4.4</span> Prepare Data / Exploratory Data Analysis</a>
   <ul class="collapse">
-  <li><a href="#plotting-relationships-to-dcl-9" id="toc-plotting-relationships-to-dcl-9" class="nav-link" data-scroll-target="#plotting-relationships-to-dcl-9"><span class="header-section-number">4.4.1</span> Plotting Relationships to DCL-9</a></li>
+  <li><a href="#dealing-with-missingness" id="toc-dealing-with-missingness" class="nav-link" data-scroll-target="#dealing-with-missingness"><span class="header-section-number">4.4.1</span> Dealing with Missingness</a></li>
+  <li><a href="#plotting-relationships-in-dcl-9" id="toc-plotting-relationships-in-dcl-9" class="nav-link" data-scroll-target="#plotting-relationships-in-dcl-9"><span class="header-section-number">4.4.2</span> Plotting Relationships in DCL-9</a></li>
   </ul></li>
-  <li><a href="#fitting-the-weighted-binomial-regression-models" id="toc-fitting-the-weighted-binomial-regression-models" class="nav-link" data-scroll-target="#fitting-the-weighted-binomial-regression-models"><span class="header-section-number">5</span> Fitting the Weighted Binomial Regression Models</a>
+  <li><a href="#models-without-interaction-terms" id="toc-models-without-interaction-terms" class="nav-link" data-scroll-target="#models-without-interaction-terms"><span class="header-section-number">5</span> Models Without Interaction Terms</a>
   <ul class="collapse">
-  <li><a href="#one-continous-predictor" id="toc-one-continous-predictor" class="nav-link" data-scroll-target="#one-continous-predictor"><span class="header-section-number">5.1</span> One Continous Predictor</a>
-  <ul class="collapse">
-  <li><a href="#parameter-table-interpretation-log-odds" id="toc-parameter-table-interpretation-log-odds" class="nav-link" data-scroll-target="#parameter-table-interpretation-log-odds"><span class="header-section-number">5.1.1</span> Parameter Table Interpretation (Log-odds)</a></li>
-  <li><a href="#parameter-table-interpretation-odds" id="toc-parameter-table-interpretation-odds" class="nav-link" data-scroll-target="#parameter-table-interpretation-odds"><span class="header-section-number">5.1.2</span> Parameter Table Interpretation (Odds)</a></li>
-  <li><a href="#predicted-probability" id="toc-predicted-probability" class="nav-link" data-scroll-target="#predicted-probability"><span class="header-section-number">5.1.3</span> Predicted Probability</a></li>
-  <li><a href="#parameter-table-interpretation-log-odds-1" id="toc-parameter-table-interpretation-log-odds-1" class="nav-link" data-scroll-target="#parameter-table-interpretation-log-odds-1"><span class="header-section-number">5.1.4</span> Parameter Table Interpretation (Log-odds)</a></li>
-  <li><a href="#parameter-table-interpretation-odds-1" id="toc-parameter-table-interpretation-odds-1" class="nav-link" data-scroll-target="#parameter-table-interpretation-odds-1"><span class="header-section-number">5.1.5</span> Parameter Table Interpretation (Odds)</a></li>
-  <li><a href="#predicted-probability-1" id="toc-predicted-probability-1" class="nav-link" data-scroll-target="#predicted-probability-1"><span class="header-section-number">5.1.6</span> Predicted Probability</a></li>
+  <li><a href="#less-correct-the-general-linear-model" id="toc-less-correct-the-general-linear-model" class="nav-link" data-scroll-target="#less-correct-the-general-linear-model"><span class="header-section-number">5.1</span> Less Correct: the General Linear Model</a></li>
   </ul></li>
-  <li><a href="#one-dummy-coded-predictor" id="toc-one-dummy-coded-predictor" class="nav-link" data-scroll-target="#one-dummy-coded-predictor"><span class="header-section-number">5.2</span> One Dummy Coded Predictor</a>
+  <li><a href="#fitting-the-weighted-binomial-regression-models" id="toc-fitting-the-weighted-binomial-regression-models" class="nav-link" data-scroll-target="#fitting-the-weighted-binomial-regression-models"><span class="header-section-number">6</span> Fitting the Weighted Binomial Regression Models</a>
   <ul class="collapse">
-  <li><a href="#parameter-table-interpretation-log-odds-2" id="toc-parameter-table-interpretation-log-odds-2" class="nav-link" data-scroll-target="#parameter-table-interpretation-log-odds-2"><span class="header-section-number">5.2.1</span> Parameter Table Interpretation (Log-odds)</a></li>
-  <li><a href="#estimating-means-and-plots" id="toc-estimating-means-and-plots" class="nav-link" data-scroll-target="#estimating-means-and-plots"><span class="header-section-number">5.2.2</span> Estimating means and plots</a></li>
-  <li><a href="#parameter-table-interpretation-odds-2" id="toc-parameter-table-interpretation-odds-2" class="nav-link" data-scroll-target="#parameter-table-interpretation-odds-2"><span class="header-section-number">5.2.3</span> Parameter Table Interpretation (Odds)</a></li>
-  <li><a href="#predicted-probability-2" id="toc-predicted-probability-2" class="nav-link" data-scroll-target="#predicted-probability-2"><span class="header-section-number">5.2.4</span> Predicted Probability</a></li>
+  <li><a href="#one-continous-predictor" id="toc-one-continous-predictor" class="nav-link" data-scroll-target="#one-continous-predictor"><span class="header-section-number">6.1</span> One Continous Predictor</a>
+  <ul class="collapse">
+  <li><a href="#parameter-table-interpretation-log-odds" id="toc-parameter-table-interpretation-log-odds" class="nav-link" data-scroll-target="#parameter-table-interpretation-log-odds"><span class="header-section-number">6.1.1</span> Parameter Table Interpretation (Log-odds)</a></li>
+  <li><a href="#parameter-table-interpretation-odds" id="toc-parameter-table-interpretation-odds" class="nav-link" data-scroll-target="#parameter-table-interpretation-odds"><span class="header-section-number">6.1.2</span> Parameter Table Interpretation (Odds)</a></li>
+  <li><a href="#predicted-probability" id="toc-predicted-probability" class="nav-link" data-scroll-target="#predicted-probability"><span class="header-section-number">6.1.3</span> Predicted Probability</a></li>
+  <li><a href="#parameter-table-interpretation-log-odds-1" id="toc-parameter-table-interpretation-log-odds-1" class="nav-link" data-scroll-target="#parameter-table-interpretation-log-odds-1"><span class="header-section-number">6.1.4</span> Parameter Table Interpretation (Log-odds)</a></li>
+  <li><a href="#parameter-table-interpretation-odds-1" id="toc-parameter-table-interpretation-odds-1" class="nav-link" data-scroll-target="#parameter-table-interpretation-odds-1"><span class="header-section-number">6.1.5</span> Parameter Table Interpretation (Odds)</a></li>
+  <li><a href="#predicted-probability-1" id="toc-predicted-probability-1" class="nav-link" data-scroll-target="#predicted-probability-1"><span class="header-section-number">6.1.6</span> Predicted Probability</a></li>
   </ul></li>
-  <li><a href="#one-dummy-coded-predictor-and-one-continous-predictor" id="toc-one-dummy-coded-predictor-and-one-continous-predictor" class="nav-link" data-scroll-target="#one-dummy-coded-predictor-and-one-continous-predictor"><span class="header-section-number">5.3</span> One Dummy Coded Predictor and One Continous Predictor</a>
+  <li><a href="#one-dummy-coded-predictor" id="toc-one-dummy-coded-predictor" class="nav-link" data-scroll-target="#one-dummy-coded-predictor"><span class="header-section-number">6.2</span> One Dummy Coded Predictor</a>
   <ul class="collapse">
-  <li><a href="#paramter-table-interpretation-log-odds" id="toc-paramter-table-interpretation-log-odds" class="nav-link" data-scroll-target="#paramter-table-interpretation-log-odds"><span class="header-section-number">5.3.1</span> Paramter Table Interpretation (Log-odds)</a></li>
-  <li><a href="#parameter-table-interpretation-odds-ratio" id="toc-parameter-table-interpretation-odds-ratio" class="nav-link" data-scroll-target="#parameter-table-interpretation-odds-ratio"><span class="header-section-number">5.3.2</span> Parameter Table Interpretation (Odds Ratio)</a></li>
+  <li><a href="#parameter-table-interpretation-log-odds-2" id="toc-parameter-table-interpretation-log-odds-2" class="nav-link" data-scroll-target="#parameter-table-interpretation-log-odds-2"><span class="header-section-number">6.2.1</span> Parameter Table Interpretation (Log-odds)</a></li>
+  <li><a href="#estimating-means-and-plots" id="toc-estimating-means-and-plots" class="nav-link" data-scroll-target="#estimating-means-and-plots"><span class="header-section-number">6.2.2</span> Estimating means and plots</a></li>
+  <li><a href="#parameter-table-interpretation-odds-2" id="toc-parameter-table-interpretation-odds-2" class="nav-link" data-scroll-target="#parameter-table-interpretation-odds-2"><span class="header-section-number">6.2.3</span> Parameter Table Interpretation (Odds)</a></li>
+  <li><a href="#predicted-probability-2" id="toc-predicted-probability-2" class="nav-link" data-scroll-target="#predicted-probability-2"><span class="header-section-number">6.2.4</span> Predicted Probability</a></li>
+  </ul></li>
+  <li><a href="#one-dummy-coded-predictor-and-one-continous-predictor" id="toc-one-dummy-coded-predictor-and-one-continous-predictor" class="nav-link" data-scroll-target="#one-dummy-coded-predictor-and-one-continous-predictor"><span class="header-section-number">6.3</span> One Dummy Coded Predictor and One Continous Predictor</a>
+  <ul class="collapse">
+  <li><a href="#paramter-table-interpretation-log-odds" id="toc-paramter-table-interpretation-log-odds" class="nav-link" data-scroll-target="#paramter-table-interpretation-log-odds"><span class="header-section-number">6.3.1</span> Paramter Table Interpretation (Log-odds)</a></li>
+  <li><a href="#parameter-table-interpretation-odds-ratio" id="toc-parameter-table-interpretation-odds-ratio" class="nav-link" data-scroll-target="#parameter-table-interpretation-odds-ratio"><span class="header-section-number">6.3.2</span> Parameter Table Interpretation (Odds Ratio)</a></li>
   </ul></li>
   </ul></li>
   </ul>
@@ -306,18 +317,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>depression</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 297 × 13
-   gender children finances support dcl_1 dcl_2 dcl_3 dcl_4 dcl_5 dcl_6 dcl_7
-    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
- 1      0        0        0   2.54      1     1     1     1     1     1     1
- 2      1        1        1   3.92      1     1     1     1     1     1     1
- 3      1        0        2   4         0     0     0     0     0     0     0
- 4      0        0        1   1.42      1     1     1     1     0     1     0
- 5      1        1        1   0.958     1     1     1     1     1     1     1
- 6      0        0        2   2.92      0     0     0     0     0     0     0
- 7      0        1        1   3.21      1     1     1     1     1     1     1
- 8      1        1        1   2.33      0     0     0     0     0     0     0
- 9      1        1        2   2.42      0     0     1     1     1     0     0
-10      0        0        1   2.33      1     1     1     1     1     1     1
+     sex children finances support dcl_1 dcl_2 dcl_3 dcl_4 dcl_5 dcl_6 dcl_7
+   &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+ 1     0        0        0   2.54      1     1     1     1     1     1     1
+ 2     1        1        1   3.92      1     1     1     1     1     1     1
+ 3     1        0        2   4         0     0     0     0     0     0     0
+ 4     0        0        1   1.42      1     1     1     1     0     1     0
+ 5     1        1        1   0.958     1     1     1     1     1     1     1
+ 6     0        0        2   2.92      0     0     0     0     0     0     0
+ 7     0        1        1   3.21      1     1     1     1     1     1     1
+ 8     1        1        1   2.33      0     0     0     0     0     0     0
+ 9     1        1        2   2.42      0     0     1     1     1     0     0
+10     0        0        1   2.33      1     1     1     1     1     1     1
 # ℹ 287 more rows
 # ℹ 2 more variables: dcl_8 &lt;dbl&gt;, dcl_9 &lt;dbl&gt;</code></pre>
 </div>
@@ -341,8 +352,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td><code>gender</code></td>
-<td style="text-align: left;">Gender of Participant (0 = Female, 1 = Male)</td>
+<td><code>sex</code></td>
+<td style="text-align: left;">Sex of Participant (0 = Female, 1 = Male)</td>
 <td style="text-align: right;">Integer</td>
 <td style="text-align: center;">Ordinal</td>
 </tr>
@@ -395,39 +406,178 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>depression2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 297 × 16
-   gender children finances support dcl_1 dcl_2 dcl_3 dcl_4 dcl_5 dcl_6 dcl_7
-    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
- 1      0        0        0   2.54      1     1     1     1     1     1     1
- 2      1        1        1   3.92      1     1     1     1     1     1     1
- 3      1        0        2   4         0     0     0     0     0     0     0
- 4      0        0        1   1.42      1     1     1     1     0     1     0
- 5      1        1        1   0.958     1     1     1     1     1     1     1
- 6      0        0        2   2.92      0     0     0     0     0     0     0
- 7      0        1        1   3.21      1     1     1     1     1     1     1
- 8      1        1        1   2.33      0     0     0     0     0     0     0
- 9      1        1        2   2.42      0     0     1     1     1     0     0
-10      0        0        1   2.33      1     1     1     1     1     1     1
+     sex children finances support dcl_1 dcl_2 dcl_3 dcl_4 dcl_5 dcl_6 dcl_7
+   &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+ 1     0        0        0   2.54      1     1     1     1     1     1     1
+ 2     1        1        1   3.92      1     1     1     1     1     1     1
+ 3     1        0        2   4         0     0     0     0     0     0     0
+ 4     0        0        1   1.42      1     1     1     1     0     1     0
+ 5     1        1        1   0.958     1     1     1     1     1     1     1
+ 6     0        0        2   2.92      0     0     0     0     0     0     0
+ 7     0        1        1   3.21      1     1     1     1     1     1     1
+ 8     1        1        1   2.33      0     0     0     0     0     0     0
+ 9     1        1        2   2.42      0     0     1     1     1     0     0
+10     0        0        1   2.33      1     1     1     1     1     1     1
 # ℹ 287 more rows
 # ℹ 5 more variables: dcl_8 &lt;dbl&gt;, dcl_9 &lt;dbl&gt;, dcl_max &lt;dbl&gt;, dcl_sum &lt;dbl&gt;,
 #   dcl9_p &lt;dbl&gt;</code></pre>
 </div>
 </div>
-<section id="plotting-relationships-to-dcl-9" class="level3" data-number="4.4.1">
-<h3 data-number="4.4.1" class="anchored" data-anchor-id="plotting-relationships-to-dcl-9"><span class="header-section-number">4.4.1</span> Plotting Relationships to DCL-9</h3>
+<p>In addition, we will change all the discrete variables to factors.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>depression2<span class="sc">$</span>sex <span class="ot">&lt;-</span> <span class="fu">factor</span>(depression2<span class="sc">$</span>sex, <span class="at">levels =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>                          <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Female"</span>,<span class="st">"Male"</span>))</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>depression2<span class="sc">$</span>children <span class="ot">&lt;-</span> <span class="fu">factor</span>(depression2<span class="sc">$</span>children, <span class="at">levels =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>                               <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"NoChildren"</span>,<span class="st">"Children"</span>))</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>depression2<span class="sc">$</span>finances <span class="ot">&lt;-</span> <span class="fu">factor</span>(depression2<span class="sc">$</span>finances, <span class="at">levels =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>),</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>                               <span class="at">labels=</span> <span class="fu">c</span>(<span class="st">"NotENough"</span>,<span class="st">"Enough"</span>,<span class="st">"SomeExtra"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="dealing-with-missingness" class="level3" data-number="4.4.1">
+<h3 data-number="4.4.1" class="anchored" data-anchor-id="dealing-with-missingness"><span class="header-section-number">4.4.1</span> Dealing with Missingness</h3>
+<p>It is worth noting that in this toy data set, the max score for any participant is always going to be “9” because there is no missing data. If there is missing data, the max score for any one row may be different. We can still use weighted binomial regression with bounded counts with data with missing values if we adjust the max score for any rows with missing values.</p>
+<p>Let’s load in the same DCL data set but with missing values in DCL scores in each row.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Read in data from file</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>depression_m <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"depression_checklist_m.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 297 Columns: 13
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+dbl (13): sex, children, finances, support, dcl_1, dcl_2, dcl_3, dcl_4, dcl_...
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>depression_m</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 297 × 13
+     sex children finances support dcl_1 dcl_2 dcl_3 dcl_4 dcl_5 dcl_6 dcl_7
+   &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+ 1     0        0        0   2.54      1     1     1     1     1    NA     1
+ 2     1        1        1   3.92      1     1     1     1     1     1     1
+ 3     1        0        2   4         0     0     0     0     0     0     0
+ 4     0        0        1   1.42      1     1     1     1     0     1     0
+ 5     1        1        1   0.958    NA     1     1     1     1     1     1
+ 6     0        0        2   2.92      0     0     0    NA     0     0     0
+ 7     0        1        1   3.21      1     1     1     1     1     1     1
+ 8     1        1        1   2.33      0     0     0     0     0     0     0
+ 9     1        1        2   2.42      0     0     1     1     1     0    NA
+10     0        0        1   2.33      1     1     1     1    NA     1     1
+# ℹ 287 more rows
+# ℹ 2 more variables: dcl_8 &lt;dbl&gt;, dcl_9 &lt;dbl&gt;</code></pre>
+</div>
+</div>
+<p>When there is missing NA values for scores in our measure, we can slightly adjust our code to reflect a different max score for each row (thus, the weight for each row is different).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>depression3 <span class="ot">&lt;-</span> </span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  depression_m <span class="sc">|&gt;</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">dcl_max =</span> <span class="fu">rowSums</span>(<span class="sc">!</span><span class="fu">is.na</span>(<span class="fu">pick</span>(dcl_1<span class="sc">:</span>dcl_9))), </span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">dcl_sum =</span> <span class="fu">rowSums</span>(<span class="fu">pick</span>(dcl_1<span class="sc">:</span>dcl_9),<span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">dcl9_p =</span> dcl_sum <span class="sc">/</span> dcl_max</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>depression3 </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 297 × 16
+     sex children finances support dcl_1 dcl_2 dcl_3 dcl_4 dcl_5 dcl_6 dcl_7
+   &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+ 1     0        0        0   2.54      1     1     1     1     1    NA     1
+ 2     1        1        1   3.92      1     1     1     1     1     1     1
+ 3     1        0        2   4         0     0     0     0     0     0     0
+ 4     0        0        1   1.42      1     1     1     1     0     1     0
+ 5     1        1        1   0.958    NA     1     1     1     1     1     1
+ 6     0        0        2   2.92      0     0     0    NA     0     0     0
+ 7     0        1        1   3.21      1     1     1     1     1     1     1
+ 8     1        1        1   2.33      0     0     0     0     0     0     0
+ 9     1        1        2   2.42      0     0     1     1     1     0    NA
+10     0        0        1   2.33      1     1     1     1    NA     1     1
+# ℹ 287 more rows
+# ℹ 5 more variables: dcl_8 &lt;dbl&gt;, dcl_9 &lt;dbl&gt;, dcl_max &lt;dbl&gt;, dcl_sum &lt;dbl&gt;,
+#   dcl9_p &lt;dbl&gt;</code></pre>
+</div>
+</div>
+</section>
+<section id="plotting-relationships-in-dcl-9" class="level3" data-number="4.4.2">
+<h3 data-number="4.4.2" class="anchored" data-anchor-id="plotting-relationships-in-dcl-9"><span class="header-section-number">4.4.2</span> Plotting Relationships in DCL-9</h3>
+<p>First let’s consider the shape of the distribution of the counts/scores.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(depression2, <span class="fu">aes</span>(<span class="at">x =</span> dcl_sum)) <span class="sc">+</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>() <span class="sc">+</span> mytheme</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="count-regression_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
 <p>Let’s first plot to see any relationship between the <code>support</code> and the weighted DCL-9 score (<code>dcl9_p</code>). We tend to see that more of the data points, especially at higher DCL-9 scores, fall in the higher values of <code>support</code> which suggests a positive relationship between support and depression severity; in other words, the higher the support, the higher the score on the DCL-9 (and more depression symptoms). While this may seem visually counter-intuitive, note that it is possible that most people in our sample may have depression symptoms despite having support, and that the plot is misleading (especially since the amount of <code>dcl9_p</code> scores are visually about the same across the higher levels of <code>support</code>).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(depression2, <span class="fu">aes</span>(<span class="at">x =</span> support, <span class="at">y =</span> dcl9_p)) <span class="sc">+</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> mytheme</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(depression2, <span class="fu">aes</span>(<span class="at">x =</span> support, <span class="at">y =</span> dcl9_p)) <span class="sc">+</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> mytheme</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="count-regression_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+<p><img src="count-regression_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </section>
 </section>
-<section id="fitting-the-weighted-binomial-regression-models" class="level1" data-number="5">
-<h1 data-number="5"><span class="header-section-number">5</span> Fitting the Weighted Binomial Regression Models</h1>
-<section id="one-continous-predictor" class="level2" data-number="5.1">
-<h2 data-number="5.1" class="anchored" data-anchor-id="one-continous-predictor"><span class="header-section-number">5.1</span> One Continous Predictor</h2>
+<section id="models-without-interaction-terms" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Models Without Interaction Terms</h1>
+<p>First, let’s take a look at the case for models with one dummy coded categorical predictor variable and one continuous predictor without any interaction term.</p>
+<section id="less-correct-the-general-linear-model" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="less-correct-the-general-linear-model"><span class="header-section-number">5.1</span> Less Correct: the General Linear Model</h2>
+<p>Before we fit the binary regression, it would be worthwhile to try fitting the less appropriate regular general linear model. We’ll use our old friend <code>lm()</code> to assess the relationship between the outcome variable <code>dcl9_p</code> with the predictor variables <code>support</code> and <code>sex</code>. For more information on general linear modeling, we covered these topics in our <b>Regression Recap</b> chapter.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>fitlm1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> dcl_sum <span class="sc">~</span> sex <span class="sc">+</span> support,</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> depression2</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fitlm1) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Parameter</th>
+<th style="text-align: center;">Coefficient</th>
+<th style="text-align: center;">SE</th>
+<th style="text-align: center;">95% CI</th>
+<th style="text-align: center;">t(294)</th>
+<th style="text-align: center;">p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: center;">7.70</td>
+<td style="text-align: center;">0.47</td>
+<td style="text-align: center;">(6.77, 8.64)</td>
+<td style="text-align: center;">16.26</td>
+<td style="text-align: center;">&lt; .001</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">sex (Male)</td>
+<td style="text-align: center;">0.64</td>
+<td style="text-align: center;">0.31</td>
+<td style="text-align: center;">(0.02, 1.26)</td>
+<td style="text-align: center;">2.05</td>
+<td style="text-align: center;">0.042</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">support</td>
+<td style="text-align: center;">-1.06</td>
+<td style="text-align: center;">0.17</td>
+<td style="text-align: center;">(-1.39, -0.73)</td>
+<td style="text-align: center;">-6.32</td>
+<td style="text-align: center;">&lt; .001</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+</section>
+<section id="fitting-the-weighted-binomial-regression-models" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> Fitting the Weighted Binomial Regression Models</h1>
+<section id="one-continous-predictor" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="one-continous-predictor"><span class="header-section-number">6.1</span> One Continous Predictor</h2>
 <p>When we fit our weighted binomial regression, we now will use the <code>glm()</code> function.</p>
 <p>We did a lot of work already with the <code>lm()</code> in the “Regression Recap”. The <code>glm()</code> function is in many ways the same as the <code>lm()</code> function. Even the syntax for how we write the equation is the same. In addition, we can use the same <code>model_parameters()</code> function to get our table of parameter estimates. Indeed, we will use the <code>glm()</code> function for the remainder of the rest of the online modules.</p>
 <p>But for weighted binomial regression, notice that the <code>glm()</code> function has two more input arguments. These input arguments are the “family” input argument, which requires which “family of distributions” to use and which “link function” choice, and a “weights” argument, which is a column in the dataset that represents the max score for each proportion.</p>
@@ -435,49 +585,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>As mentioned before, we will consider the effect of <code>support</code>.</p>
 <p>We then assess the results with <code>model_paramters()</code>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>fit2 <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> dcl9_p <span class="sc">~</span> support,</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"logit"</span>),</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">weights =</span> dcl_max,</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> depression2</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit2) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<table class="table table-sm table-striped small">
-<thead>
-<tr class="header">
-<th style="text-align: left;">Parameter</th>
-<th style="text-align: center;">Log-Odds</th>
-<th style="text-align: center;">SE</th>
-<th style="text-align: center;">95% CI</th>
-<th style="text-align: center;">z</th>
-<th style="text-align: center;">p</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">(Intercept)</td>
-<td style="text-align: center;">1.75</td>
-<td style="text-align: center;">0.13</td>
-<td style="text-align: center;">(1.50, 2.01)</td>
-<td style="text-align: center;">13.43</td>
-<td style="text-align: center;">&lt; .001</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">support</td>
-<td style="text-align: center;">-0.52</td>
-<td style="text-align: center;">0.05</td>
-<td style="text-align: center;">(-0.61, -0.42)</td>
-<td style="text-align: center;">-10.81</td>
-<td style="text-align: center;">&lt; .001</td>
-</tr>
-</tbody>
-</table>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fit1 &lt;- glm(</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co">#   formula = dcl9_p ~ sex + support,</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   family = binomial(link = "logit"),</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   weights = dcl_max,</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="co">#   data = depression2</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="co"># )</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="co"># model_parameters(fit1) |&gt; print_md()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fit1 &lt;- glmmTMB( </span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co">#   formula = dcl9_p ~ sex + support,</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   family = betabinomial(link = "logit"),</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   weights = dcl_max,</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="co">#   data = depression2</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="co"># )</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<section id="parameter-table-interpretation-log-odds" class="level3" data-number="5.1.1">
-<h3 data-number="5.1.1" class="anchored" data-anchor-id="parameter-table-interpretation-log-odds"><span class="header-section-number">5.1.1</span> Parameter Table Interpretation (Log-odds)</h3>
+<section id="parameter-table-interpretation-log-odds" class="level3" data-number="6.1.1">
+<h3 data-number="6.1.1" class="anchored" data-anchor-id="parameter-table-interpretation-log-odds"><span class="header-section-number">6.1.1</span> Parameter Table Interpretation (Log-odds)</h3>
 <p>Again, the parameter table output from a model fit with <code>glm()</code> looks very similar to parameter table outputs from models fit with <code>lm()</code>. But there is a <b>big</b> difference – in <code>glm()</code> models, we are no longer working in the same raw units!</p>
 <p>This difference is clear in the second column of the output table: “Log-Odds”. Because we fit a logistic regression with a logit function, the parameter values are in “log-odds” unit. Technically, when <code>support</code> is in log-odds units, we can only say:</p>
 <blockquote class="blockquote">
@@ -487,46 +613,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ul>
 <li><p>If log-odds $ = -0.52$, then it is less than 0, meaning it is more likely to have a lower DCL-9 score (than a higher DCL-9 score) when we use <code>support</code> as a predictor.</p></li>
 <li><p>This effect is also statistically significant from 0 (<span class="math inline">\(p&lt;0.001\)</span>). Remember, with log-odds, a value of 0 means it is equally likely for an event to occur or not occur. In this case, since it is significantly less than 0, we can say it is more likely to not have a symptom than have a symptom (i.e.&nbsp;score less on the DCL-9 than score more) when predicted by <code>support</code>.</p></li>
-<li><p>As mentioned before, with weighted binomial regression the values of the outcome variable are interchangeable, so our parameter results speak in reference to obtaining <i>one</i> value difference on the outcome variable. Therefore, when log-odds <span class="math inline">\(= -0.52\)</span>, that is in reference to decreasing (because it is negative) the outcome variable score by one value lower.</p></li>
+<li><p>As mentioned before, with weighted binomial regression the values of the outcome variable are interchangeable, so our parameter results speak in reference to obtaining <i>one</i> value difference on the outcome variable. In other words, we are estimating the likelihood of endorsing any single symptom of depression. Therefore, when log-odds <span class="math inline">\(= -0.52\)</span>, that is in reference to decreasing (because it is negative) the outcome variable score by one value lower.</p></li>
 </ul>
 </section>
-<section id="parameter-table-interpretation-odds" class="level3" data-number="5.1.2">
-<h3 data-number="5.1.2" class="anchored" data-anchor-id="parameter-table-interpretation-odds"><span class="header-section-number">5.1.2</span> Parameter Table Interpretation (Odds)</h3>
+<section id="parameter-table-interpretation-odds" class="level3" data-number="6.1.2">
+<h3 data-number="6.1.2" class="anchored" data-anchor-id="parameter-table-interpretation-odds"><span class="header-section-number">6.1.2</span> Parameter Table Interpretation (Odds)</h3>
 <p>We can also present the results in odds ratios by using the “exponentiate” input argument.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit2, <span class="at">exponentiate =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<table class="table table-sm table-striped small">
-<thead>
-<tr class="header">
-<th style="text-align: left;">Parameter</th>
-<th style="text-align: center;">Odds Ratio</th>
-<th style="text-align: center;">SE</th>
-<th style="text-align: center;">95% CI</th>
-<th style="text-align: center;">z</th>
-<th style="text-align: center;">p</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">(Intercept)</td>
-<td style="text-align: center;">5.77</td>
-<td style="text-align: center;">0.75</td>
-<td style="text-align: center;">(4.48, 7.48)</td>
-<td style="text-align: center;">13.43</td>
-<td style="text-align: center;">&lt; .001</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">support</td>
-<td style="text-align: center;">0.60</td>
-<td style="text-align: center;">0.03</td>
-<td style="text-align: center;">(0.54, 0.65)</td>
-<td style="text-align: center;">-10.81</td>
-<td style="text-align: center;">&lt; .001</td>
-</tr>
-</tbody>
-</table>
-</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co">#model_parameters(fit2, exponentiate = TRUE) |&gt; print_md()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Now that we are in odds, we can adjust our previous interpretation of the <code>support</code> parameter for odds:</p>
 <blockquote class="blockquote">
@@ -536,15 +630,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Also from the output table, we know the significance values in odds and we can now say that the effect of <code>support</code> in the decrease of odds is statistically significant from <b>1</b>, <span class="math inline">\(p&lt;0.001\)</span> <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
 <p>A lot of fields, like medicine, prefer to output and report their logistic regression values in odds.</p>
 </section>
-<section id="predicted-probability" class="level3" data-number="5.1.3">
-<h3 data-number="5.1.3" class="anchored" data-anchor-id="predicted-probability"><span class="header-section-number">5.1.3</span> Predicted Probability</h3>
+<section id="predicted-probability" class="level3" data-number="6.1.3">
+<h3 data-number="6.1.3" class="anchored" data-anchor-id="predicted-probability"><span class="header-section-number">6.1.3</span> Predicted Probability</h3>
 <p>A convenient transformation is taking the log-odds and converting into probability. Then, our question becomes “Is there a relationship between support and the probability of scoring one value different on the DCL-9?”.</p>
 <p>We can assess this relationship with the <code>predict_response()</code> function. It outputs a plot with the Y-axis as “the probability of <code>DCL-9</code>” and the X-axis as the predictor (in this case <code>support</code>) in raw units, and it overlays the predicted probability on top of the data.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict_response</span>(fit2, <span class="at">terms =</span> <span class="st">"support"</span>) <span class="sc">|&gt;</span> <span class="fu">plot</span>(<span class="at">show_data =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="count-regression_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
-</div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co">#predict_response(fit2, terms = "support") |&gt; plot(show_data = TRUE)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Again, the transformed outcome variable is the “probability of <code>dcl9_p</code>” (on the y-axis), so we can see that it is bounded between [0,100]. The logistic regression line also makes predictions between these bounds so we no longer have the model predicting unreasonable values/states which would happen if we didn’t consider using the <code>glm()</code> function. Lastly, we can now see how an increase in <code>suppport</code> leads to a decrease in the probability of scoring one score lower on the DCL-9.</p>
 <p>Also notice that our prediction line is more in agreement with the general intuition that the higher support one has, the less depression symptoms one may have. This is more clear now that the model can pick apart this relationship that would be hard to see if we only relied on a solely visual inspection.</p>
@@ -566,19 +657,19 @@ Why not always use probability?
 <p>When we have two predictors, we are now conducting a multiple weighted binomial (logistic) regression. Recall that multiple regression, in general, allows us to control for the effects of multiple predictors on the outcome, and we are left with the unique effect of a predictor when controlling for other predictors.</p>
 <p>Once again, let’s fit this model with the <code>glm()</code> function.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fit3 &lt;- glm(</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co">#   formula = phq9_p ~ income_ratio + age, </span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   family = binomial(link = "logit"),</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   weights = phq9_max,</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co">#   data = depression2</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co"># )</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co"># ## Print parameters in logit (i.e., log-odds) units</span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co"># model_parameters(fit3) |&gt; print_md()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fit3 &lt;- glm(</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co">#   formula = phq9_p ~ income_ratio + age, </span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   family = binomial(link = "logit"),</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   weights = phq9_max,</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="co">#   data = depression2</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="co"># )</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="co"># ## Print parameters in logit (i.e., log-odds) units</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="co"># model_parameters(fit3) |&gt; print_md()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="parameter-table-interpretation-log-odds-1" class="level3" data-number="5.1.4">
-<h3 data-number="5.1.4" class="anchored" data-anchor-id="parameter-table-interpretation-log-odds-1"><span class="header-section-number">5.1.4</span> Parameter Table Interpretation (Log-odds)</h3>
+<section id="parameter-table-interpretation-log-odds-1" class="level3" data-number="6.1.4">
+<h3 data-number="6.1.4" class="anchored" data-anchor-id="parameter-table-interpretation-log-odds-1"><span class="header-section-number">6.1.4</span> Parameter Table Interpretation (Log-odds)</h3>
 <p>When the parameter table is in log-odds, we can now say the following:</p>
 <blockquote class="blockquote">
 <p>For every one unit increase in <code>income_ratio</code>, there is a 0.16 decrease in the log-odds of having a one-unit higher PHQ-9 score (and greater chance of having severe depression) while controlling for the effect of <code>age</code>. The unique (i.e., partial) effect of <code>income_ratio</code> is significantly different from 0, <span class="math inline">\(p&lt;0.001\)</span>.</p>
@@ -588,12 +679,12 @@ Why not always use probability?
 </blockquote>
 <p>Remember, in log-odds, if the value is positive, it is more likely for the event to occur, and if it is negative, it is more likely for the event to not occur.</p>
 </section>
-<section id="parameter-table-interpretation-odds-1" class="level3" data-number="5.1.5">
-<h3 data-number="5.1.5" class="anchored" data-anchor-id="parameter-table-interpretation-odds-1"><span class="header-section-number">5.1.5</span> Parameter Table Interpretation (Odds)</h3>
+<section id="parameter-table-interpretation-odds-1" class="level3" data-number="6.1.5">
+<h3 data-number="6.1.5" class="anchored" data-anchor-id="parameter-table-interpretation-odds-1"><span class="header-section-number">6.1.5</span> Parameter Table Interpretation (Odds)</h3>
 <p>We can also present the results in odds.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Print parameters in odds </span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co"># model_parameters(fit3, exponentiate = TRUE) |&gt; print_md()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Print parameters in odds </span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="co"># model_parameters(fit3, exponentiate = TRUE) |&gt; print_md()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>When the parameter table is in odds, we can now say the following:</p>
 <blockquote class="blockquote">
@@ -605,66 +696,34 @@ Why not always use probability?
 <p>Remember, in odds, if the value greater than 1, it is more likely for the event to occur, and if it less than 1, it is more likely for the event to not occur.</p>
 <p>At this point, it is interesting to consider that the higher the <code>income_ratio</code> amount, then the lower the chance of a one-unit increase of scores on the PHQ-9, whereas the higher the <code>age</code>, then the higher the chance of a one-unit increase on the PHQ-9</p>
 </section>
-<section id="predicted-probability-1" class="level3" data-number="5.1.6">
-<h3 data-number="5.1.6" class="anchored" data-anchor-id="predicted-probability-1"><span class="header-section-number">5.1.6</span> Predicted Probability</h3>
+<section id="predicted-probability-1" class="level3" data-number="6.1.6">
+<h3 data-number="6.1.6" class="anchored" data-anchor-id="predicted-probability-1"><span class="header-section-number">6.1.6</span> Predicted Probability</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># predict_response(fit3, terms = "income_ratio") |&gt; plot(show_data = TRUE)</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># predict_response(fit3, terms = "age") |&gt; plot(show_data = TRUE)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># predict_response(fit3, terms = "income_ratio") |&gt; plot(show_data = TRUE)</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co"># predict_response(fit3, terms = "age") |&gt; plot(show_data = TRUE)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The plots for predicted probabilities is helpful for highlighting the different effects for <code>income_ratio</code> and <code>age</code> on the probability of obtaining a one-unit higher score on the PHQ-9. As we see, there is a decrease in the probability of a higher score as <code>income_ratio</code> increases, and there is an increase in the probability of surviving as <code>age</code> increases.</p>
 <p></p>
 </section>
 </section>
-<section id="one-dummy-coded-predictor" class="level2" data-number="5.2">
-<h2 data-number="5.2" class="anchored" data-anchor-id="one-dummy-coded-predictor"><span class="header-section-number">5.2</span> One Dummy Coded Predictor</h2>
+<section id="one-dummy-coded-predictor" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="one-dummy-coded-predictor"><span class="header-section-number">6.2</span> One Dummy Coded Predictor</h2>
 <p>Let’s consider the question “Is there a relationship between gender and the log-odds/probability of scoring one-unit higher on the DCL-9?”</p>
 <p>Remember, first we have to change our predictor variable to a factor (i.e., a dummy-coded variable), and then we can fit with <code>glm()</code>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>depression2<span class="sc">$</span>gender <span class="ot">&lt;-</span> <span class="fu">factor</span>(depression2<span class="sc">$</span>gender, <span class="at">levels =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Female"</span>,<span class="st">"Male"</span>)) <span class="co">#change to factor</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>fit4 <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> dcl9_p <span class="sc">~</span> gender, </span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"logit"</span>), </span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">weights =</span> dcl_max,</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> depression2</span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit4) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<table class="table table-sm table-striped small">
-<thead>
-<tr class="header">
-<th style="text-align: left;">Parameter</th>
-<th style="text-align: center;">Log-Odds</th>
-<th style="text-align: center;">SE</th>
-<th style="text-align: center;">95% CI</th>
-<th style="text-align: center;">z</th>
-<th style="text-align: center;">p</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">(Intercept)</td>
-<td style="text-align: center;">0.29</td>
-<td style="text-align: center;">0.06</td>
-<td style="text-align: center;">(0.17, 0.42)</td>
-<td style="text-align: center;">4.57</td>
-<td style="text-align: center;">&lt; .001</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">gender (Male)</td>
-<td style="text-align: center;">0.24</td>
-<td style="text-align: center;">0.08</td>
-<td style="text-align: center;">(0.08, 0.40)</td>
-<td style="text-align: center;">2.89</td>
-<td style="text-align: center;">0.004</td>
-</tr>
-</tbody>
-</table>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># depression2$gender &lt;- factor(depression2$gender, levels = c(0,1), labels = c("Female","Male")) #change to factor</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="co"># fit4 &lt;- glm(</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   formula = dcl9_p ~ gender, </span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="co">#   family = binomial(link = "logit"), </span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="co">#   weights = dcl_max,</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="co">#   data = depression2</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="co"># )</span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a><span class="co"># model_parameters(fit4) |&gt; print_md()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</div>
-<section id="parameter-table-interpretation-log-odds-2" class="level3" data-number="5.2.1">
-<h3 data-number="5.2.1" class="anchored" data-anchor-id="parameter-table-interpretation-log-odds-2"><span class="header-section-number">5.2.1</span> Parameter Table Interpretation (Log-odds)</h3>
+<section id="parameter-table-interpretation-log-odds-2" class="level3" data-number="6.2.1">
+<h3 data-number="6.2.1" class="anchored" data-anchor-id="parameter-table-interpretation-log-odds-2"><span class="header-section-number">6.2.1</span> Parameter Table Interpretation (Log-odds)</h3>
 <p>Remember, although we are performing a weighted binomial (logistic) regression, it is still dummy-coded so our parameters estimates are given relative to the first category of the predictor variable. In this case, the females are the reference group.</p>
 <blockquote class="blockquote">
 <p>The intercept is the average log-odds of scoring one unit higher on the DCL-9 for females. In this case, females have a 0.29 log-odds of scoring one unit higher on the DCL-9, which means it is more likely for them to score one unit higher on the DCL-9 (since it is a log odds greater than 0)</p>
@@ -676,78 +735,18 @@ Why not always use probability?
 <p>There was a significant difference in the log-odds women from 0, <span class="math inline">\(p&lt;0.001\)</span>. The difference between women and men was significant, <span class="math inline">\(p&lt;0.01\)</span>.</p>
 </blockquote>
 </section>
-<section id="estimating-means-and-plots" class="level3" data-number="5.2.2">
-<h3 data-number="5.2.2" class="anchored" data-anchor-id="estimating-means-and-plots"><span class="header-section-number">5.2.2</span> Estimating means and plots</h3>
+<section id="estimating-means-and-plots" class="level3" data-number="6.2.2">
+<h3 data-number="6.2.2" class="anchored" data-anchor-id="estimating-means-and-plots"><span class="header-section-number">6.2.2</span> Estimating means and plots</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>gmeans1 <span class="ot">&lt;-</span> <span class="fu">estimate_means</span>(fit4, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"gender"</span>)) </span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>gmeans1 <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<table class="table table-sm table-striped small">
-<caption>Estimated Marginal Means</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">gender</th>
-<th style="text-align: right;">Probability</th>
-<th style="text-align: left;">SE</th>
-<th style="text-align: left;">95% CI</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Female</td>
-<td style="text-align: right;">0.57</td>
-<td style="text-align: left;">0.02</td>
-<td style="text-align: left;">(0.54, 0.60)</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Male</td>
-<td style="text-align: right;">0.63</td>
-<td style="text-align: left;">0.01</td>
-<td style="text-align: left;">(0.61, 0.65)</td>
-</tr>
-</tbody>
-</table>
-<p>Marginal means estimated at gender</p>
-</div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># gmeans1 &lt;- estimate_means(fit4, by = c("gender")) </span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="co"># gmeans1 |&gt; print_md()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="parameter-table-interpretation-odds-2" class="level3" data-number="5.2.3">
-<h3 data-number="5.2.3" class="anchored" data-anchor-id="parameter-table-interpretation-odds-2"><span class="header-section-number">5.2.3</span> Parameter Table Interpretation (Odds)</h3>
+<section id="parameter-table-interpretation-odds-2" class="level3" data-number="6.2.3">
+<h3 data-number="6.2.3" class="anchored" data-anchor-id="parameter-table-interpretation-odds-2"><span class="header-section-number">6.2.3</span> Parameter Table Interpretation (Odds)</h3>
 <p>Like in other logistic regression models, we can convert to odds ratios with <code>model_parameters</code> and “exponentiate” input argument.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit4, <span class="at">exponentiate =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<table class="table table-sm table-striped small">
-<thead>
-<tr class="header">
-<th style="text-align: left;">Parameter</th>
-<th style="text-align: center;">Odds Ratio</th>
-<th style="text-align: center;">SE</th>
-<th style="text-align: center;">95% CI</th>
-<th style="text-align: center;">z</th>
-<th style="text-align: center;">p</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">(Intercept)</td>
-<td style="text-align: center;">1.34</td>
-<td style="text-align: center;">0.09</td>
-<td style="text-align: center;">(1.18, 1.52)</td>
-<td style="text-align: center;">4.57</td>
-<td style="text-align: center;">&lt; .001</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">gender (Male)</td>
-<td style="text-align: center;">1.27</td>
-<td style="text-align: center;">0.10</td>
-<td style="text-align: center;">(1.08, 1.49)</td>
-<td style="text-align: center;">2.89</td>
-<td style="text-align: center;">0.004</td>
-</tr>
-</tbody>
-</table>
-</div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># model_parameters(fit4, exponentiate = TRUE) |&gt; print_md()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <blockquote class="blockquote">
 <p>The intercept is the average odds of scoring one-unit higher on the PHQ-9 for women. In this case, women have a base odds of 1.32 for scoring higher on the DCL-9. Since it is greater than 1, it is more likely for someone to score one-unit higher.</p>
@@ -760,33 +759,30 @@ Why not always use probability?
 </blockquote>
 <p>In other words, both log-odds and odds ratio show that men have a increased chance of scoring one-unit higher on the DCL-9 relative to women meaning they are more likely to score for more depression symptoms than women.</p>
 </section>
-<section id="predicted-probability-2" class="level3" data-number="5.2.4">
-<h3 data-number="5.2.4" class="anchored" data-anchor-id="predicted-probability-2"><span class="header-section-number">5.2.4</span> Predicted Probability</h3>
+<section id="predicted-probability-2" class="level3" data-number="6.2.4">
+<h3 data-number="6.2.4" class="anchored" data-anchor-id="predicted-probability-2"><span class="header-section-number">6.2.4</span> Predicted Probability</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict_response</span>(fit4, <span class="at">terms =</span> <span class="st">"gender"</span>) <span class="sc">|&gt;</span> <span class="fu">plot</span>(<span class="at">show_data =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="count-regression_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
-</div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># predict_response(fit4, terms = "gender") |&gt; plot(show_data = TRUE)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>When the predicted probabilities are plotted, we can visualize the differences in probabilities of women versus men.</p>
 </section>
 </section>
-<section id="one-dummy-coded-predictor-and-one-continous-predictor" class="level2" data-number="5.3">
-<h2 data-number="5.3" class="anchored" data-anchor-id="one-dummy-coded-predictor-and-one-continous-predictor"><span class="header-section-number">5.3</span> One Dummy Coded Predictor and One Continous Predictor</h2>
+<section id="one-dummy-coded-predictor-and-one-continous-predictor" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="one-dummy-coded-predictor-and-one-continous-predictor"><span class="header-section-number">6.3</span> One Dummy Coded Predictor and One Continous Predictor</h2>
 <p>“Is there a relationship between the income ratio, gender, and the log-odds/probability of scoring one-unit higher on the PHQ-9?”</p>
 <p>Again, multiple regression allows us to control for the effects of multiple predictors on the outcome, and we are left with the unique effect of a predictor when controlling for other predictors. In this case, the outcome variable will be <code>phq9_p</code>, and the predictor variables will be <code>gender</code> (categorical variable) and <code>income_ratio</code> (continuous variable).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fit5 &lt;- glm(</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co">#   formula = phq9_p ~ gender + income_ratio, </span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   family = binomial(link = "logit"), </span></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   weights = phq9_max,</span></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="co">#   data = depression2</span></span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="co"># )</span></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="co"># model_parameters(fit5) |&gt; print_md()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fit5 &lt;- glm(</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="co">#   formula = phq9_p ~ gender + income_ratio, </span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   family = binomial(link = "logit"), </span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   weights = phq9_max,</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="co">#   data = depression2</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="co"># )</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a><span class="co"># model_parameters(fit5) |&gt; print_md()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<section id="paramter-table-interpretation-log-odds" class="level3" data-number="5.3.1">
-<h3 data-number="5.3.1" class="anchored" data-anchor-id="paramter-table-interpretation-log-odds"><span class="header-section-number">5.3.1</span> Paramter Table Interpretation (Log-odds)</h3>
+<section id="paramter-table-interpretation-log-odds" class="level3" data-number="6.3.1">
+<h3 data-number="6.3.1" class="anchored" data-anchor-id="paramter-table-interpretation-log-odds"><span class="header-section-number">6.3.1</span> Paramter Table Interpretation (Log-odds)</h3>
 <blockquote class="blockquote">
 <p>The intercept is the average log-odds of scoring higher on the PHQ-9 for women, while accounting for the effect of <code>income_ratio</code>. In this case, women have a average log odds of -1.44 indiciating that they are less likely to score higher on the PHQ-9 (since it is a log odds less than 0).</p>
 </blockquote>
@@ -800,11 +796,11 @@ Why not always use probability?
 <p>Lastly, while controlling for the effect of <code>gender</code>, a one unit increase in <code>income_ratio</code> was significantly related to a 0.14 decrease in the log-odds of scoring one-unit higher on the PHQ-9.</p>
 </blockquote>
 </section>
-<section id="parameter-table-interpretation-odds-ratio" class="level3" data-number="5.3.2">
-<h3 data-number="5.3.2" class="anchored" data-anchor-id="parameter-table-interpretation-odds-ratio"><span class="header-section-number">5.3.2</span> Parameter Table Interpretation (Odds Ratio)</h3>
+<section id="parameter-table-interpretation-odds-ratio" class="level3" data-number="6.3.2">
+<h3 data-number="6.3.2" class="anchored" data-anchor-id="parameter-table-interpretation-odds-ratio"><span class="header-section-number">6.3.2</span> Parameter Table Interpretation (Odds Ratio)</h3>
 <p>We can also consider the results in odds ratio by using the “exponentiate” argument in <code>model_paramters()</code>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co">#model_parameters(fit5, exponentiate = TRUE) |&gt; print_md()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co">#model_parameters(fit5, exponentiate = TRUE) |&gt; print_md()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <blockquote class="blockquote">
 <p>The intercept is the average odds of scoring higher on the PHQ-9 for women, while accounting for the effect of <code>income_ratio</code>. In this case, women have a average odds of 0.24 indiciating that they are less likely to score higher on the PHQ-9 (since it is a log odds ratio than 1).</p>
@@ -1071,8 +1067,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./linear-models.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Linear models</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./unbounded-count-regression.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">unbounded-count-regression</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
