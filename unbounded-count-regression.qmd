@@ -2,4 +2,221 @@
 title: "unbounded-count-regression"
 ---
 
-When modeling count data, you aren't always sure if there is an upper bound to the count. 
+When your outcome variable is a <i>unbounded count variable</i>, it has a lower bound of 0 and no upper bound. The fact that there is no upper bound has to do with the nature of the variable. Simply, when it's possible that count amount of a level of a variable can be unlimited, and the levels of that variable are independent, then a <i>Poisson</i> or <i>Negative Binomial</i> regression is usually the way to go.
+
+An unbounded count variable is easiest to understand and identify with an example. Imagine you are counting how many coins you pick up on the ground in a day on your daily walk. It is possible that at any given day you collect a lot of coins (with theoretically no maximum), and some days you collect zero coins. And it is assumed that the amount of coins you collect on one day does not impact the number of coins you find on any other day. Then the count for the number of coins is best represented by a Poisson or Negative Binomial distribution and we can use either Poisson or Negative binomial regression. 
+
+DO I HAVE TO EXPLICITLY SAY "IN A GIVEN TIME INTERVAL"?
+
+## Count Events with a Poisson Distribution
+
+The Poisson distribution is for models when the outcome variable is a count variable; specifically, when the variable is discrete. Unlike other distributions (e.g. Guassian, Binary), the Poisson distribution is described by only one parameter: $\lambda$. The $\lambda$ parameter is the mean number of occurrences/events in a specific time interval. <b>Put another way, it's the average expected count of a level of that variable.</b> 
+
+The important thing to know is that Poisson regression's goal is to model the $\lambda$ parameter of a Poisson count distribution with a linear and additive combination of an intercept and slope of a predictor variable(s). But there's an inherent problem with modeling a count distribution with a (non-Poisson) linear model because the outcome variable is bounded from [0,$\infty$], and we already know that a linear model works best when the outcome is unbounded (and continuous).  
+
+## Defining the Poisson Regression Model and the Log Link Function
+
+As mentioned in the previous section, the Poisson regression model takes into account that the outcome we are modeling is a one sided bounded count outcome.  Since a count variable is bounded between [0,$\infty$], we need a way to modify the linear model to work with this variable. We are motivated to do this because the linear model works best when the outcome it is modeling is a unbounded (and continuous).   
+
+Let's summarize the details of this model in a more compact way: 
+
+$$ y_i \sim Poisson(\lambda)$$
+Here we are saying that our outcome variable $y_i$ is Poisson distributed. This is not the part of the model that regression is specifically concerned with -- this is an assumption we are placing on the model knowing that the data is a bounded count variable between [0,$\infty$].
+
+$$ g(\lambda) = \beta_0 + \beta_1 x_1$$
+Here we are now defining how we use the simple Poisson regression model. We call it simple because there is only one predictor variable ($x_1$). The right side of the equation should be very familiar to us: it is a linear model where we have $\beta_0$ (the intercept), and $\beta_1$ (the slope of the predictor variable). 
+
+But the left side of this equation is unique to <b>generalized linear models</b>. First, we see that we are assigning $\beta_0$ and $\beta_1$ to estimate $\lambda$, which is the "rate" parameter of the Poisson distribution. However, we also see that $\lambda$ is inside a function called $g$, which we now define as our <i>link function</i>. 
+
+The link function will allow us to use the linear model (the right side of the equation that is usually assumed with a continuous and unbounded outcome) to estimate the rate, or average number of events, $\lambda$, which is discrete and bounded. 
+
+In Poisson regression, our $g$ is the "logarithmic function", which is defined as: 
+
+$$ g = log(\lambda) $$
+or, equivalently, 
+
+$$ \lambda = e^g $$
+Therefore, the full equation becomes, 
+
+$$ log(\lambda) = \beta_0 + \beta_1 x_1$$
+
+
+When we use the log link function with linear predictors, we now can call this <i>"Poisson regression"</i>. 
+
+:::{.callout-tip title="Takeaway: Link Functions"}
+When we use GLMs, we will be using many different link functions depending on the data. In the case of Poisson regression, all this function is trying to do is relate our linear predictors to a response outcome that is discrete and between some bounds (like 0 and $\infinity$). More generally, we need link functions because if we <b>did not</b> do this, we are using the linear predictors to predictor some value that is continuous when it may <b>not</b> be continuous (like discrete values for count variables).  We also find that when using the appropriate link function, other problems, like the shape of residuals, gets fixed! 
+:::
+
+## Overdispersion and Count Events with a Negative Binomial Distribution
+
+While a Poisson regression is used for unbounded count variables, a Negative Binomial regression is also used for the same reason. When to use between a Poisson and Negative Binomial is due to <b>overdispersion</b>.  Overdispersion occurs when the variance of the count variable is greater than the mean. Overdispersion happens a lot in the real world, so we will always check for overdispersion and default to Negative Binomial regression when it occurs. 
+
+It is worth emphasizing that the interpretation of the parameter estimates of both Poisson and Negative Binomial regression can be used interchangeably, which makes the use of Poisson and Negative Binomial regressions key models for unbounded count variable that are also not ordinal. 
+
+## Data Demonstration 
+<span style="background-color: #FFFF00">
+Use the affairs.csv dataset and Poisson count regression to predict each participant’s number of affairs from their `gender`, `age`, `children`, `yearsmarried` and `religiousness`. Since each participant's number of affairs is independent of each other, and there is a bound of 0 and no maximum amount, then `affairs` example of an unbounded count variable.   
+
+
+-   Data: <a href="./affairs.csv" download> depression.csv </a>
+</span>
+
+## Loading the Packages and Reading in Data
+```{r, warning = FALSE, message=FALSE}
+## Load packages
+library(tidyverse)
+library(easystats)
+library(ggeffects)
+library(MASS) #needed for Negative Binomial Regression
+
+## Read in data from file
+affairs <- read_csv("affairs.csv")
+affairs
+
+```
+
+```{r, warning=FALSE,echo=FALSE}
+mytheme <- theme_bw(
+  base_size = 12
+)
+```
+
+This data shows records for 297 patients screened with the DCL-9 where each row is one participant.
+
+Here's a table of our variables in this dataset: 
+
+| Variable    | Description                     |     Values | Measurement |
+|-------------|:--------------------------------|-----------:|:-----------:|
+| `affairs`       | Number of affairs    | Integer |  Nominal   |
+| `gender`    | Male or Female |   String |    Nominal    |
+| `age`    | Age |    Double |    Scale    |
+| `yearsmarried`    | Number of Years Married | Double | Scale   |
+| `children` |  Yes or No   |   String |   Ordinal   |
+| `religiousness`` |   1 (Low) to 5 (Highs)  |   Integer |   Scale   |
+| `education` |     | Number of Years of Education |   Integer   | Scale |
+| `satisfaction`` |   1 (Low) to 5 (Highs)  |   Integer |   Scale |
+
+
+## Prepare Data / Exploratory Data Analysis
+
+For Poisson Regression, let's first treat the discrete variables in this dataset as factors. 
+
+```{r}
+affairs$gender <- factor(affairs$gender)
+affairs$children <- factor(affairs$children)
+```
+
+Next, let's plot the distribution of the count of `affairs`. The main thing to consider is that this is a discrete variable and using Poisson regression inherently takes this into account. 
+
+```{r}
+ggplot(affairs, aes(x = affairs)) +
+  geom_bar() + mytheme
+```
+
+
+Now, let's try to see the relationship between the number of `affairs` and `relgiousness`: 
+
+HARD TO SEE ANY RELATIONSHIPS? 
+
+```{r}
+ggplot(data = affairs, mapping = aes(x = affairs, y = religiousness)) +
+  geom_point() 
+```
+## Checking for Overdispersion
+
+As aforementioned, the key to choosing between a Poisson or Negative Binomial regression is checking for overdispersion in the count variable. Specifically, if the mean or variance of the count variable is roughly the same, then using a Poisson regression is reasonable, but if the variance is significantly greater than the mean, then it would be better to default to a Negative Binomial regression.
+
+For teaching purposes, we will first roughly check for overdispersion by hand, but most of the time it isn't too difficult to fit both models and check for overdispersion by using a statistical test for overdispersion. 
+
+Let's consider overdispersion in the `affairs` count variable first by hand, and then confirm it with a test in the later examples. 
+
+```{r}
+mean(affairs$affairs)
+var(affairs$affairs)
+```
+As seen here, we can expect to use the Negative Binomial over the Poisson because we detect overdispersion in the outcome variable. While it is easy to see the difference between the mean and variance in this example, when they seem closer it is harder to test by eye, so we will apply an overdispersion test in the following examples to help us decide between a Poisson or Negative Binomial regression.
+
+# Models Without Interaction Terms
+
+## Less Correct: The General Linear Model
+
+Before we fit the Poisson or Negative Binomial regression model, it would be worthwhile to try fitting the less appropriate regular general linear model. We'll use our old friend `lm()` to assess the relationship between the outcome variable `affairs` with the predictor variables `gender` and `age`. For more information on general linear modeling, we covered these topics in our <b>Regression Recap</b> chapter.
+
+```{r}
+fitlm1 <- lm(
+  formula = affairs ~ gender + age ,
+  data = affairs
+)
+
+model_parameters(fitlm1) |> print_md()
+```
+
+As the results show, we have a significant partial effect of `age`, such that a 1 unit increase in `age` increases the amount of affairs by a small amount (0.03 units of "affair") while controlling for `gender`. Despite the challenge of interpreting non-integer values of the amount of affairs, it is worth nothing that the regular `lm()` "worked" in that it was able to produce an estimate. 
+
+### Checking Assumptions
+
+When we fit a model, we always want to see if there were any violations in the assumptions. When using the general linear model via the `lm()` function for binary responses, taking a look at a plot of the residuals, using `check_residuals()` [^1], should be concerning.  
+
+[^1]: `check_residuals()` requires the package `qqplotr` to be installed. 
+
+```{r}
+## Check residuals
+check_residuals(fitlm1) |> plot() # looks bad
+```
+Yikes! As you can see, the dots <b>do not</b> fall neatly along the line, especially at the ends of the quantiles. Once this or any other assumption of the general linear model are not met, this is a clear sign that parts of the model may not be trustworthy. Specifically, in this case of the non-uniformity of residuals, there is terrible violation to the model's uncertainty estimates. While the predictions may be okay and others could argue this violation does not appear too detrimental, we can (and should) do better.
+
+## More Correct: The Genearlized Linear Model 
+
+Now let's compare our modeling of the same variables using Poisson regression or Negative Binomial regression on the interpretation of estimates and adherence to model assumptions.  
+
+<b>First, we will decide which of the two models is better for this question based on an overdispersion test. Then, we will interpret the results of that model. </b>
+
+"Is there a relationship between the age, gender, and the amount of affairs?"
+
+Again, because we have multiple predictors, multiple regression allows us to control for the effects of multiple predictors on the outcome, and we are left with the unique effect of a predictor when controlling for other predictors. In this case, the outcome variable will be `affairs`, and the predictor variables will be `gender` (categorical variable) and `age` (continuous variable). 
+
+We did a lot of work already with the `lm()` in the "Regression Recap". The `glm()` function is in many ways the same as the `lm()` function. Even the syntax for how we write the equation is the same. In addition, we can use the same `model_parameters()` function to get our table of parameter estimates. Indeed, we will use the `glm()` function for the remainder of the rest of the online modules. 
+
+But notice that the `glm()` function has one more input argument. This input argument is the "family" input argument, which requires which "family of distributions" to use and which "link function" choice.  
+
+### Choosing Between Poisson or Negative Binomial 
+
+For Poisson regression, we supply the <b>Poisson</b> distribution and the <b>log</b> link function. 
+
+```{r}
+fit1_poisson <- glm(
+  formula = affairs ~ gender + age, 
+  family = poisson(link = "log"),
+  data = affairs
+)
+```
+For Negative Binomial regression, we will use a slightly differnt glm function called `glm.nb()` from the `MASS` package. Instead of supplying a family/link function argument, the function already understands we are fitting a Negative Binomial model, so the input argument for `glm.nb()` is more compact.
+
+```{r}
+fit1_nb<- glm.nb(
+  formula = affairs ~ gender + age, 
+  data = affairs
+)
+
+```
+
+Recall in the previous section that we calculated the mean and variance of the outcome variable `affairs` by hand and saw overdispersion in that the variance was clearly greater than the mean. Now, we will apply a test for overdispersion to choose between the two models using the `check_overdispersion()` function. We recommend this test prior to interpreting any model parameters.
+
+Let's check for overdispersion in the Poisson model:
+
+```{r}
+check_overdispersion(fit1_poisson)
+```
+
+As expected, overdispersion was found when fitting the data with the Poisson model. 
+Now, let's check for overdispersion in the Negative Binomial model:
+
+```{r}
+check_overdispersion(fit1_nb)
+```
+
+Therefore, for the same combination of predictor variables and count outcome variable, we will use the Negative Binomial model. This takes overdispersion into account and advantage of the fact that we can interpret the estimates interchangeably between both models. 
+
+### Paramter Table Interpretation: Log-Mean (Negative Binomial)
+
+
