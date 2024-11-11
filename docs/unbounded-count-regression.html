@@ -21,6 +21,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -63,6 +97,8 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 </head>
 
@@ -185,7 +221,26 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#count-events-with-a-poisson-distribution" id="toc-count-events-with-a-poisson-distribution" class="nav-link active" data-scroll-target="#count-events-with-a-poisson-distribution"><span class="header-section-number">5.1</span> Count Events with a Poisson Distribution</a></li>
+  <li><a href="#defining-the-poisson-regression-model-and-the-log-link-function" id="toc-defining-the-poisson-regression-model-and-the-log-link-function" class="nav-link" data-scroll-target="#defining-the-poisson-regression-model-and-the-log-link-function"><span class="header-section-number">5.2</span> Defining the Poisson Regression Model and the Log Link Function</a></li>
+  <li><a href="#overdispersion-and-count-events-with-a-negative-binomial-distribution" id="toc-overdispersion-and-count-events-with-a-negative-binomial-distribution" class="nav-link" data-scroll-target="#overdispersion-and-count-events-with-a-negative-binomial-distribution"><span class="header-section-number">5.3</span> Overdispersion and Count Events with a Negative Binomial Distribution</a></li>
+  <li><a href="#data-demonstration-1-poisson-regression" id="toc-data-demonstration-1-poisson-regression" class="nav-link" data-scroll-target="#data-demonstration-1-poisson-regression"><span class="header-section-number">5.4</span> Data Demonstration #1: Poisson Regression</a>
+  <ul class="collapse">
+  <li><a href="#loading-the-packages-and-reading-in-data" id="toc-loading-the-packages-and-reading-in-data" class="nav-link" data-scroll-target="#loading-the-packages-and-reading-in-data"><span class="header-section-number">5.4.1</span> Loading the Packages and Reading in Data</a></li>
+  </ul></li>
+  <li><a href="#data-demonstration-2-negative-binomial-regression" id="toc-data-demonstration-2-negative-binomial-regression" class="nav-link" data-scroll-target="#data-demonstration-2-negative-binomial-regression"><span class="header-section-number">5.5</span> Data Demonstration 2: Negative Binomial Regression</a>
+  <ul class="collapse">
+  <li><a href="#loading-the-packages-and-reading-in-data-1" id="toc-loading-the-packages-and-reading-in-data-1" class="nav-link" data-scroll-target="#loading-the-packages-and-reading-in-data-1"><span class="header-section-number">5.5.1</span> Loading the Packages and Reading in Data</a></li>
+  <li><a href="#prepare-data-exploratory-data-analysis" id="toc-prepare-data-exploratory-data-analysis" class="nav-link" data-scroll-target="#prepare-data-exploratory-data-analysis"><span class="header-section-number">5.5.2</span> Prepare Data / Exploratory Data Analysis</a></li>
+  <li><a href="#checking-for-overdispersion" id="toc-checking-for-overdispersion" class="nav-link" data-scroll-target="#checking-for-overdispersion"><span class="header-section-number">5.5.3</span> Checking for Overdispersion</a></li>
+  <li><a href="#models-without-interaction-terms" id="toc-models-without-interaction-terms" class="nav-link" data-scroll-target="#models-without-interaction-terms"><span class="header-section-number">5.5.4</span> Models Without Interaction Terms</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://www.github.com/affcomlab/learn-glms/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -207,9 +262,633 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<p>When modeling count data, you aren’t always sure if there is an upper bound to the count.</p>
+<p>When your outcome variable is a <i>unbounded count variable</i>, it has a lower bound of 0 and no upper bound. The fact that there is no upper bound has to do with the nature of the variable. Simply, when it’s possible that a variable has an unlimited count amount of any of its levels, and the levels of that variable are independent, then a <i>Poisson</i> or <i>Negative Binomial</i> regression is usually the way to go.</p>
+<p>An unbounded count variable is easiest to understand and identify with an example. Imagine you are counting how many coins you pick up on the ground in a day on your daily walk. It is possible that at any given day you collect a lot of coins (with theoretically no maximum), and some days you collect zero coins. And it is assumed that the amount of coins you collect on one day does not impact the number of coins you find on any other day. Then the count for the number of coins is best represented by a Poisson or Negative Binomial distribution and we can use either Poisson or Negative binomial regression. And at the of the analysis, we can ask “What is the average number of coins you would expect to pick up in a day?”</p>
+<section id="count-events-with-a-poisson-distribution" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="count-events-with-a-poisson-distribution"><span class="header-section-number">5.1</span> Count Events with a Poisson Distribution</h2>
+<p>The Poisson distribution is for models when the outcome variable is a count variable; specifically, when the variable is discrete. Unlike other distributions (e.g.&nbsp;Guassian, Binary), the Poisson distribution is described by only one parameter: <span class="math inline">\(\lambda\)</span>. The <span class="math inline">\(\lambda\)</span> parameter is the mean number of occurrences/events in a specific time interval. <b>Put another way, it’s the average expected count of a level of that variable.</b></p>
+<p>The important thing to know is that Poisson regression’s goal is to model the <span class="math inline">\(\lambda\)</span> parameter of a Poisson count distribution with a linear and additive combination of an intercept and slope of a predictor variable(s). But there’s an inherent problem with modeling a count distribution with a (non-Poisson) linear model because the outcome variable is bounded from [0,<span class="math inline">\(\infty\)</span>], and we already know that a linear model works best when the outcome is unbounded (and continuous).</p>
+</section>
+<section id="defining-the-poisson-regression-model-and-the-log-link-function" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="defining-the-poisson-regression-model-and-the-log-link-function"><span class="header-section-number">5.2</span> Defining the Poisson Regression Model and the Log Link Function</h2>
+<p>As mentioned in the previous section, the Poisson regression model takes into account that the outcome we are modeling is a one sided bounded count outcome. Since a count variable is bounded between [0,<span class="math inline">\(\infty\)</span>], we need a way to modify the linear model to work with this variable. We are motivated to do this because the linear model works best when the outcome it is modeling is a unbounded (and continuous).</p>
+<p>Let’s summarize the details of this model in a more compact way:</p>
+<p><span class="math display">\[ y_i \sim Poisson(\lambda)\]</span> Here we are saying that our outcome variable <span class="math inline">\(y_i\)</span> is Poisson distributed. This is not the part of the model that regression is specifically concerned with – this is an assumption we are placing on the model knowing that the data is a bounded count variable between [0,<span class="math inline">\(\infty\)</span>].</p>
+<p><span class="math display">\[ g(\lambda) = \beta_0 + \beta_1 x_1\]</span> Here we are now defining how we use the simple Poisson regression model. We call it simple because there is only one predictor variable (<span class="math inline">\(x_1\)</span>). The right side of the equation should be very familiar to us: it is a linear model where we have <span class="math inline">\(\beta_0\)</span> (the intercept), and <span class="math inline">\(\beta_1\)</span> (the slope of the predictor variable).</p>
+<p>But the left side of this equation is unique to <b>generalized linear models</b>. First, we see that we are assigning <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> to estimate <span class="math inline">\(\lambda\)</span>, which is the “rate” parameter of the Poisson distribution. However, we also see that <span class="math inline">\(\lambda\)</span> is inside a function called <span class="math inline">\(g\)</span>, which we now define as our <i>link function</i>.</p>
+<p>The link function will allow us to use the linear model (the right side of the equation that is usually assumed with a continuous and unbounded outcome) to estimate the rate, or average number of events, <span class="math inline">\(\lambda\)</span>, which is discrete and bounded.</p>
+<p>In Poisson regression, our <span class="math inline">\(g\)</span> is the “logarithmic function”, which is defined as:</p>
+<p><span class="math display">\[ g = log(\lambda) \]</span> or, equivalently,</p>
+<p><span class="math display">\[ \lambda = e^g \]</span> Therefore, the full equation becomes,</p>
+<p><span class="math display">\[ log(\lambda) = \beta_0 + \beta_1 x_1\]</span></p>
+<p>When we use the log link function with linear predictors, we now can call this <i>“Poisson regression”</i>.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Takeaway: Link Functions">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Takeaway: Link Functions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>When we use GLMs, we will be using many different link functions depending on the data. In the case of Poisson regression, all this function is trying to do is relate our linear predictors to a response outcome that is discrete and between some bounds (like 0 and <span class="math inline">\(\infinity\)</span>). More generally, we need link functions because if we <b>did not</b> do this, we are using the linear predictors to predictor some value that is continuous when it may <b>not</b> be continuous (like discrete values for count variables). We also find that when using the appropriate link function, other problems, like the shape of residuals, gets fixed!</p>
+</div>
+</div>
+</section>
+<section id="overdispersion-and-count-events-with-a-negative-binomial-distribution" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="overdispersion-and-count-events-with-a-negative-binomial-distribution"><span class="header-section-number">5.3</span> Overdispersion and Count Events with a Negative Binomial Distribution</h2>
+<p>While a Poisson regression is used for unbounded count variables, a Negative Binomial regression is also used for the same reason. When to use between a Poisson and Negative Binomial is due to <b>overdispersion</b>. Overdispersion occurs when the variance of the count variable is greater than the mean. Overdispersion happens a lot in the real world, so we will always first fit a Poisson distribution, check for overdispersion, and default to Negative Binomial regression if it occurs.</p>
+<p>It is worth emphasizing that the interpretation are the same for parameter estimates of both Poisson and Negative Binomial regression, which makes the use of Poisson and Negative Binomial regressions key models for unbounded count variable that are also not ordinal.</p>
+<p><b>This chapter will contain two Data Demonstrations in order to outline the thought process of choosing between a Poisson and Negative Binomial regression.</b></p>
+</section>
+<section id="data-demonstration-1-poisson-regression" class="level2" data-number="5.4">
+<h2 data-number="5.4" class="anchored" data-anchor-id="data-demonstration-1-poisson-regression"><span class="header-section-number">5.4</span> Data Demonstration #1: Poisson Regression</h2>
+<p>We will use the simulated toy-dataset “fish_example.csv” to analyze and predict the relationship of the number of fishes caught and predictor variables like age, sex, and years of experience.</p>
+<ul>
+<li>Data: <a href="./fish_example.csv" download=""> fish_example.csv </a> </li>
+</ul>
+<section id="loading-the-packages-and-reading-in-data" class="level3" data-number="5.4.1">
+<h3 data-number="5.4.1" class="anchored" data-anchor-id="loading-the-packages-and-reading-in-data"><span class="header-section-number">5.4.1</span> Loading the Packages and Reading in Data</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Load packages</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(easystats)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggeffects)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MASS) <span class="co">#needed for Negative Binomial Regression</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Read in data from file</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>fishing <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"fish_example.csv"</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>fishing</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 600 × 4
+    Fish   Age   Sex Experience
+   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;      &lt;dbl&gt;
+ 1     3  19.9     1          2
+ 2     3  20.5     1          6
+ 3     1  24.1     0          2
+ 4     5  21.1     1          5
+ 5     4  21.3     0          4
+ 6     1  24.4     1          1
+ 7     2  21.9     0          8
+ 8     3  18.5     0          4
+ 9     4  19.6     1          6
+10     2  20.1     1          4
+# ℹ 590 more rows</code></pre>
+</div>
+</div>
+<p>This data shows records for 60 individual fisherpeople where each row is one fisher.</p>
+<p>Here’s a table of our variables in this dataset:</p>
+<table class="table">
+<colgroup>
+<col style="width: 18%">
+<col style="width: 46%">
+<col style="width: 16%">
+<col style="width: 18%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Variable</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: right;">Values</th>
+<th style="text-align: center;">Measurement</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>affairs</code></td>
+<td style="text-align: left;">Number of affairs</td>
+<td style="text-align: right;">Integer</td>
+<td style="text-align: center;">Nominal</td>
+</tr>
+<tr class="even">
+<td><code>gender</code></td>
+<td style="text-align: left;">Male or Female</td>
+<td style="text-align: right;">String</td>
+<td style="text-align: center;">Nominal</td>
+</tr>
+<tr class="odd">
+<td><code>age</code></td>
+<td style="text-align: left;">Age</td>
+<td style="text-align: right;">Double</td>
+<td style="text-align: center;">Scale</td>
+</tr>
+<tr class="even">
+<td><code>yearsmarried</code></td>
+<td style="text-align: left;">Number of Years Married</td>
+<td style="text-align: right;">Double</td>
+<td style="text-align: center;">Scale</td>
+</tr>
+<tr class="odd">
+<td><code>children</code></td>
+<td style="text-align: left;">Yes or No</td>
+<td style="text-align: right;">String</td>
+<td style="text-align: center;">Ordinal</td>
+</tr>
+<tr class="even">
+<td><code>religiousness</code></td>
+<td style="text-align: left;">1 (Low) to 5 (Highs)</td>
+<td style="text-align: right;">Integer</td>
+<td style="text-align: center;">Scale</td>
+</tr>
+<tr class="odd">
+<td><code>education</code></td>
+<td style="text-align: left;"></td>
+<td style="text-align: right;">Number of Years of Education</td>
+<td style="text-align: center;">Integer</td>
+</tr>
+<tr class="even">
+<td><code>satisfaction</code></td>
+<td style="text-align: left;">1 (Low) to 5 (Highs)</td>
+<td style="text-align: right;">Integer</td>
+<td style="text-align: center;">Scale</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="data-demonstration-2-negative-binomial-regression" class="level2" data-number="5.5">
+<h2 data-number="5.5" class="anchored" data-anchor-id="data-demonstration-2-negative-binomial-regression"><span class="header-section-number">5.5</span> Data Demonstration 2: Negative Binomial Regression</h2>
+<p><span style="background-color: #FFFF00"> Use the affairs.csv dataset and Poisson count regression to predict each participant’s number of affairs from their <code>gender</code>, <code>age</code>, <code>children</code>, <code>yearsmarried</code> and <code>religiousness</code>. Since each participant’s number of affairs is independent of each other, and there is a bound of 0 and no maximum amount, then <code>affairs</code> example of an unbounded count variable.</span></p>
+<ul>
+<li>Data: <a href="./affairs.csv" download=""> depression.csv </a> </li>
+</ul>
+<section id="loading-the-packages-and-reading-in-data-1" class="level3" data-number="5.5.1">
+<h3 data-number="5.5.1" class="anchored" data-anchor-id="loading-the-packages-and-reading-in-data-1"><span class="header-section-number">5.5.1</span> Loading the Packages and Reading in Data</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Load packages</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(easystats)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggeffects)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MASS) <span class="co">#needed for Negative Binomial Regression</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Read in data from file</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>affairs <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"affairs.csv"</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>affairs</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 601 × 8
+   affairs gender   age yearsmarried children religiousness education
+     &lt;dbl&gt; &lt;chr&gt;  &lt;dbl&gt;        &lt;dbl&gt; &lt;chr&gt;            &lt;dbl&gt;     &lt;dbl&gt;
+ 1       0 male      37        10    no                   3        18
+ 2       0 female    27         4    no                   4        14
+ 3       0 female    32        15    yes                  1        12
+ 4       0 male      57        15    yes                  5        18
+ 5       0 male      22         0.75 no                   2        17
+ 6       0 female    32         1.5  no                   2        17
+ 7       0 female    22         0.75 no                   2        12
+ 8       0 male      57        15    yes                  2        14
+ 9       0 female    32        15    yes                  4        16
+10       0 male      22         1.5  no                   4        14
+# ℹ 591 more rows
+# ℹ 1 more variable: satisfaction &lt;dbl&gt;</code></pre>
+</div>
+</div>
+<p>This data shows records for 601 individuals where each row is one participant.</p>
+<p>Here’s a table of our variables in this dataset:</p>
+<table class="table">
+<colgroup>
+<col style="width: 18%">
+<col style="width: 46%">
+<col style="width: 16%">
+<col style="width: 18%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Variable</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: right;">Values</th>
+<th style="text-align: center;">Measurement</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>affairs</code></td>
+<td style="text-align: left;">Number of affairs</td>
+<td style="text-align: right;">Integer</td>
+<td style="text-align: center;">Nominal</td>
+</tr>
+<tr class="even">
+<td><code>gender</code></td>
+<td style="text-align: left;">Male or Female</td>
+<td style="text-align: right;">String</td>
+<td style="text-align: center;">Nominal</td>
+</tr>
+<tr class="odd">
+<td><code>age</code></td>
+<td style="text-align: left;">Age</td>
+<td style="text-align: right;">Double</td>
+<td style="text-align: center;">Scale</td>
+</tr>
+<tr class="even">
+<td><code>yearsmarried</code></td>
+<td style="text-align: left;">Number of Years Married</td>
+<td style="text-align: right;">Double</td>
+<td style="text-align: center;">Scale</td>
+</tr>
+<tr class="odd">
+<td><code>children</code></td>
+<td style="text-align: left;">Yes or No</td>
+<td style="text-align: right;">String</td>
+<td style="text-align: center;">Ordinal</td>
+</tr>
+<tr class="even">
+<td><code>religiousness</code></td>
+<td style="text-align: left;">1 (Low) to 5 (Highs)</td>
+<td style="text-align: right;">Integer</td>
+<td style="text-align: center;">Scale</td>
+</tr>
+<tr class="odd">
+<td><code>education</code></td>
+<td style="text-align: left;"></td>
+<td style="text-align: right;">Number of Years of Education</td>
+<td style="text-align: center;">Integer</td>
+</tr>
+<tr class="even">
+<td><code>satisfaction</code></td>
+<td style="text-align: left;">1 (Low) to 5 (Highs)</td>
+<td style="text-align: right;">Integer</td>
+<td style="text-align: center;">Scale</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="prepare-data-exploratory-data-analysis" class="level3" data-number="5.5.2">
+<h3 data-number="5.5.2" class="anchored" data-anchor-id="prepare-data-exploratory-data-analysis"><span class="header-section-number">5.5.2</span> Prepare Data / Exploratory Data Analysis</h3>
+<p>For Poisson Regression, let’s first treat the discrete variables in this dataset as factors.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>affairs<span class="sc">$</span>gender <span class="ot">&lt;-</span> <span class="fu">factor</span>(affairs<span class="sc">$</span>gender)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>affairs<span class="sc">$</span>children <span class="ot">&lt;-</span> <span class="fu">factor</span>(affairs<span class="sc">$</span>children)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Next, let’s plot the distribution of the count of <code>affairs</code>. The main thing to consider is that this is a discrete variable and using Poisson regression inherently takes this into account.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(affairs, <span class="fu">aes</span>(<span class="at">x =</span> affairs)) <span class="sc">+</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>() <span class="sc">+</span> mytheme</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="unbounded-count-regression_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Now, let’s try to see the relationship between the number of <code>affairs</code> and <code>relgiousness</code>:</p>
+<p>HARD TO SEE ANY RELATIONSHIPS?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> affairs, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> affairs, <span class="at">y =</span> religiousness)) <span class="sc">+</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="unbounded-count-regression_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="checking-for-overdispersion" class="level3" data-number="5.5.3">
+<h3 data-number="5.5.3" class="anchored" data-anchor-id="checking-for-overdispersion"><span class="header-section-number">5.5.3</span> Checking for Overdispersion</h3>
+<p>As aforementioned, the key to choosing between a Poisson or Negative Binomial regression is checking for overdispersion in the count variable. Specifically, if the mean or variance of the count variable is roughly the same, then using a Poisson regression is reasonable, but if the variance is significantly greater than the mean, then it would be better to default to a Negative Binomial regression.</p>
+<p>For teaching purposes, we will first roughly check for overdispersion by hand, but most of the time it isn’t too difficult to fit both models and check for overdispersion by using a statistical test for overdispersion.</p>
+<p>Let’s consider overdispersion in the <code>affairs</code> count variable first by hand, and then confirm it with a test in the later examples.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(affairs<span class="sc">$</span>affairs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.455907</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">var</span>(affairs<span class="sc">$</span>affairs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 10.8818</code></pre>
+</div>
+</div>
+<p>As seen here, we can expect to use the Negative Binomial over the Poisson because we detect overdispersion in the outcome variable. While it is easy to see the difference between the mean and variance in this example, when the values are closer it is harder to test by eye, so we will apply an overdispersion test in the following examples to help us decide between a Poisson or Negative Binomial regression.</p>
+<p>Technically, the Negative Binomial model allow us to account that the mean is larger than the variance of the count variable, whereas Poisson models require that the mean should be about the same as the variance.</p>
+</section>
+<section id="models-without-interaction-terms" class="level3" data-number="5.5.4">
+<h3 data-number="5.5.4" class="anchored" data-anchor-id="models-without-interaction-terms"><span class="header-section-number">5.5.4</span> Models Without Interaction Terms</h3>
+<section id="less-correct-the-general-linear-model" class="level4" data-number="5.5.4.1">
+<h4 data-number="5.5.4.1" class="anchored" data-anchor-id="less-correct-the-general-linear-model"><span class="header-section-number">5.5.4.1</span> Less Correct: The General Linear Model</h4>
+<p>Before we fit the Poisson or Negative Binomial regression model, it would be worthwhile to try fitting the less appropriate regular general linear model. We’ll use our old friend <code>lm()</code> to assess the relationship between the outcome variable <code>affairs</code> with the predictor variables <code>gender</code> and <code>age</code>. For more information on general linear modeling, we covered these topics in our <b>Regression Recap</b> chapter.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>fitlm1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> affairs <span class="sc">~</span> gender <span class="sc">+</span> age ,</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> affairs</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fitlm1) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 21%">
+<col style="width: 19%">
+<col style="width: 9%">
+<col style="width: 27%">
+<col style="width: 12%">
+<col style="width: 10%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Parameter</th>
+<th style="text-align: center;">Coefficient</th>
+<th style="text-align: center;">SE</th>
+<th style="text-align: center;">95% CI</th>
+<th style="text-align: center;">t(598)</th>
+<th style="text-align: center;">p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: center;">0.36</td>
+<td style="text-align: center;">0.49</td>
+<td style="text-align: center;">(-0.60, 1.33)</td>
+<td style="text-align: center;">0.74</td>
+<td style="text-align: center;">0.459</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">gender (male)</td>
+<td style="text-align: center;">-0.04</td>
+<td style="text-align: center;">0.27</td>
+<td style="text-align: center;">(-0.58, 0.49)</td>
+<td style="text-align: center;">-0.16</td>
+<td style="text-align: center;">0.872</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">age</td>
+<td style="text-align: center;">0.03</td>
+<td style="text-align: center;">0.01</td>
+<td style="text-align: center;">(5.35e-03, 0.06)</td>
+<td style="text-align: center;">2.33</td>
+<td style="text-align: center;">0.020</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>As the results show, we have a significant partial effect of <code>age</code>, such that a 1 unit increase in <code>age</code> increases the amount of affairs by a small amount (0.03 units of “affair”) while controlling for <code>gender</code>. Despite the challenge of interpreting non-integer values of the amount of affairs, it is worth nothing that the regular <code>lm()</code> “worked” in that it was able to produce an estimate.</p>
+<section id="checking-assumptions" class="level5" data-number="5.5.4.1.1">
+<h5 data-number="5.5.4.1.1" class="anchored" data-anchor-id="checking-assumptions"><span class="header-section-number">5.5.4.1.1</span> Checking Assumptions</h5>
+<p>When we fit a model, we always want to see if there were any violations in the assumptions. When using the general linear model via the <code>lm()</code> function for binary responses, taking a look at a plot of the residuals, using <code>check_residuals()</code> <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>, should be concerning.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Check residuals</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">check_residuals</span>(fitlm1) <span class="sc">|&gt;</span> <span class="fu">plot</span>() <span class="co"># looks bad</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="unbounded-count-regression_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Yikes! As you can see, the dots <b>do not</b> fall neatly along the line, especially at the ends of the quantiles. Once this or any other assumption of the general linear model are not met, this is a clear sign that parts of the model may not be trustworthy. Specifically, in this case of the non-uniformity of residuals, there is terrible violation to the model’s uncertainty estimates. While the predictions may be okay and others could argue this violation does not appear too detrimental, we can (and should) do better.</p>
+</section>
+</section>
+<section id="more-correct-the-genearlized-linear-model" class="level4" data-number="5.5.4.2">
+<h4 data-number="5.5.4.2" class="anchored" data-anchor-id="more-correct-the-genearlized-linear-model"><span class="header-section-number">5.5.4.2</span> More Correct: The Genearlized Linear Model</h4>
+<p>Now let’s compare our modeling of the same variables using Poisson regression or Negative Binomial regression on the interpretation of estimates and adherence to model assumptions.</p>
+<p><b>First, we will decide which of the two models is better for this question based on an overdispersion test. Then, we will interpret the results of that model. </b></p>
+<p>“Is there a relationship between the age, gender, and the amount of affairs?”</p>
+<p>Again, because we have multiple predictors, multiple regression allows us to control for the effects of multiple predictors on the outcome, and we are left with the unique effect of a predictor when controlling for other predictors. In this case, the outcome variable will be <code>affairs</code>, and the predictor variables will be <code>gender</code> (categorical variable) and <code>age</code> (continuous variable).</p>
+<p>We did a lot of work already with the <code>lm()</code> in the “Regression Recap”. The <code>glm()</code> function is in many ways the same as the <code>lm()</code> function. Even the syntax for how we write the equation is the same. In addition, we can use the same <code>model_parameters()</code> function to get our table of parameter estimates. Indeed, we will use the <code>glm()</code> function for the remainder of the rest of the online modules.</p>
+<p>But notice that the <code>glm()</code> function has one more input argument. This input argument is the “family” input argument, which requires which “family of distributions” to use and which “link function” choice.</p>
+</section>
+<section id="choosing-between-poisson-or-negative-binomial" class="level4" data-number="5.5.4.3">
+<h4 data-number="5.5.4.3" class="anchored" data-anchor-id="choosing-between-poisson-or-negative-binomial"><span class="header-section-number">5.5.4.3</span> Choosing Between Poisson or Negative Binomial</h4>
+<p>For Poisson regression, we supply the <b>Poisson</b> distribution and the <b>log</b> link function.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>fit1_poisson <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> affairs <span class="sc">~</span> gender <span class="sc">+</span> age, </span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">poisson</span>(<span class="at">link =</span> <span class="st">"log"</span>),</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> affairs</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>For Negative Binomial regression, we will use a slightly differnt glm function called <code>glm.nb()</code> from the <code>MASS</code> package. Instead of supplying a family/link function argument, the function already understands we are fitting a Negative Binomial model, so the input argument for <code>glm.nb()</code> is more compact.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>fit1_nb<span class="ot">&lt;-</span> <span class="fu">glm.nb</span>(</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> affairs <span class="sc">~</span> gender <span class="sc">+</span> age, </span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> affairs</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Recall in the previous section that we calculated the mean and variance of the outcome variable <code>affairs</code> by hand and saw overdispersion in that the variance was clearly greater than the mean. Now, we will apply a test for overdispersion to choose between the two models using the <code>check_overdispersion()</code> function. We recommend this test prior to interpreting any model parameters.</p>
+<p>Let’s check for over dispersion in the Poisson model:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_overdispersion</span>(fit1_poisson)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># Overdispersion test
+
+       dispersion ratio =    7.366
+  Pearson's Chi-Squared = 4404.836
+                p-value =  &lt; 0.001</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Overdispersion detected.</code></pre>
+</div>
+</div>
+<p>As expected, overdispersion was found when fitting the data with the Poisson model. Now, let’s check for overdispersion in the Negative Binomial model:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_overdispersion</span>(fit1_nb)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># Overdispersion test
+
+ dispersion ratio = 0.481
+          p-value = 0.032</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Underdispersion detected.</code></pre>
+</div>
+</div>
+<p>Therefore, for the same combination of predictor variables and count outcome variable, we will use the Negative Binomial model. This takes overdispersion into account and also takes advantage of the fact that we can interpret the estimates interchangeably between both models.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Forgetting overdispersion">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Forgetting overdispersion
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>It is likely that not checking for overdispersion affects model assumptions. For example, if we were to check the residuals for the <code>fit1_poisson</code> model, we would see clear violation to the assumption.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_residuals</span>(fit1_poisson) <span class="sc">|&gt;</span> <span class="fu">plot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="unbounded-count-regression_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="paramter-table-interpretation-log-mean-negative-binomial" class="level4" data-number="5.5.4.4">
+<h4 data-number="5.5.4.4" class="anchored" data-anchor-id="paramter-table-interpretation-log-mean-negative-binomial"><span class="header-section-number">5.5.4.4</span> Paramter Table Interpretation: Log-Mean (Negative Binomial)</h4>
+<p>Using the Negative Binomial model, let’s interpret use the <code>model_parameters</code> function and interpret the estimates.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit1_nb) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Parameter</th>
+<th style="text-align: center;">Log-Mean</th>
+<th style="text-align: center;">SE</th>
+<th style="text-align: center;">95% CI</th>
+<th style="text-align: center;">z</th>
+<th style="text-align: center;">p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: center;">-0.61</td>
+<td style="text-align: center;">0.46</td>
+<td style="text-align: center;">(-1.63, 0.43)</td>
+<td style="text-align: center;">-1.33</td>
+<td style="text-align: center;">0.185</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">gender (male)</td>
+<td style="text-align: center;">-0.04</td>
+<td style="text-align: center;">0.26</td>
+<td style="text-align: center;">(-0.54, 0.47)</td>
+<td style="text-align: center;">-0.16</td>
+<td style="text-align: center;">0.874</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">age</td>
+<td style="text-align: center;">0.03</td>
+<td style="text-align: center;">0.01</td>
+<td style="text-align: center;">(-6.93e-04, 0.06)</td>
+<td style="text-align: center;">2.19</td>
+<td style="text-align: center;">0.029</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>The parameter table output from a model fit with <code>glm.nb()</code> looks very similar to parameter table outputs from models fit with <code>lm()</code>. But there is a <b>big</b> difference – in <code>glm()</code> and <code>glm.nb()</code> models, we are no longer working in the same raw units!</p>
+<p>This difference is apparent in the second column of the output table: “Log-Mean”. Because we fit a Negative Binomial regression with a log function, the parameter values are in “log-mean” unit.</p>
+<p>Due to the nature of the dummy coded categorical variable <code>gender</code>, we will assess the parameters from each level of that variable first.</p>
+<blockquote class="blockquote">
+<p>The intercept is the log mean of <code>affairs</code> for female participants while accounting for the effect of <code>age</code>. In this case, female participants who are 0 years old have an average log mean of -0.61 affairs. This intercept value is not significantly different from 0. This will make more sense once we exponentiate this value. The exp(-0.61) = 0.54. Therefore, the baseline number of affairs for female participants who are 0 years old is 0.54.</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>The log mean of <code>affairs</code> for male participants while controlling for the effect of <code>age</code> is -0.04, or 0.04 less, than female participants. This slope is also not significantly different from a log mean of 0. Once again, this value makes more sense when we exponentiate it. The exp(-0.04) = 0.96, which is the multiplicative effect of a male participant compared to females; in other words, male participants at age 0 have a 0.96 times the expected number of affairs of females aged 0. Note that the value is 0.96 is less than 1, so males have slightly lesser affairs than females.</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>As you increase <code>age</code> by 1 unit, there is an increase in the log mean of both male and female participants by 0.03. This slope of age is significantly different from 0 (p&lt;0.05). If we exponentiate this, exp(0.03) = 1.03, or 3% increase (because it is a multiplicative effect). We can interpret this as for every 1 year increase in age for male and females, there is a 3% increase in the number of affairs.</p>
+</blockquote>
+<p>Note that we used the <code>exp()</code> a lot in order to make our log-mean estamates make more sense. We could have immediately printed the parameter table of <code>model_parameters()</code> with the argument “exponentiate = TRUE”:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit1_nb, <span class="at">exponentiate =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Parameter</th>
+<th style="text-align: center;">IRR</th>
+<th style="text-align: center;">SE</th>
+<th style="text-align: center;">95% CI</th>
+<th style="text-align: center;">z</th>
+<th style="text-align: center;">p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: center;">0.54</td>
+<td style="text-align: center;">0.25</td>
+<td style="text-align: center;">(0.20, 1.54)</td>
+<td style="text-align: center;">-1.33</td>
+<td style="text-align: center;">0.185</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">gender (male)</td>
+<td style="text-align: center;">0.96</td>
+<td style="text-align: center;">0.25</td>
+<td style="text-align: center;">(0.58, 1.59)</td>
+<td style="text-align: center;">-0.16</td>
+<td style="text-align: center;">0.874</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">age</td>
+<td style="text-align: center;">1.03</td>
+<td style="text-align: center;">0.01</td>
+<td style="text-align: center;">(1.00, 1.06)</td>
+<td style="text-align: center;">2.19</td>
+<td style="text-align: center;">0.029</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>When the value log-mean values are exponentiated, they are called <b>“Incident Rate Ratios”</b> or IRR. As aforementioned, they are the multiplicative effects on the baseline value (in this case, the baseline group is female participants at age 0). For interpretation purposes, we can consider the following guidelines:</p>
+<ul>
+<li>IRR &gt; 1, the comparison group has a higher outcome value than the baseline.</li>
+<li>IRR &lt; 1, the comparison group has a lower outcome value than the baseline.</li>
+<li>IRR = 1, there is little to no difference between comparision and baseline.</li>
+</ul>
+</section>
+<section id="estimate-means" class="level4" data-number="5.5.4.5">
+<h4 data-number="5.5.4.5" class="anchored" data-anchor-id="estimate-means"><span class="header-section-number">5.5.4.5</span> Estimate means</h4>
+<p>Because we have a dummy-coded predictor, <code>gender</code>, we can estimate the mean number of <code>affairs</code> for females and males averaged over age with <code>estimate_means()</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>gmeans1 <span class="ot">&lt;-</span> <span class="fu">estimate_means</span>(fit1_nb, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"gender"</span>)) </span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>gmeans1 <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<caption>Estimated Marginal Means</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">gender</th>
+<th style="text-align: left;">Mean</th>
+<th style="text-align: left;">SE</th>
+<th style="text-align: left;">95% CI</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">female</td>
+<td style="text-align: left;">1.44</td>
+<td style="text-align: left;">0.25</td>
+<td style="text-align: left;">(1.02, 2.03)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">male</td>
+<td style="text-align: left;">1.38</td>
+<td style="text-align: left;">0.25</td>
+<td style="text-align: left;">(0.96, 1.99)</td>
+</tr>
+</tbody>
+</table>
+<p>Marginal means estimated at gender</p>
+</div>
+</div>
+<p>Notice that if we take the ratio between males and females, we get the IRR for males: 1.38/1.44 = 0.96, or males have a 0.96 multiplicative (so, lesser) amount of <code>affairs</code> compared to females.</p>
+</section>
+<section id="predicted-reponses" class="level4" data-number="5.5.4.6">
+<h4 data-number="5.5.4.6" class="anchored" data-anchor-id="predicted-reponses"><span class="header-section-number">5.5.4.6</span> Predicted reponses</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict_response</span>(fit1_nb, <span class="at">terms =</span> <span class="st">"age"</span>) <span class="sc">|&gt;</span> <span class="fu">plot</span>(<span class="at">show_data =</span> <span class="cn">TRUE</span>, <span class="at">jitter =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="unbounded-count-regression_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<section id="checking-assumptions-1" class="level5" data-number="5.5.4.6.1">
+<h5 data-number="5.5.4.6.1" class="anchored" data-anchor-id="checking-assumptions-1"><span class="header-section-number">5.5.4.6.1</span> Checking Assumptions</h5>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_residuals</span>(fit1_nb) <span class="sc">|&gt;</span> <span class="fu">plot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="unbounded-count-regression_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_model</span>(fit1_poisson)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="unbounded-count-regression_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_model</span>(fit1_nb)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="unbounded-count-regression_files/figure-html/unnamed-chunk-21-2.png" class="img-fluid" width="672"></p>
+</div>
+</div>
 
 
+</section>
+</section>
+</section>
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p><code>check_residuals()</code> requires the package <code>qqplotr</code> to be installed.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -463,7 +1142,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     <div class="nav-footer-left">Introduction to Generalized Linear Modeling was written by Aaron Matthew Simmons and Jeffrey M. Girard.</div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://www.github.com/affcomlab/learn-glms/issues/new" class="toc-action">Report an issue</a></p></div></div></div>
+    </div>
     <div class="nav-footer-right">This book was built with <a href="https://quarto.org/">Quarto</a>.</div>
   </div>
 </footer>

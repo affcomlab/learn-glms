@@ -506,15 +506,15 @@ Due to the nature of the dummy coded categorical variable `sex`, we will assess 
 
 -   Remember, with log-odds, a value of 0 means it is equally likely for an event to occur or not occur.  Here, since the log-odds is greater than 0, it is more likely for the event that is labeled a "success" (in this case, more likely to survive) to happen than the event that is labeled a "failure". 
 
-> Male passengers have a 1.26 decrease in the log-odds of suriving relative to the female passengers while accounting for the simple effects of `fare` and `age` (i.e., they have a worse chance of surviving). 
+> Male passengers have a 1.26 decrease in the log-odds of suriving relative to the female passengers while accounting for the simple effects of `fare` (at $0) and `age` at 0 years old (i.e., they have a worse chance of surviving). 
 
 -   Notice how these comparisons are all in reference to the females. Again, this is due to the nature of the dummy coded categorical variable. 
 
 > Because the intercept was not significant, there was no significant difference between the estimate of female passengers and 0. Because "sex[male]" was significant, the difference between female and male passengers was significant, $p<0.001$. 
 
-> While controlling for the simple effects of `sex` and `age`, a one unit increase in `fare` was significantly related to a 0.01 increase in the log-odds of survival. 
+> While controlling for the simple effects of `sex` (for females) and `age` (at 0 years old), a one unit increase in `fare` was significantly related to a 0.01 increase in the log-odds of survival. 
 
-> While controlling for the simple effects of `sex` and `fare`, a one unit increase in `age` was significantly related to a 0.02 increase in the log-odds of survival. 
+> While controlling for the simple effects of `sex` (for females) and `fare` (at $0), a one unit increase in `age` was significantly related to a 0.02 increase in the log-odds of survival. 
 
 -   We now turn our attention to the continuous variable `fare` and `age`. Both estimates are positive (greater than 0), so it is the case that we can say it is more likely for someone to survive the Titanic with an increase in fare paid and age. 
 

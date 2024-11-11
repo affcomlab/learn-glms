@@ -2,11 +2,10 @@
 title: "unbounded-count-regression"
 ---
 
-When your outcome variable is a <i>unbounded count variable</i>, it has a lower bound of 0 and no upper bound. The fact that there is no upper bound has to do with the nature of the variable. Simply, when it's possible that count amount of a level of a variable can be unlimited, and the levels of that variable are independent, then a <i>Poisson</i> or <i>Negative Binomial</i> regression is usually the way to go.
+When your outcome variable is a <i>unbounded count variable</i>, it has a lower bound of 0 and no upper bound. The fact that there is no upper bound has to do with the nature of the variable. Simply, when it's possible that a variable has an unlimited count amount of any of its levels, and the levels of that variable are independent, then a <i>Poisson</i> or <i>Negative Binomial</i> regression is usually the way to go.
 
-An unbounded count variable is easiest to understand and identify with an example. Imagine you are counting how many coins you pick up on the ground in a day on your daily walk. It is possible that at any given day you collect a lot of coins (with theoretically no maximum), and some days you collect zero coins. And it is assumed that the amount of coins you collect on one day does not impact the number of coins you find on any other day. Then the count for the number of coins is best represented by a Poisson or Negative Binomial distribution and we can use either Poisson or Negative binomial regression. 
+An unbounded count variable is easiest to understand and identify with an example. Imagine you are counting how many coins you pick up on the ground in a day on your daily walk. It is possible that at any given day you collect a lot of coins (with theoretically no maximum), and some days you collect zero coins. And it is assumed that the amount of coins you collect on one day does not impact the number of coins you find on any other day. Then the count for the number of coins is best represented by a Poisson or Negative Binomial distribution and we can use either Poisson or Negative binomial regression. And at the of the analysis, we can ask "What is the average number of coins you would expect to pick up in a day?" 
 
-DO I HAVE TO EXPLICITLY SAY "IN A GIVEN TIME INTERVAL"?
 
 ## Count Events with a Poisson Distribution
 
@@ -40,8 +39,13 @@ Therefore, the full equation becomes,
 
 $$ log(\lambda) = \beta_0 + \beta_1 x_1$$
 
-
 When we use the log link function with linear predictors, we now can call this <i>"Poisson regression"</i>. 
+
+### Multiplicative Proporty 
+A unique property to the Poisson (and Negative Binomial?) regression model is the "product property" of logarithmic functions. Specifically,
+
+$$log_amn = log_am + log_an $$
+So when we interpret the estimates of this model, they are multiplicative effects. We will see in the Data Demonstration sections how this affects our interpretation of our parameters. 
 
 :::{.callout-tip title="Takeaway: Link Functions"}
 When we use GLMs, we will be using many different link functions depending on the data. In the case of Poisson regression, all this function is trying to do is relate our linear predictors to a response outcome that is discrete and between some bounds (like 0 and $\infinity$). More generally, we need link functions because if we <b>did not</b> do this, we are using the linear predictors to predictor some value that is continuous when it may <b>not</b> be continuous (like discrete values for count variables).  We also find that when using the appropriate link function, other problems, like the shape of residuals, gets fixed! 
@@ -49,19 +53,260 @@ When we use GLMs, we will be using many different link functions depending on th
 
 ## Overdispersion and Count Events with a Negative Binomial Distribution
 
-While a Poisson regression is used for unbounded count variables, a Negative Binomial regression is also used for the same reason. When to use between a Poisson and Negative Binomial is due to <b>overdispersion</b>.  Overdispersion occurs when the variance of the count variable is greater than the mean. Overdispersion happens a lot in the real world, so we will always check for overdispersion and default to Negative Binomial regression when it occurs. 
+While a Poisson regression is used for unbounded count variables, a Negative Binomial regression is also used for the same reason. When to use between a Poisson and Negative Binomial is due to <b>overdispersion</b>.  Overdispersion occurs when the variance of the count variable is greater than the mean. Overdispersion happens a lot in the real world, so we will always first fit a Poisson distribution, check for overdispersion, and default to Negative Binomial regression if it occurs. 
 
-It is worth emphasizing that the interpretation of the parameter estimates of both Poisson and Negative Binomial regression can be used interchangeably, which makes the use of Poisson and Negative Binomial regressions key models for unbounded count variable that are also not ordinal. 
+It is worth emphasizing that the interpretation are the same for parameter estimates of both Poisson and Negative Binomial regression, which makes the use of Poisson and Negative Binomial regressions key models for unbounded count variable that are also not ordinal. 
 
-## Data Demonstration 
+<b>This chapter will contain two Data Demonstrations in order to outline the thought process of choosing between a Poisson and Negative Binomial regression.</b>
+
+
+## Data Demonstration #1: Poisson Regression 
+We will use the simulated toy-dataset "fish_example.csv" to analyze and predict the relationship of the number of fishes caught and predictor variables like age, sex, and years of experience.
+
+-   Data: <a href="./fish_example.csv" download> fish_example.csv </a>
+</span>
+
+### Loading the Packages and Reading in Data
+```{r, warning = FALSE, message=FALSE}
+## Load packages
+library(tidyverse)
+library(easystats)
+library(ggeffects)
+library(MASS) #needed for Negative Binomial Regression
+
+## Read in data from file
+fishing <- read_csv("fish_example.csv")
+fishing
+
+```
+```{r, warning=FALSE,echo=FALSE}
+mytheme <- theme_bw(
+  base_size = 12
+)
+
+```
+
+This data shows records for 600 individual fisherpeople where each row is one fisher.
+
+Here's a table of our variables in this dataset: 
+
+| Variable    | Description                     |     Values | Measurement |
+|-------------|:--------------------------------|-----------:|:-----------:|
+| `Fish`       | Number of affairs    | Integer |  Nominal   |
+| `Age`    | Age |    Double |    Scale    |
+| `Sex`    | Female =0, Male = 1  |   Integer |    Nominal    |
+| `Experience`    | Number of Years of Fisher Experience | Double | Scale   |
+
+### Prepare Data / Exploratory Data Analysis
+
+For Poisson Regression, let's first treat the discrete variables in this dataset as factors and apply labels to make it easier to interpret. 
+
+```{r}
+fishing$Sex <- factor(fishing$Sex, levels = c(0,1), labels = c("Female", "Male"))
+```
+
+Next, let's plot the distribution of the count of `Fish`. The main thing to consider is that this is a discrete variable and using Poisson regression inherently takes this into account. 
+
+```{r}
+ggplot(fishing, aes(x = Fish)) +
+  geom_bar() + mytheme
+```
+Finally, let's consider a plot of the relationship between the count of fishes and years of experience being a fisher.  
+```{r}
+ggplot(data = fishing, mapping = aes(x = Fish, y = Experience)) +
+  geom_point() 
+```
+As we can see, there seems to be a positive relationship between the count of fish and years of experience being a fisher.
+
+### Models Without Interaction Terms 
+
+#### Less Correct: the General Linear Model
+
+Before we fit the Poisson regression model, it would be worthwhile to try fitting the less appropriate regular general linear model. We'll use our old friend `lm()` to assess the relationship between the outcome variable `Fish` with the predictor variables `Sex` and `Experience` as a multiple regression example. Again, we know it is less appropriate because we are treating the outcome variable as a continuous variable rather than a count variable. For more information on general linear modeling, we covered these topics in our <b>Regression Recap</b> chapter. 
+
+```{r}
+fitlm1 <- lm(
+  formula = Fish ~ Sex + Experience,
+  data = fishing
+)
+
+model_parameters(fitlm1) |> print_md()
+```
+
+As the results show, we have a significant partial effect of `Experience`, such that a 1 unit increase in `Experience` increases the amount of fishes by a small amount (0.24 units of the number of "fish") while controlling for `Sex`. It is worth nothing that the regular `lm()` "worked" in that it was able to produce an estimate. 
+
+
+##### Checking Assumptions
+
+When we fit a model, we always want to see if there were any violations in the assumptions. We will use the diagnostic function `check_model()` to see if there are any deviations from `lm()` assumptions. For this model, the most concerning assumption appears to be the normality of residuals, as the distribution is offset from the normal curve. Updating our model to a generalized linear model that takes into account our discrete outcome variable should help fix this problem. 
+
+```{r}
+check_model(fitlm1, check = "normality")
+```
+
+#### More Correct: Poisson Regression 
+
+Now let's compare a Poisson regression model of the same variables. <b> Our first step is to fit the Poisson and check if it is overdispersed or not. We will only proceed with the Poisson regression model if we find it not overdispersed.</b> 
+
+"Is there a relationship between sex, years of experience, and the amount of fishes caught?"
+
+Again, because we have multiple predictors, multiple regression allows us to control for the effects of multiple predictors on the outcome, and we are left with the unique effect of a predictor when controlling for other predictors. In this case, the outcome variable will be the count of `fish`, and the predictor variables will be `Sex` (a categorical variable) and `Experience` (a continuous variable). 
+
+We did a lot of work already with the `lm()` in the "Regression Recap". The `glm()` function is in many ways the same as the `lm()` function. Even the syntax for how we write the equation is the same. In addition, we can use the same `model_parameters()` function to get our table of parameter estimates. Indeed, we will use the `glm()` function for the remainder of the rest of the online modules. 
+
+But notice that the `glm()` function has one more input argument. This input argument is the "family" input argument, which requires which "family of distributions" to use and which "link function" choice. 
+
+For Poisson regression, we supply the <b>poisson</b> distribution and the <b>log</b> link function. 
+
+```{r}
+
+fit_poisson_1 <- glm(
+  formula = Fish ~ Sex + Experience, 
+  family = poisson(link = "log"), 
+  data = fishing
+)
+
+```
+
+Now, before we consider any model parameters, we will check if the model is overdispersed or not using `check_overdispersion()` from the `performance` package, which is include in 
+the `easystats` package. 
+```{r}
+check_overdispersion(fit_poisson_1)
+```
+
+Since no overdispersion was detected, that means our Poisson model fits the data well, and we can continue to use the Poisson model for our unbounded count regression. <i>If the Poisson model was found to be overdispersed, we will default to the Negative Binomial model (See Data Demonstration 2 in this module). 
+
+##### Parameter Table Interpretation: Log Mean
+
+Using the Poisson model, let's use the `model_parameters` function and interpret the estimates. 
+
+```{r}
+model_parameters(fit_poisson_1)
+```
+
+The parameter table output from a model fit with `glm()` looks very similar to parameter table outputs from models fit with `lm()`. But there is a <b>big</b> difference -- in `glm()` models, we are no longer working in the same raw units! 
+
+This difference is apparent in the second column of the output table: "Log-Mean". Because we fit a Poisson regression with a log function, the parameter values are in "log-mean" unit. 
+
+Due to the nature of the dummy coded categorical variable `Sex`, we will assess the parameters from each level of that variable first. 
+
+> The intercept is the log mean of `fishes` for female fishers while accounting for the effect of `Experience`. In this case, female fishers with 0 years of fishing experience have an average log mean of 0.55 fishes. This intercept value is significantly different from 0, p<0.001. This will make more sense once we exponentiate this value. The exp(0.55) = 1.73. Therefore, the baseline number of fishes of female female fishers with 0 years of experience is 1.73 fishes.
+
+> The log mean of `fishes` for male fishers while controlling for the effect of `Experience` is 0.07, or 0.07 more, than male fishers. This slope, which is the difference between males and female fishers, is also not significantly different from a log mean of 0. Once again, this value makes more sense when we exponentiate it. The exp(0.07) = 1.07, which is the multiplicative effect of male fishers compared to female fishers; in other words, male participants with 0 years of fishing experience catch 1.07 times the expected number of fishes compared to female fishers with 0 years of fishing experience. Note that the value is 1.07 is greater than 1, so male fishers are expected to catch more fishes than females fishers. 
+
+> As you increase the amount of `Experience` by 1 unit (or 1 year), there is an increase in the log mean of both male and female participants by 0.09. This slope of age is significantly different from 0, p<0.001. If we exponentiate this, we get exp(0.09) = 1.09, and is therefore  9% increase (because it is a multiplicative effect). We can interpret this as for every 1 year increase in experience for male and female fishers, there is a 9% increase in the number of fishes caught.
+
+Note that we used the `exp()` a lot in order to make our log-mean estimates make more sense. We actually could have immediately printed the parameter table of `model_parameters()` with the argument "exponentiate = TRUE":
+
+```{r}
+model_parameters(fit_poisson_1, exponentiate = TRUE)
+```
+
+When the value log-mean values are exponentiated, they are called <b>"Incident Rate Ratios"</b> or IRR. As aforementioned, they are the multiplicative effects on the baseline value (in this case, the baseline group is female fishers with 0 years of experience). For interpretation purposes, we can consider the following guidelines:
+
+- IRR > 1, the comparison group has a higher outcome value than the baseline.
+- IRR < 1, the comparison group has a lower outcome value than the baseline.
+- IRR = 1, there is little to no difference between comparison and baseline.
+
+##### Checking Assumptions
+
+When we used Poisson regression, we can see that the normality of the residuals, which was more violated in the regular multiple regression model, is more in line with the assumption. 
+
+```{r}
+check_model(fit_poisson_1)
+```
+
+###Models with Interaction Terms 
+
+####Less Correct: the General Linear Model
+
+Now, let's consider a less appropriate linear model with an interaction term. Again, we'll use our old friend `lm()` this time to assess the relationship between the outcome variable `Fish` with the predictor variables `Sex` and `Experience` as a multiple regression example with an interaction term. Again, we know it is less appropriate because we are treating the outcome variable as a continuous variable rather than a count variable. For more information on general linear modeling, we covered these topics in our <b>Regression Recap</b> chapter. 
+
+```{r}
+fitlm2 <- lm(
+  formula = Fish ~ Sex * Experience,
+  #equivalent formula: Fish ~ Sex + Experience + Sex:Experience
+  data = fishing
+)
+
+model_parameters(fitlm2) |> print_md()
+```
+
+As the results show, we have a significant partial effect of `Experience`, such that a 1 unit (or 1 year) increase in `Experience` increases the amount of fishes by a small amount (0.24 units of the number of "fish") while controlling for `Sex`. Our model here also includes an interaction term which was not significant. 
+
+##### Checking Assumptions 
+
+Again, when we fit a model, we always want to see if there were any violations in the assumptions. We will use the diagnostic function `check_model()` to see if there are any deviations from `lm()` assumptions. For this model, the most concerning assumption appears to be the normality of residuals, as the distribution is offset from the normal curve. Updating our model to a generalized linear model that takes into account our discrete outcome variable should help fix this problem. 
+
+```{r}
+check_model(fitlm2)
+```
+#### More Correct: Poisson Regression 
+
+Now let's compare a Poisson regression model of the same variables and also including the interaction term. <b> Like always with the Poisson model, our first step is to fit the Poisson and check if it is overdispersed or not. We will only proceed with the Poisson regression model if we find it not overdispersed.</b> 
+
+"Is there a relationship between sex, years of experience, and the amount of fishes caught, and does the effect of one predictor depend on the other?"
+
+Again, because we have multiple predictors, multiple regression allows us to control for the effects of multiple predictors on the outcome, and we are left with the unique effect of a predictor when controlling for other predictors. In this case, the outcome variable will be the count of `fish`, and the predictor variables will be `Sex` (a categorical variable) and `Experience` (a continuous variable), and the interaction term will assses the degree to which the predictor variables do or do not depend on each other.
+
+For Poisson regression, we supply the <b>poisson</b> distribution and the <b>log</b> link function to the `glm()` function. 
+
+
+```{r}
+fit_poisson_2<- glm(
+  formula = Fish ~ Sex * Experience,
+  #equivalent formula: Fish ~ Sex + Experience + Sex:Experience
+  family = poisson(link = "log"), 
+  data = fishing
+)
+```
+
+##### Parameter Table Interpretation: Log-Mean 
+
+Let's use the `model_parameters` function and interpret the estimates of our model with an interaction term. 
+
+```{r}
+model_parameters(fit_poisson_2) |> print_md()
+```
+Due to the nature of the dummy coded categorical variable `Sex`, we will assess the parameters from each level of that variable first. 
+
+> The intercept is the log mean of `fishes` for female fishers while accounting for the effect of `Experience`. In this case, the simple effect of female fishers at 0 years of fishing experience have an average log mean of 0.55 fishes. This intercept value is significantly different from 0, p<0.001. This will make more sense once we exponentiate this value. The exp(0.55) = 1.73. Therefore, the baseline number of fishes of female female fishers with 0 years of experience is 1.73 fishes.
+
+> The log mean of `fishes` for male fishers while controlling for the effect of `Experience` is 0.07, or 0.07 more, than male fishers at 0 years of experience. This simple effect slope, which is the difference between males and female fishers, is also not significantly different from a log mean of 0. Once again, this value makes more sense when we exponentiate it. The exp(0.09) = 1.09, which is the multiplicative effect of male fishers compared to female fishers at 0 years of experience; in other words, male participants with 0 years of fishing experience catch 1.09 times the expected number of fishes compared to female fishers with 0 years of fishing experience. Note that the value is 1.07 is greater than 1, so male fishers are expected to catch more fishes than females fishers. 
+
+> As you increase the amount of `Experience` by 1 unit (or 1 year), there is an increase in the log mean of female participants by 0.09. This slope of age is significantly different from 0, p<0.001. If we exponentiate this, we get exp(0.09) = 1.09, and is therefore  9% increase (because it is a multiplicative effect). We can interpret this as for every 1 year increase in experience for female fishers, there is a 9% increase in the number of fishes caught. (Note that this is the slope is only for female fishers as the male fishers are have a different slope due to the nature of a model with an interaction term)
+
+> The Sex-by-Experience interaction effect is the difference in the slope between male and female fishers as well as the expected change in the difference between male and female fishers the number of fishes caught for each +1 year change in experience; it is not significantly different from zero.
+
+Note that we used the `exp()` a lot in order to make our log-mean estimates make more sense. We actually could have immediately printed the parameter table of `model_parameters()` with the argument "exponentiate = TRUE":
+
+```{r}
+model_parameters(fit_poisson_2, exponentiate = TRUE) |> print_md()
+```
+Remember, the value log-mean values are exponentiated, they are called <b>"Incident Rate Ratios"</b> or IRR. As aforementioned, they are the multiplicative effects on the baseline value (in this case, the baseline group is female fishers at 0 years of experience). For interpretation purposes, we can consider the following guidelines:
+
+- IRR > 1, the comparison group has a higher outcome value than the baseline.
+- IRR < 1, the comparison group has a lower outcome value than the baseline.
+- IRR = 1, there is little to no difference between comparison and baseline.
+
+Here, IRR for the interaction effect = 1, so there essentially no difference in the slopes for the individual predictors when we allow them to interact.
+
+##### Checking Assumptions 
+
+When we used Poisson regression, we can see that the normality of the residuals, which was more violated in the regular multiple regression model, is more in line with the assumption. 
+
+```{r}
+check_model(fit_poisson_2)
+```
+
+## Data Demonstration 2: Negative Binomial Regression
 <span style="background-color: #FFFF00">
-Use the affairs.csv dataset and Poisson count regression to predict each participant’s number of affairs from their `gender`, `age`, `children`, `yearsmarried` and `religiousness`. Since each participant's number of affairs is independent of each other, and there is a bound of 0 and no maximum amount, then `affairs` example of an unbounded count variable.   
-
+We will use the affairs.csv dataset and count regression to predict each participant’s number of affairs from their `gender`, `age`, `children`, `yearsmarried` and `religiousness`. Since each participant's number of affairs is independent of each other, and there is a bound of 0 and no maximum amount, then `affairs` example of an unbounded count variable.   
 
 -   Data: <a href="./affairs.csv" download> depression.csv </a>
 </span>
 
-## Loading the Packages and Reading in Data
+### Loading the Packages and Reading in Data
 ```{r, warning = FALSE, message=FALSE}
 ## Load packages
 library(tidyverse)
@@ -79,9 +324,10 @@ affairs
 mytheme <- theme_bw(
   base_size = 12
 )
+
 ```
 
-This data shows records for 297 patients screened with the DCL-9 where each row is one participant.
+This data shows records for 601 individuals where each row is one participant.
 
 Here's a table of our variables in this dataset: 
 
@@ -92,14 +338,14 @@ Here's a table of our variables in this dataset:
 | `age`    | Age |    Double |    Scale    |
 | `yearsmarried`    | Number of Years Married | Double | Scale   |
 | `children` |  Yes or No   |   String |   Ordinal   |
-| `religiousness`` |   1 (Low) to 5 (Highs)  |   Integer |   Scale   |
+| `religiousness`|   1 (Low) to 5 (Highs)  |   Integer |   Scale   |
 | `education` |     | Number of Years of Education |   Integer   | Scale |
-| `satisfaction`` |   1 (Low) to 5 (Highs)  |   Integer |   Scale |
+| `satisfaction` |   1 (Low) to 5 (Highs)  |   Integer |   Scale |
 
 
-## Prepare Data / Exploratory Data Analysis
+### Prepare Data / Exploratory Data Analysis
 
-For Poisson Regression, let's first treat the discrete variables in this dataset as factors. 
+For unbounded count regression, let's first treat the discrete variables in this dataset as factors. 
 
 ```{r}
 affairs$gender <- factor(affairs$gender)
@@ -122,38 +368,30 @@ HARD TO SEE ANY RELATIONSHIPS?
 ggplot(data = affairs, mapping = aes(x = affairs, y = religiousness)) +
   geom_point() 
 ```
-## Checking for Overdispersion
+### Checking for Overdispersion
 
 As aforementioned, the key to choosing between a Poisson or Negative Binomial regression is checking for overdispersion in the count variable. Specifically, if the mean or variance of the count variable is roughly the same, then using a Poisson regression is reasonable, but if the variance is significantly greater than the mean, then it would be better to default to a Negative Binomial regression.
 
-For teaching purposes, we will first roughly check for overdispersion by hand, but most of the time it isn't too difficult to fit both models and check for overdispersion by using a statistical test for overdispersion. 
+Therefore, we will fit the Poisson model first and test for overdispersion before choosing the Negative Binomial model.
 
-Let's consider overdispersion in the `affairs` count variable first by hand, and then confirm it with a test in the later examples. 
+### Models Without Interaction Terms
 
-```{r}
-mean(affairs$affairs)
-var(affairs$affairs)
-```
-As seen here, we can expect to use the Negative Binomial over the Poisson because we detect overdispersion in the outcome variable. While it is easy to see the difference between the mean and variance in this example, when they seem closer it is harder to test by eye, so we will apply an overdispersion test in the following examples to help us decide between a Poisson or Negative Binomial regression.
-
-# Models Without Interaction Terms
-
-## Less Correct: The General Linear Model
+#### Less Correct: The General Linear Model
 
 Before we fit the Poisson or Negative Binomial regression model, it would be worthwhile to try fitting the less appropriate regular general linear model. We'll use our old friend `lm()` to assess the relationship between the outcome variable `affairs` with the predictor variables `gender` and `age`. For more information on general linear modeling, we covered these topics in our <b>Regression Recap</b> chapter.
 
 ```{r}
-fitlm1 <- lm(
-  formula = affairs ~ gender + age ,
+fitlm3 <- lm(
+  formula = affairs ~ gender + age,
   data = affairs
 )
 
-model_parameters(fitlm1) |> print_md()
+model_parameters(fitlm3) |> print_md()
 ```
 
 As the results show, we have a significant partial effect of `age`, such that a 1 unit increase in `age` increases the amount of affairs by a small amount (0.03 units of "affair") while controlling for `gender`. Despite the challenge of interpreting non-integer values of the amount of affairs, it is worth nothing that the regular `lm()` "worked" in that it was able to produce an estimate. 
 
-### Checking Assumptions
+##### Checking Assumptions
 
 When we fit a model, we always want to see if there were any violations in the assumptions. When using the general linear model via the `lm()` function for binary responses, taking a look at a plot of the residuals, using `check_residuals()` [^1], should be concerning.  
 
@@ -161,14 +399,13 @@ When we fit a model, we always want to see if there were any violations in the a
 
 ```{r}
 ## Check residuals
-check_residuals(fitlm1) |> plot() # looks bad
+check_residuals(fitlm3) |> plot() # looks bad
 ```
 Yikes! As you can see, the dots <b>do not</b> fall neatly along the line, especially at the ends of the quantiles. Once this or any other assumption of the general linear model are not met, this is a clear sign that parts of the model may not be trustworthy. Specifically, in this case of the non-uniformity of residuals, there is terrible violation to the model's uncertainty estimates. While the predictions may be okay and others could argue this violation does not appear too detrimental, we can (and should) do better.
 
-## More Correct: The Genearlized Linear Model 
+#### More Correct: The Genearlized Linear Model 
 
 Now let's compare our modeling of the same variables using Poisson regression or Negative Binomial regression on the interpretation of estimates and adherence to model assumptions.  
-
 <b>First, we will decide which of the two models is better for this question based on an overdispersion test. Then, we will interpret the results of that model. </b>
 
 "Is there a relationship between the age, gender, and the amount of affairs?"
@@ -179,44 +416,102 @@ We did a lot of work already with the `lm()` in the "Regression Recap". The `glm
 
 But notice that the `glm()` function has one more input argument. This input argument is the "family" input argument, which requires which "family of distributions" to use and which "link function" choice.  
 
-### Choosing Between Poisson or Negative Binomial 
+#### Choosing Between Poisson or Negative Binomial 
 
 For Poisson regression, we supply the <b>Poisson</b> distribution and the <b>log</b> link function. 
 
 ```{r}
-fit1_poisson <- glm(
+fit_poisson_3 <- glm(
   formula = affairs ~ gender + age, 
   family = poisson(link = "log"),
   data = affairs
 )
 ```
+
+Now let's check if there is overdispersion in the Poisson model: 
+
+```{r}
+check_overdispersion(fit_poisson_3)
+```
+
+Since overdispersion was detected in the Poisson model, we will now use the the Negative Binomial model to account for the overdispersion. Remember, overdispersion in the Poisson model means that our model does not fit our data well.
+
 For Negative Binomial regression, we will use a slightly differnt glm function called `glm.nb()` from the `MASS` package. Instead of supplying a family/link function argument, the function already understands we are fitting a Negative Binomial model, so the input argument for `glm.nb()` is more compact.
 
 ```{r}
-fit1_nb<- glm.nb(
-  formula = affairs ~ gender + age, 
+fit_nb_1<- glm.nb(
+  formula = affairs ~  gender + age, 
   data = affairs
 )
 
 ```
 
-Recall in the previous section that we calculated the mean and variance of the outcome variable `affairs` by hand and saw overdispersion in that the variance was clearly greater than the mean. Now, we will apply a test for overdispersion to choose between the two models using the `check_overdispersion()` function. We recommend this test prior to interpreting any model parameters.
-
-Let's check for overdispersion in the Poisson model:
+Now, we will apply the same test for overdispersion using the `check_overdispersion()` function for our Negative Binomial model. 
 
 ```{r}
-check_overdispersion(fit1_poisson)
+check_overdispersion(fit_nb_1)
 ```
 
-As expected, overdispersion was found when fitting the data with the Poisson model. 
-Now, let's check for overdispersion in the Negative Binomial model:
+Therefore, for the same combination of predictor variables and count outcome variable, we will use the Negative Binomial model. This takes overdispersion into account and also takes advantage of the fact that we can interpret the estimates interchangeably between both models. 
+
+#### Paramter Table Interpretation: Log-Mean (Negative Binomial)
+
+Using the Negative Binomial model, let's interpret use the `model_parameters` function and interpret the estimates. 
 
 ```{r}
-check_overdispersion(fit1_nb)
+model_parameters(fit_nb_1) |> print_md()
 ```
 
-Therefore, for the same combination of predictor variables and count outcome variable, we will use the Negative Binomial model. This takes overdispersion into account and advantage of the fact that we can interpret the estimates interchangeably between both models. 
+The parameter table output from a model fit with `glm.nb()` looks very similar to parameter table outputs from models fit with `lm()`. But there is a <b>big</b> difference -- in `glm()` and `glm.nb()` models, we are no longer working in the same raw units! 
 
-### Paramter Table Interpretation: Log-Mean (Negative Binomial)
+This difference is apparent in the second column of the output table: "Log-Mean". Because we fit a Negative Binomial regression with a log function, the parameter values are in "log-mean" unit. 
+
+Due to the nature of the dummy coded categorical variable `gender`, we will assess the parameters from each level of that variable first. 
+
+> The intercept is the log mean of `affairs` for female participants while accounting for the effect of `age`. In this case, female participants who are 0 years old have an average log mean of -0.61 affairs. This intercept value is not significantly different from 0. This will make more sense once we exponentiate this value. The exp(-0.61) = 0.54. Therefore, the baseline number of affairs for female participants who are 0 years old is 0.54.
+
+> The log mean of `affairs` for male participants while controlling for the effect of `age` is -0.04, or 0.04 less, than female participants. This slope is also not significantly different from a log mean of 0. Once again, this value makes more sense when we exponentiate it. The exp(-0.04) = 0.96, which is the multiplicative effect of a male participant compared to females; in other words, male participants at age 0 have a 0.96 times the expected number of affairs of females aged 0. Note that the value is 0.96 is less than 1, so males have slightly lesser affairs than females.  
+
+> As you increase `age` by 1 unit, there is an increase in the log mean of both male and female participants by 0.03. This slope of age is significantly different from 0 (p<0.05). If we exponentiate this, exp(0.03) = 1.03, or 3% increase (because it is a multiplicative effect). We can interpret this as for every 1 year increase in age for male and females, there is a 3% increase in the number of affairs. 
+
+Note that we used the `exp()` a lot in order to make our log-mean estamates make more sense. We could have immediately printed the parameter table of `model_parameters()` with the argument "exponentiate = TRUE": 
+
+```{r}
+model_parameters(fit1_nb, exponentiate = TRUE) |> print_md()
+```
+
+As in the Poisson model, the value log-mean values are exponentiated, they are called <b>"Incident Rate Ratios"</b> or IRR. As aforementioned, they are the multiplicative effects on the baseline value (in this case, the baseline group is female participants at age 0). For interpretation purposes, we can consider the following guidelines:
+
+- IRR > 1, the comparison group has a higher outcome value than the baseline.
+- IRR < 1, the comparison group has a lower outcome value than the baseline.
+- IRR = 1, there is little to no difference between comparision and baseline.
+
+
+#### Estimate means
+
+Because we have a dummy-coded predictor, `gender`, we can estimate the mean number of `affairs` for females and males averaged over age with `estimate_means()`: 
+
+```{r}
+gmeans1 <- estimate_means(fit1_nb, by = c("gender")) 
+gmeans1 |> print_md()
+```
+
+Notice that if we take the ratio between males and females, we get the IRR for males: 1.38/1.44 = 0.96, or males have a 0.96 multiplicative (so, lesser) amount of `affairs` compared to females. 
+
+##### Checking Assumptions 
+
+```{r}
+check_residuals(fit1_nb) |> plot()
+```
+
+```{r}
+check_model(fit1_poisson)
+check_model(fit1_nb)
+```
+
+
+
+
+
 
 
