@@ -171,19 +171,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./count-regression.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">count-regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Bounded Count Regression</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./unbounded-count-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Unbounded Count Regression</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./linear-models.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Linear models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Linear models</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./summary.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Summary</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Summary</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -1142,7 +1148,7 @@ Why not always use probability?
 <li>Remember, with log-odds, a value of 0 means it is equally likely for an event to occur or not occur. Here, since the log-odds is greater than 0, it is more likely for the event that is labeled a “success” (in this case, more likely to survive) to happen than the event that is labeled a “failure”.</li>
 </ul>
 <blockquote class="blockquote">
-<p>Male passengers have a 1.26 decrease in the log-odds of suriving relative to the female passengers while accounting for the simple effects of <code>fare</code> and <code>age</code> (i.e., they have a worse chance of surviving).</p>
+<p>Male passengers have a 1.26 decrease in the log-odds of suriving relative to the female passengers while accounting for the simple effects of <code>fare</code> (at $0) and <code>age</code> at 0 years old (i.e., they have a worse chance of surviving).</p>
 </blockquote>
 <ul>
 <li>Notice how these comparisons are all in reference to the females. Again, this is due to the nature of the dummy coded categorical variable.</li>
@@ -1151,10 +1157,10 @@ Why not always use probability?
 <p>Because the intercept was not significant, there was no significant difference between the estimate of female passengers and 0. Because “sex[male]” was significant, the difference between female and male passengers was significant, <span class="math inline">\(p&lt;0.001\)</span>.</p>
 </blockquote>
 <blockquote class="blockquote">
-<p>While controlling for the simple effects of <code>sex</code> and <code>age</code>, a one unit increase in <code>fare</code> was significantly related to a 0.01 increase in the log-odds of survival.</p>
+<p>While controlling for the simple effects of <code>sex</code> (for females) and <code>age</code> (at 0 years old), a one unit increase in <code>fare</code> was significantly related to a 0.01 increase in the log-odds of survival.</p>
 </blockquote>
 <blockquote class="blockquote">
-<p>While controlling for the simple effects of <code>sex</code> and <code>fare</code>, a one unit increase in <code>age</code> was significantly related to a 0.02 increase in the log-odds of survival.</p>
+<p>While controlling for the simple effects of <code>sex</code> (for females) and <code>fare</code> (at $0), a one unit increase in <code>age</code> was significantly related to a 0.02 increase in the log-odds of survival.</p>
 </blockquote>
 <ul>
 <li><p>We now turn our attention to the continuous variable <code>fare</code> and <code>age</code>. Both estimates are positive (greater than 0), so it is the case that we can say it is more likely for someone to survive the Titanic with an increase in fare paid and age.</p></li>
@@ -1616,7 +1622,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
   <div class="nav-page nav-page-next">
       <a href="./count-regression.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">count-regression</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Bounded Count Regression</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

@@ -1,6 +1,5 @@
 ---
 title: "Binary Regression"
-format: html
 ---
 
 We start our first look at GLMs with binary regression. Here, we consider when binary regression, specifically <i>logistic regression</i>, is more appropriate than a regular (general linear) regression. We will also fit toy data and interpret the results.

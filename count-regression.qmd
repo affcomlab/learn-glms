@@ -1,5 +1,5 @@
 ---
-title: "count-regression"
+title: "Bounded Count Regression"
 ---
 
 ## Binomial Regression with Bounded Counts

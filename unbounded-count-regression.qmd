@@ -1,10 +1,11 @@
 ---
-title: "unbounded-count-regression"
+title: "Unbounded Count Regression"
+format: html
 ---
 
 When your outcome variable is a <i>unbounded count variable</i>, it has a lower bound of 0 and no upper bound. The fact that there is no upper bound has to do with the nature of the variable. Simply, when it's possible that a variable has an unlimited count amount of any of its levels, and the levels of that variable are independent, then a <i>Poisson</i> or <i>Negative Binomial</i> regression is usually the way to go.
 
-An unbounded count variable is easiest to understand and identify with an example. Imagine you are counting how many coins you pick up on the ground in a day on your daily walk. It is possible that at any given day you collect a lot of coins (with theoretically no maximum), and some days you collect zero coins. And it is assumed that the amount of coins you collect on one day does not impact the number of coins you find on any other day. Then the count for the number of coins is best represented by a Poisson or Negative Binomial distribution and we can use either Poisson or Negative binomial regression. And at the of the analysis, we can ask "What is the average number of coins you would expect to pick up in a day?" 
+An unbounded count variable is easiest to understand and identify with an example. Imagine you are counting how many coins you pick up on the ground in a day on your daily walk. It is possible that at any given day you collect a lot of coins (with theoretically no maximum), and some days you collect zero coins. And it is assumed that the amount of coins you collect on one day does not impact the number of coins you find on any other day. Then the count for the number of coins is best represented by a Poisson or Negative Binomial distribution and we can use either Poisson or Negative Binomial regression. And at the of the analysis, we can ask "What is the average number of coins you would expect to pick up in a day?" 
 
 
 ## Count Events with a Poisson Distribution
@@ -41,6 +42,22 @@ $$ log(\lambda) = \beta_0 + \beta_1 x_1$$
 
 When we use the log link function with linear predictors, we now can call this <i>"Poisson regression"</i>. 
 
+
+::: {.content-visible when-format="html"}
+
+::: {#fig-poisson}
+
+```{=html}
+<div align="center">
+<iframe height="480" width="480" src="poisson_distribution.gif"></iframe>
+</div>
+```
+
+Animation of the Poisson distribution for different values of $\lambda$. Notice how at smaller count values, or smaller $\lambda$ values, we have more proportion at the bounded end, and with larger count values, or larger $\lambda$ values, the Poisson distribution approximates a Normal distribution. 
+:::
+
+:::
+
 ### Multiplicative Proporty 
 A unique property to the Poisson (and Negative Binomial?) regression model is the "product property" of logarithmic functions. Specifically,
 
@@ -48,7 +65,7 @@ $$log_amn = log_am + log_an $$
 So when we interpret the estimates of this model, they are multiplicative effects. We will see in the Data Demonstration sections how this affects our interpretation of our parameters. 
 
 :::{.callout-tip title="Takeaway: Link Functions"}
-When we use GLMs, we will be using many different link functions depending on the data. In the case of Poisson regression, all this function is trying to do is relate our linear predictors to a response outcome that is discrete and between some bounds (like 0 and $\infinity$). More generally, we need link functions because if we <b>did not</b> do this, we are using the linear predictors to predictor some value that is continuous when it may <b>not</b> be continuous (like discrete values for count variables).  We also find that when using the appropriate link function, other problems, like the shape of residuals, gets fixed! 
+When we use GLMs, we will be using many different link functions depending on the data. In the case of Poisson regression, all this function is trying to do is relate our linear predictors to a response outcome that is discrete and between some bounds (like 0 and $\infty$). More generally, we need link functions because if we <b>did not</b> do this, we are using the linear predictors to predictor some value that is continuous when it may <b>not</b> be continuous (like discrete values for count variables).  We also find that when using the appropriate link function, other problems, like the shape of residuals, gets fixed! 
 :::
 
 ## Overdispersion and Count Events with a Negative Binomial Distribution
@@ -174,14 +191,14 @@ the `easystats` package.
 check_overdispersion(fit_poisson_1)
 ```
 
-Since no overdispersion was detected, that means our Poisson model fits the data well, and we can continue to use the Poisson model for our unbounded count regression. <i>If the Poisson model was found to be overdispersed, we will default to the Negative Binomial model (See Data Demonstration 2 in this module). 
+Since no overdispersion was detected, that means our Poisson model fits the data well, and we can continue to use the Poisson model for our unbounded count regression. <i>If the Poisson model was found to be overdispersed, we will default to the Negative Binomial model (See Data Demonstration 2 in this module). </i>
 
 ##### Parameter Table Interpretation: Log Mean
 
 Using the Poisson model, let's use the `model_parameters` function and interpret the estimates. 
 
 ```{r}
-model_parameters(fit_poisson_1)
+model_parameters(fit_poisson_1) |> print_md()
 ```
 
 The parameter table output from a model fit with `glm()` looks very similar to parameter table outputs from models fit with `lm()`. But there is a <b>big</b> difference -- in `glm()` models, we are no longer working in the same raw units! 
@@ -199,7 +216,7 @@ Due to the nature of the dummy coded categorical variable `Sex`, we will assess 
 Note that we used the `exp()` a lot in order to make our log-mean estimates make more sense. We actually could have immediately printed the parameter table of `model_parameters()` with the argument "exponentiate = TRUE":
 
 ```{r}
-model_parameters(fit_poisson_1, exponentiate = TRUE)
+model_parameters(fit_poisson_1, exponentiate = TRUE) |> print_md()
 ```
 
 When the value log-mean values are exponentiated, they are called <b>"Incident Rate Ratios"</b> or IRR. As aforementioned, they are the multiplicative effects on the baseline value (in this case, the baseline group is female fishers with 0 years of experience). For interpretation purposes, we can consider the following guidelines:
@@ -210,15 +227,16 @@ When the value log-mean values are exponentiated, they are called <b>"Incident R
 
 ##### Checking Assumptions
 
-When we used Poisson regression, we can see that the normality of the residuals, which was more violated in the regular multiple regression model, is more in line with the assumption. 
+When we used Poisson regression, we can see that the normality of the residuals, which was more violated in the regular multiple regression model, is more in line with its assumption for uniformity of residuals. 
 
 ```{r}
+#check_model(fit_poisson_1, check = "normality") #this doesn't worK? 
 check_model(fit_poisson_1)
 ```
 
-###Models with Interaction Terms 
+### Models with Interaction Terms 
 
-####Less Correct: the General Linear Model
+#### Less Correct: the General Linear Model
 
 Now, let's consider a less appropriate linear model with an interaction term. Again, we'll use our old friend `lm()` this time to assess the relationship between the outcome variable `Fish` with the predictor variables `Sex` and `Experience` as a multiple regression example with an interaction term. Again, we know it is less appropriate because we are treating the outcome variable as a continuous variable rather than a count variable. For more information on general linear modeling, we covered these topics in our <b>Regression Recap</b> chapter. 
 
@@ -301,7 +319,7 @@ check_model(fit_poisson_2)
 
 ## Data Demonstration 2: Negative Binomial Regression
 <span style="background-color: #FFFF00">
-We will use the affairs.csv dataset and count regression to predict each participant’s number of affairs from their `gender`, `age`, `children`, `yearsmarried` and `religiousness`. Since each participant's number of affairs is independent of each other, and there is a bound of 0 and no maximum amount, then `affairs` example of an unbounded count variable.   
+We will use the affairs.csv dataset and count regression to predict each participant’s number of affairs from their `gender`, `age`, `satisfaction`, and `religiousness`. Since each participant's number of affairs is independent of each other, and there is a bound of 0 and no maximum amount, then `affairs` example of an unbounded count variable.   
 
 -   Data: <a href="./affairs.csv" download> depression.csv </a>
 </span>
@@ -405,7 +423,8 @@ Yikes! As you can see, the dots <b>do not</b> fall neatly along the line, especi
 
 #### More Correct: The Genearlized Linear Model 
 
-Now let's compare our modeling of the same variables using Poisson regression or Negative Binomial regression on the interpretation of estimates and adherence to model assumptions.  
+Now let's compare our modeling of the same variables using Poisson regression or Negative Binomial regression. 
+
 <b>First, we will decide which of the two models is better for this question based on an overdispersion test. Then, we will interpret the results of that model. </b>
 
 "Is there a relationship between the age, gender, and the amount of affairs?"
@@ -446,12 +465,6 @@ fit_nb_1<- glm.nb(
 
 ```
 
-Now, we will apply the same test for overdispersion using the `check_overdispersion()` function for our Negative Binomial model. 
-
-```{r}
-check_overdispersion(fit_nb_1)
-```
-
 Therefore, for the same combination of predictor variables and count outcome variable, we will use the Negative Binomial model. This takes overdispersion into account and also takes advantage of the fact that we can interpret the estimates interchangeably between both models. 
 
 #### Paramter Table Interpretation: Log-Mean (Negative Binomial)
@@ -477,7 +490,7 @@ Due to the nature of the dummy coded categorical variable `gender`, we will asse
 Note that we used the `exp()` a lot in order to make our log-mean estamates make more sense. We could have immediately printed the parameter table of `model_parameters()` with the argument "exponentiate = TRUE": 
 
 ```{r}
-model_parameters(fit1_nb, exponentiate = TRUE) |> print_md()
+model_parameters(fit_nb_1, exponentiate = TRUE) |> print_md()
 ```
 
 As in the Poisson model, the value log-mean values are exponentiated, they are called <b>"Incident Rate Ratios"</b> or IRR. As aforementioned, they are the multiplicative effects on the baseline value (in this case, the baseline group is female participants at age 0). For interpretation purposes, we can consider the following guidelines:
@@ -492,7 +505,7 @@ As in the Poisson model, the value log-mean values are exponentiated, they are c
 Because we have a dummy-coded predictor, `gender`, we can estimate the mean number of `affairs` for females and males averaged over age with `estimate_means()`: 
 
 ```{r}
-gmeans1 <- estimate_means(fit1_nb, by = c("gender")) 
+gmeans1 <- estimate_means(fit_nb_1, by = c("gender")) 
 gmeans1 |> print_md()
 ```
 
@@ -501,17 +514,115 @@ Notice that if we take the ratio between males and females, we get the IRR for m
 ##### Checking Assumptions 
 
 ```{r}
-check_residuals(fit1_nb) |> plot()
+check_residuals(fit_nb_1) |> plot()
 ```
+
+### Models With Interaction Terms 
+
+#### Less Correct: The General Linear Model
+
+Let's again consider a regular general linear model with an interaction term. We'll use `lm()` to assess the relationship between the outcome variable `affairs` with the predictor variables `gender`, `satisfaction`, and `religousnes` with a two-way interaction between `gender` and `religiousness`. Again, for more information on general linear modeling, we covered these topics in our <b>Regression Recap</b> chapter.
+
 
 ```{r}
-check_model(fit1_poisson)
-check_model(fit1_nb)
+fitlm4 <- lm(
+  formula = affairs ~ gender + satisfaction + religiousness+
+    gender:religiousness,
+  data = affairs
+)
+
+model_parameters(fitlm4) |> print_md()
+```
+
+As the results show, we have a significant partial effect of `satisfaction` such that a 1 unit increase in `satisfaction` decreases the amount of `affairs` by 0.83 units while controlling for `gender` and `religiousness`, and a significant partial effect of `religiousness` such that a 1 unit increase in `religiousness` decreases the amount of `affairs` by 0.43 units while controlling for `gender` and `satisfaction`. Our model here also includes an interaction term which was not significant. 
+
+##### Checking Assumptions 
+
+As seen using the `check_model` function, the most concerning violations of assumptions appears to be the homogeneity of variance and the normality of residuals. Updating our model to a generalized linear model that takes into account our discrete outcome variable should help fix these problems. 
+
+```{r}
+check_model(fitlm4)
 ```
 
 
+#### More Correct: the Generalized Linear Model
 
+Now let's compare our modeling of the same variables with our interaction term using Poisson regression or Negative Binomial regression. 
 
+<b>First, we will decide which of the two models is better for this question based on an overdispersion test. Then, we will interpret the results of that model. </b>
 
+"Is there a relationship between satisfaction, gender, and religiousness, with an interaction between gender and religiousness, on the amount of affairs?"
 
+First, let's start by fitting the Poisson model and testing it for overdispersion.
 
+#### Choosing Between Poisson or Negative Binomial 
+
+For Poisson regression, we supply the <b>Poisson</b> distribution and the <b>log</b> link function to the `glm()` function. 
+
+```{r}
+fit_poisson_4 <- glm(
+  formula = affairs ~ gender + satisfaction + religiousness + 
+    gender:religiousness, 
+  family = poisson(link = "log"),
+  data = affairs
+)
+```
+
+Now let's check if there is overdispersion in the Poisson model: 
+
+```{r}
+check_overdispersion(fit_poisson_4)
+```
+
+Since overdispersion was detected in the Poisson model, we will now use the the Negative Binomial model to account for the overdispersion. Remember, overdispersion in the Poisson model means that our model does not fit our data well.
+
+For Negative Binomial regression, again we will use a slightly differnt glm function called `glm.nb()` from the `MASS` package. Instead of supplying a family/link function argument, the function already understands we are fitting a Negative Binomial model, so the input argument for `glm.nb()` is more compact.
+
+```{r}
+fit_nb_2 <- glm.nb(
+  formula = affairs ~ gender + satisfaction + religiousness +
+    religiousness:gender,
+  data = affairs
+)
+
+model_parameters(fit_nb_2) |> print_md()
+```
+
+Therefore, for the same combination of predictor variables and count outcome variable, we will use the Negative Binomial model. This takes overdispersion into account and also takes advantage of the fact that we can interpret the estimates interchangeably between both models. 
+
+#### Paramter Table Interpretation: Log-Mean (Negative Binomial)
+
+Using the Negative Binomial model, let's interpret use the `model_parameters` function and interpret the estimates. 
+
+```{r}
+model_parameters(fit_nb_2)
+```
+
+Due to the nature of the dummy coded categorical variable `gender`, we will assess the parameters from each level of that variable first. 
+
+> The intercept is the log mean of `affairs` for female participants while accounting for the effect of `satisfaction` and `religiousness`. In this case, female participants with scores of 1 on both `satisfaction` and `religiousness` have an average log mean of 3.70-0.55-0.48 = 2.67 affairs. This intercept value is significantly different from 0, p<0.001. This will make more sense once we exponentiate this value. The exp(2.67) = 14.44. (Since `satisfaction` and `religiousness` are scaled from 1-5, we must include those slopes when predicting our outcome response for our intercept). Therefore, the baseline number of affairs for female participants who are most unsatisfied and not religious are expected to have 14.44 affairs. 
+
+> The log mean of `affairs` for male participants while controlling for the effect of `satisfaction` and `religiousness` is -0.65, or 0.65 less, than female participants. This slope difference between males and females is also not significantly different from a log mean of 0. Once again, this value makes more sense when we exponentiate it. The exp(-0.65) = 0.52, which is the multiplicative effect of a male participant compared to females; in other words, male participants with scores of 1 on both `satisfaction` and `religiousness` have a 0.52 times the expected number of affairs of females with the same scores. Note that the value is 0.52 is less than 1, so males have half than affairs than females.  
+
+> As you increase `satisfaction` by 1 unit, there is a decrease in the log mean of female participants by 0.55 while holding `religiousness` constant. This slope of `satisfaction` for females (at a score for 1 for `religiousness`) is significantly different from 0 (p<0.001). If we exponentiate this, exp(-0.55) = 0.58, or 58% decrease in affairs (because it is a multiplicative effect). We can interpret this as for every 1 unit increase in `satisfaction` for females, there is a 58% decrease in the number of affairs. 
+
+> As you increase `religiousness` by 1 unit, there is a decrease in the log mean of female participants by 0.48 while holding `satisfaction` constant. This slope of `religiousness` for females (at a score for 1 for `satisfaction`) is significantly different from 0 (p=0.001). If we exponentiate this, exp(-0.48) = 0.62, or 62% decrease in affairs (because it is a multiplicative effect). We can interpret this as for every 1 unit increase in `religiousness` for females, there is a 62% decrease in the number of affairs. 
+
+> The `gender[male] x religiousness` interaction effect is not significant. The slopes for gender and religiousness do not depend on each other. 
+
+Note that once more we used the `exp()` a lot in order to make our log-mean estamates make more sense. We could have immediately printed the parameter table of `model_parameters()` with the argument "exponentiate = TRUE": 
+
+```{r}
+model_parameters(fit_nb_2, exponentiate = TRUE) |> print_md()
+```
+
+Now, as IRR values, we can simply multiply the terms for our parameter relationships and model predictions.
+
+##### Checking Assumptions
+
+We benefit from using the Negative Binomial model over the general model and the Poisson model by accounting for both model assumptions (including overdispersion):
+
+```{r}
+check_model(fit_nb_2)
+```
+Both the homogeneity of variance and uniformity of residuals have marked improvments compared to the violations found in the regular linear model. 
