@@ -345,15 +345,15 @@ Takeaway: Link Functions
     Fish   Age   Sex Experience
    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;      &lt;dbl&gt;
  1     3  19.9     1          2
- 2     3  20.5     1          6
+ 2     4  20.5     1          6
  3     1  24.1     0          2
- 4     5  21.1     1          5
- 5     4  21.3     0          4
+ 4     6  21.1     1          5
+ 5     5  21.3     0          4
  6     1  24.4     1          1
- 7     2  21.9     0          8
+ 7     3  21.9     0          8
  8     3  18.5     0          4
- 9     4  19.6     1          6
-10     2  20.1     1          4
+ 9     5  19.6     1          6
+10     3  20.1     1          4
 # ℹ 590 more rows</code></pre>
 </div>
 </div>
@@ -453,26 +453,26 @@ Takeaway: Link Functions
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: center;">1.55</td>
-<td style="text-align: center;">0.15</td>
-<td style="text-align: center;">(1.25, 1.86)</td>
-<td style="text-align: center;">10.08</td>
+<td style="text-align: center;">1.27</td>
+<td style="text-align: center;">0.17</td>
+<td style="text-align: center;">(0.93, 1.61)</td>
+<td style="text-align: center;">7.33</td>
 <td style="text-align: center;">&lt; .001</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Sex (Male)</td>
-<td style="text-align: center;">0.19</td>
-<td style="text-align: center;">0.13</td>
-<td style="text-align: center;">(-0.07, 0.44)</td>
-<td style="text-align: center;">1.43</td>
-<td style="text-align: center;">0.154</td>
+<td style="text-align: center;">0.17</td>
+<td style="text-align: center;">0.15</td>
+<td style="text-align: center;">(-0.12, 0.46)</td>
+<td style="text-align: center;">1.18</td>
+<td style="text-align: center;">0.239</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Experience</td>
-<td style="text-align: center;">0.24</td>
-<td style="text-align: center;">0.03</td>
-<td style="text-align: center;">(0.18, 0.30)</td>
-<td style="text-align: center;">7.57</td>
+<td style="text-align: center;">0.45</td>
+<td style="text-align: center;">0.04</td>
+<td style="text-align: center;">(0.38, 0.52)</td>
+<td style="text-align: center;">12.65</td>
 <td style="text-align: center;">&lt; .001</td>
 </tr>
 </tbody>
@@ -488,6 +488,10 @@ Takeaway: Link Functions
 <div class="cell-output-display">
 <p><img src="unbounded-count-regression_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
 </div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_model</span>(fitlm1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="unbounded-count-regression_files/figure-html/unnamed-chunk-7-2.png" class="img-fluid" width="672"></p>
+</div>
 </div>
 </section>
 </section>
@@ -500,21 +504,21 @@ Takeaway: Link Functions
 <p>But notice that the <code>glm()</code> function has one more input argument. This input argument is the “family” input argument, which requires which “family of distributions” to use and which “link function” choice.</p>
 <p>For Poisson regression, we supply the <b>poisson</b> distribution and the <b>log</b> link function.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>fit_poisson_1 <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> Fish <span class="sc">~</span> Sex <span class="sc">+</span> Experience, </span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">poisson</span>(<span class="at">link =</span> <span class="st">"log"</span>), </span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> fishing</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>fit_poisson_1 <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> Fish <span class="sc">~</span> Sex <span class="sc">+</span> Experience, </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">poisson</span>(<span class="at">link =</span> <span class="st">"log"</span>), </span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> fishing</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Now, before we consider any model parameters, we will check if the model is overdispersed or not using <code>check_overdispersion()</code> from the <code>performance</code> package, which is include in the <code>easystats</code> package.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_overdispersion</span>(fit_poisson_1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_overdispersion</span>(fit_poisson_1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># Overdispersion test
 
-       dispersion ratio =   0.968
-  Pearson's Chi-Squared = 578.085
-                p-value =   0.703</code></pre>
+       dispersion ratio =   0.976
+  Pearson's Chi-Squared = 582.605
+                p-value =   0.656</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>No overdispersion detected.</code></pre>
@@ -525,7 +529,7 @@ Takeaway: Link Functions
 <h5 data-number="5.4.3.2.1" class="anchored" data-anchor-id="parameter-table-interpretation-log-mean"><span class="header-section-number">5.4.3.2.1</span> Parameter Table Interpretation: Log Mean</h5>
 <p>Using the Poisson model, let’s use the <code>model_parameters</code> function and interpret the estimates.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit_poisson_1) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit_poisson_1) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
 <thead>
@@ -541,26 +545,26 @@ Takeaway: Link Functions
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: center;">0.55</td>
+<td style="text-align: center;">0.56</td>
 <td style="text-align: center;">0.06</td>
-<td style="text-align: center;">(0.43, 0.68)</td>
-<td style="text-align: center;">8.92</td>
+<td style="text-align: center;">(0.44, 0.67)</td>
+<td style="text-align: center;">9.72</td>
 <td style="text-align: center;">&lt; .001</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Sex (Male)</td>
-<td style="text-align: center;">0.07</td>
+<td style="text-align: center;">0.06</td>
 <td style="text-align: center;">0.05</td>
-<td style="text-align: center;">(-0.03, 0.17)</td>
-<td style="text-align: center;">1.45</td>
-<td style="text-align: center;">0.147</td>
+<td style="text-align: center;">(-0.03, 0.15)</td>
+<td style="text-align: center;">1.30</td>
+<td style="text-align: center;">0.192</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Experience</td>
-<td style="text-align: center;">0.09</td>
+<td style="text-align: center;">0.13</td>
 <td style="text-align: center;">0.01</td>
-<td style="text-align: center;">(0.06, 0.11)</td>
-<td style="text-align: center;">7.48</td>
+<td style="text-align: center;">(0.11, 0.15)</td>
+<td style="text-align: center;">12.76</td>
 <td style="text-align: center;">&lt; .001</td>
 </tr>
 </tbody>
@@ -581,7 +585,7 @@ Takeaway: Link Functions
 </blockquote>
 <p>Note that we used the <code>exp()</code> a lot in order to make our log-mean estimates make more sense. We actually could have immediately printed the parameter table of <code>model_parameters()</code> with the argument “exponentiate = TRUE”:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit_poisson_1, <span class="at">exponentiate =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit_poisson_1, <span class="at">exponentiate =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
 <thead>
@@ -598,25 +602,25 @@ Takeaway: Link Functions
 <tr class="odd">
 <td style="text-align: left;">(Intercept)</td>
 <td style="text-align: center;">1.74</td>
-<td style="text-align: center;">0.11</td>
-<td style="text-align: center;">(1.54, 1.97)</td>
-<td style="text-align: center;">8.92</td>
+<td style="text-align: center;">0.10</td>
+<td style="text-align: center;">(1.56, 1.95)</td>
+<td style="text-align: center;">9.72</td>
 <td style="text-align: center;">&lt; .001</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Sex (Male)</td>
-<td style="text-align: center;">1.08</td>
+<td style="text-align: center;">1.06</td>
 <td style="text-align: center;">0.05</td>
-<td style="text-align: center;">(0.97, 1.19)</td>
-<td style="text-align: center;">1.45</td>
-<td style="text-align: center;">0.147</td>
+<td style="text-align: center;">(0.97, 1.16)</td>
+<td style="text-align: center;">1.30</td>
+<td style="text-align: center;">0.192</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Experience</td>
-<td style="text-align: center;">1.09</td>
+<td style="text-align: center;">1.14</td>
 <td style="text-align: center;">0.01</td>
-<td style="text-align: center;">(1.07, 1.12)</td>
-<td style="text-align: center;">7.48</td>
+<td style="text-align: center;">(1.12, 1.16)</td>
+<td style="text-align: center;">12.76</td>
 <td style="text-align: center;">&lt; .001</td>
 </tr>
 </tbody>
@@ -634,8 +638,8 @@ Takeaway: Link Functions
 <h5 data-number="5.4.3.2.2" class="anchored" data-anchor-id="checking-assumptions-1"><span class="header-section-number">5.4.3.2.2</span> Checking Assumptions</h5>
 <p>When we used Poisson regression, we can see that the normality of the residuals, which was more violated in the regular multiple regression model, is more in line with its assumption for uniformity of residuals.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">#check_model(fit_poisson_1, check = "normality") #this doesn't worK? </span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">check_model</span>(fit_poisson_1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">#check_model(fit_poisson_1, check = "normality") #this doesn't worK? </span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">check_model</span>(fit_poisson_1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="unbounded-count-regression_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -649,13 +653,13 @@ Takeaway: Link Functions
 <h4 data-number="5.4.4.1" class="anchored" data-anchor-id="less-correct-the-general-linear-model-1"><span class="header-section-number">5.4.4.1</span> Less Correct: the General Linear Model</h4>
 <p>Now, let’s consider a less appropriate linear model with an interaction term. Again, we’ll use our old friend <code>lm()</code> this time to assess the relationship between the outcome variable <code>Fish</code> with the predictor variables <code>Sex</code> and <code>Experience</code> as a multiple regression example with an interaction term. Again, we know it is less appropriate because we are treating the outcome variable as a continuous variable rather than a count variable. For more information on general linear modeling, we covered these topics in our <b>Regression Recap</b> chapter.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>fitlm2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> Fish <span class="sc">~</span> Sex <span class="sc">*</span> Experience,</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">#equivalent formula: Fish ~ Sex + Experience + Sex:Experience</span></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> fishing</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fitlm2) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>fitlm2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> Fish <span class="sc">~</span> Sex <span class="sc">*</span> Experience,</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">#equivalent formula: Fish ~ Sex + Experience + Sex:Experience</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> fishing</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fitlm2) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
 <colgroup>
@@ -679,35 +683,35 @@ Takeaway: Link Functions
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: center;">1.56</td>
-<td style="text-align: center;">0.20</td>
-<td style="text-align: center;">(1.18, 1.94)</td>
-<td style="text-align: center;">7.97</td>
+<td style="text-align: center;">1.26</td>
+<td style="text-align: center;">0.22</td>
+<td style="text-align: center;">(0.83, 1.70)</td>
+<td style="text-align: center;">5.74</td>
 <td style="text-align: center;">&lt; .001</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Sex (Male)</td>
-<td style="text-align: center;">0.17</td>
-<td style="text-align: center;">0.28</td>
-<td style="text-align: center;">(-0.39, 0.73)</td>
+<td style="text-align: center;">0.19</td>
+<td style="text-align: center;">0.32</td>
+<td style="text-align: center;">(-0.44, 0.82)</td>
 <td style="text-align: center;">0.60</td>
-<td style="text-align: center;">0.546</td>
+<td style="text-align: center;">0.551</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Experience</td>
-<td style="text-align: center;">0.24</td>
-<td style="text-align: center;">0.04</td>
-<td style="text-align: center;">(0.15, 0.32)</td>
-<td style="text-align: center;">5.39</td>
+<td style="text-align: center;">0.45</td>
+<td style="text-align: center;">0.05</td>
+<td style="text-align: center;">(0.35, 0.55)</td>
+<td style="text-align: center;">9.11</td>
 <td style="text-align: center;">&lt; .001</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Sex (Male) × Experience</td>
-<td style="text-align: center;">3.54e-03</td>
-<td style="text-align: center;">0.06</td>
-<td style="text-align: center;">(-0.12, 0.13)</td>
-<td style="text-align: center;">0.06</td>
-<td style="text-align: center;">0.955</td>
+<td style="text-align: center;">-4.58e-03</td>
+<td style="text-align: center;">0.07</td>
+<td style="text-align: center;">(-0.14, 0.13)</td>
+<td style="text-align: center;">-0.06</td>
+<td style="text-align: center;">0.949</td>
 </tr>
 </tbody>
 </table>
@@ -718,7 +722,7 @@ Takeaway: Link Functions
 <h5 data-number="5.4.4.1.1" class="anchored" data-anchor-id="checking-assumptions-2"><span class="header-section-number">5.4.4.1.1</span> Checking Assumptions</h5>
 <p>Again, when we fit a model, we always want to see if there were any violations in the assumptions. We will use the diagnostic function <code>check_model()</code> to see if there are any deviations from <code>lm()</code> assumptions. For this model, the most concerning assumption appears to be the normality of residuals, as the distribution is offset from the normal curve. Updating our model to a generalized linear model that takes into account our discrete outcome variable should help fix this problem.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_model</span>(fitlm2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_model</span>(fitlm2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="unbounded-count-regression_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -732,18 +736,18 @@ Takeaway: Link Functions
 <p>Again, because we have multiple predictors, multiple regression allows us to control for the effects of multiple predictors on the outcome, and we are left with the unique effect of a predictor when controlling for other predictors. In this case, the outcome variable will be the count of <code>fish</code>, and the predictor variables will be <code>Sex</code> (a categorical variable) and <code>Experience</code> (a continuous variable), and the interaction term will assses the degree to which the predictor variables do or do not depend on each other.</p>
 <p>For Poisson regression, we supply the <b>poisson</b> distribution and the <b>log</b> link function to the <code>glm()</code> function.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>fit_poisson_2<span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> Fish <span class="sc">~</span> Sex <span class="sc">*</span> Experience,</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">#equivalent formula: Fish ~ Sex + Experience + Sex:Experience</span></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">poisson</span>(<span class="at">link =</span> <span class="st">"log"</span>), </span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> fishing</span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>fit_poisson_2<span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> Fish <span class="sc">~</span> Sex <span class="sc">*</span> Experience,</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">#equivalent formula: Fish ~ Sex + Experience + Sex:Experience</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">poisson</span>(<span class="at">link =</span> <span class="st">"log"</span>), </span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> fishing</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="parameter-table-interpretation-log-mean-1" class="level5" data-number="5.4.4.2.1">
 <h5 data-number="5.4.4.2.1" class="anchored" data-anchor-id="parameter-table-interpretation-log-mean-1"><span class="header-section-number">5.4.4.2.1</span> Parameter Table Interpretation: Log-Mean</h5>
 <p>Let’s use the <code>model_parameters</code> function and interpret the estimates of our model with an interaction term.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit_poisson_2) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit_poisson_2) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
 <colgroup>
@@ -768,34 +772,34 @@ Takeaway: Link Functions
 <tr class="odd">
 <td style="text-align: left;">(Intercept)</td>
 <td style="text-align: center;">0.55</td>
-<td style="text-align: center;">0.08</td>
-<td style="text-align: center;">(0.39, 0.70)</td>
-<td style="text-align: center;">6.92</td>
+<td style="text-align: center;">0.07</td>
+<td style="text-align: center;">(0.41, 0.69)</td>
+<td style="text-align: center;">7.57</td>
 <td style="text-align: center;">&lt; .001</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Sex (Male)</td>
-<td style="text-align: center;">0.09</td>
-<td style="text-align: center;">0.11</td>
-<td style="text-align: center;">(-0.14, 0.31)</td>
-<td style="text-align: center;">0.76</td>
-<td style="text-align: center;">0.450</td>
+<td style="text-align: center;">0.08</td>
+<td style="text-align: center;">0.10</td>
+<td style="text-align: center;">(-0.13, 0.28)</td>
+<td style="text-align: center;">0.72</td>
+<td style="text-align: center;">0.470</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Experience</td>
-<td style="text-align: center;">0.09</td>
-<td style="text-align: center;">0.02</td>
-<td style="text-align: center;">(0.06, 0.12)</td>
-<td style="text-align: center;">5.44</td>
+<td style="text-align: center;">0.13</td>
+<td style="text-align: center;">0.01</td>
+<td style="text-align: center;">(0.10, 0.16)</td>
+<td style="text-align: center;">9.38</td>
 <td style="text-align: center;">&lt; .001</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Sex (Male) × Experience</td>
-<td style="text-align: center;">-2.81e-03</td>
+<td style="text-align: center;">-3.41e-03</td>
 <td style="text-align: center;">0.02</td>
-<td style="text-align: center;">(-0.05, 0.04)</td>
-<td style="text-align: center;">-0.12</td>
-<td style="text-align: center;">0.903</td>
+<td style="text-align: center;">(-0.04, 0.04)</td>
+<td style="text-align: center;">-0.17</td>
+<td style="text-align: center;">0.868</td>
 </tr>
 </tbody>
 </table>
@@ -816,7 +820,7 @@ Takeaway: Link Functions
 </blockquote>
 <p>Note that we used the <code>exp()</code> a lot in order to make our log-mean estimates make more sense. We actually could have immediately printed the parameter table of <code>model_parameters()</code> with the argument “exponentiate = TRUE”:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit_poisson_2, <span class="at">exponentiate =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit_poisson_2, <span class="at">exponentiate =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
 <thead>
@@ -833,34 +837,34 @@ Takeaway: Link Functions
 <tr class="odd">
 <td style="text-align: left;">(Intercept)</td>
 <td style="text-align: center;">1.73</td>
-<td style="text-align: center;">0.14</td>
-<td style="text-align: center;">(1.48, 2.02)</td>
-<td style="text-align: center;">6.92</td>
+<td style="text-align: center;">0.13</td>
+<td style="text-align: center;">(1.50, 1.99)</td>
+<td style="text-align: center;">7.57</td>
 <td style="text-align: center;">&lt; .001</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Sex (Male)</td>
-<td style="text-align: center;">1.09</td>
-<td style="text-align: center;">0.12</td>
-<td style="text-align: center;">(0.87, 1.36)</td>
-<td style="text-align: center;">0.76</td>
-<td style="text-align: center;">0.450</td>
+<td style="text-align: center;">1.08</td>
+<td style="text-align: center;">0.11</td>
+<td style="text-align: center;">(0.88, 1.32)</td>
+<td style="text-align: center;">0.72</td>
+<td style="text-align: center;">0.470</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Experience</td>
-<td style="text-align: center;">1.09</td>
+<td style="text-align: center;">1.14</td>
 <td style="text-align: center;">0.02</td>
-<td style="text-align: center;">(1.06, 1.13)</td>
-<td style="text-align: center;">5.44</td>
+<td style="text-align: center;">(1.11, 1.17)</td>
+<td style="text-align: center;">9.38</td>
 <td style="text-align: center;">&lt; .001</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Sex (Male) × Experience</td>
 <td style="text-align: center;">1.00</td>
 <td style="text-align: center;">0.02</td>
-<td style="text-align: center;">(0.95, 1.04)</td>
-<td style="text-align: center;">-0.12</td>
-<td style="text-align: center;">0.903</td>
+<td style="text-align: center;">(0.96, 1.04)</td>
+<td style="text-align: center;">-0.17</td>
+<td style="text-align: center;">0.868</td>
 </tr>
 </tbody>
 </table>
@@ -878,7 +882,7 @@ Takeaway: Link Functions
 <h5 data-number="5.4.4.2.2" class="anchored" data-anchor-id="checking-assumptions-3"><span class="header-section-number">5.4.4.2.2</span> Checking Assumptions</h5>
 <p>When we used Poisson regression, we can see that the normality of the residuals, which was more violated in the regular multiple regression model, is more in line with the assumption.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_model</span>(fit_poisson_2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_model</span>(fit_poisson_2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="unbounded-count-regression_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -896,15 +900,15 @@ Takeaway: Link Functions
 <section id="loading-the-packages-and-reading-in-data-1" class="level3" data-number="5.5.1">
 <h3 data-number="5.5.1" class="anchored" data-anchor-id="loading-the-packages-and-reading-in-data-1"><span class="header-section-number">5.5.1</span> Loading the Packages and Reading in Data</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Load packages</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(easystats)</span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggeffects)</span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MASS) <span class="co">#needed for Negative Binomial Regression</span></span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Read in data from file</span></span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>affairs <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"affairs.csv"</span>)</span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>affairs</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Load packages</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(easystats)</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggeffects)</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MASS) <span class="co">#needed for Negative Binomial Regression</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Read in data from file</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>affairs <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"affairs.csv"</span>)</span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>affairs</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 601 × 8
    affairs gender   age yearsmarried children religiousness education
@@ -996,13 +1000,13 @@ Takeaway: Link Functions
 <h3 data-number="5.5.2" class="anchored" data-anchor-id="prepare-data-exploratory-data-analysis-1"><span class="header-section-number">5.5.2</span> Prepare Data / Exploratory Data Analysis</h3>
 <p>For unbounded count regression, let’s first treat the discrete variables in this dataset as factors.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>affairs<span class="sc">$</span>gender <span class="ot">&lt;-</span> <span class="fu">factor</span>(affairs<span class="sc">$</span>gender)</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>affairs<span class="sc">$</span>children <span class="ot">&lt;-</span> <span class="fu">factor</span>(affairs<span class="sc">$</span>children)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>affairs<span class="sc">$</span>gender <span class="ot">&lt;-</span> <span class="fu">factor</span>(affairs<span class="sc">$</span>gender)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>affairs<span class="sc">$</span>children <span class="ot">&lt;-</span> <span class="fu">factor</span>(affairs<span class="sc">$</span>children)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Next, let’s plot the distribution of the count of <code>affairs</code>. The main thing to consider is that this is a discrete variable and using Poisson regression inherently takes this into account.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(affairs, <span class="fu">aes</span>(<span class="at">x =</span> affairs)) <span class="sc">+</span></span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>() <span class="sc">+</span> mytheme</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(affairs, <span class="fu">aes</span>(<span class="at">x =</span> affairs)) <span class="sc">+</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>() <span class="sc">+</span> mytheme</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="unbounded-count-regression_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -1010,8 +1014,8 @@ Takeaway: Link Functions
 <p>Now, let’s try to see the relationship between the number of <code>affairs</code> and <code>relgiousness</code>:</p>
 <p>HARD TO SEE ANY RELATIONSHIPS?</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> affairs, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> affairs, <span class="at">y =</span> religiousness)) <span class="sc">+</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> affairs, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> affairs, <span class="at">y =</span> religiousness)) <span class="sc">+</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="unbounded-count-regression_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -1028,12 +1032,12 @@ Takeaway: Link Functions
 <h4 data-number="5.5.4.1" class="anchored" data-anchor-id="less-correct-the-general-linear-model-2"><span class="header-section-number">5.5.4.1</span> Less Correct: The General Linear Model</h4>
 <p>Before we fit the Poisson or Negative Binomial regression model, it would be worthwhile to try fitting the less appropriate regular general linear model. We’ll use our old friend <code>lm()</code> to assess the relationship between the outcome variable <code>affairs</code> with the predictor variables <code>gender</code> and <code>age</code>. For more information on general linear modeling, we covered these topics in our <b>Regression Recap</b> chapter.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>fitlm3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> affairs <span class="sc">~</span> gender <span class="sc">+</span> age,</span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> affairs</span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fitlm3) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>fitlm3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> affairs <span class="sc">~</span> gender <span class="sc">+</span> age,</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> affairs</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fitlm3) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
 <colgroup>
@@ -1088,8 +1092,8 @@ Takeaway: Link Functions
 <h5 data-number="5.5.4.1.1" class="anchored" data-anchor-id="checking-assumptions-4"><span class="header-section-number">5.5.4.1.1</span> Checking Assumptions</h5>
 <p>When we fit a model, we always want to see if there were any violations in the assumptions. When using the general linear model via the <code>lm()</code> function for binary responses, taking a look at a plot of the residuals, using <code>check_residuals()</code> <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>, should be concerning.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Check residuals</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">check_residuals</span>(fitlm3) <span class="sc">|&gt;</span> <span class="fu">plot</span>() <span class="co"># looks bad</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Check residuals</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">check_residuals</span>(fitlm3) <span class="sc">|&gt;</span> <span class="fu">plot</span>() <span class="co"># looks bad</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="unbounded-count-regression_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -1110,15 +1114,15 @@ Takeaway: Link Functions
 <h4 data-number="5.5.4.3" class="anchored" data-anchor-id="choosing-between-poisson-or-negative-binomial"><span class="header-section-number">5.5.4.3</span> Choosing Between Poisson or Negative Binomial</h4>
 <p>For Poisson regression, we supply the <b>Poisson</b> distribution and the <b>log</b> link function.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>fit_poisson_3 <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> affairs <span class="sc">~</span> gender <span class="sc">+</span> age, </span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">poisson</span>(<span class="at">link =</span> <span class="st">"log"</span>),</span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> affairs</span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>fit_poisson_3 <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> affairs <span class="sc">~</span> gender <span class="sc">+</span> age, </span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">poisson</span>(<span class="at">link =</span> <span class="st">"log"</span>),</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> affairs</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Now let’s check if there is overdispersion in the Poisson model:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_overdispersion</span>(fit_poisson_3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_overdispersion</span>(fit_poisson_3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># Overdispersion test
 
@@ -1133,10 +1137,10 @@ Takeaway: Link Functions
 <p>Since overdispersion was detected in the Poisson model, we will now use the the Negative Binomial model to account for the overdispersion. Remember, overdispersion in the Poisson model means that our model does not fit our data well.</p>
 <p>For Negative Binomial regression, we will use a slightly differnt glm function called <code>glm.nb()</code> from the <code>MASS</code> package. Instead of supplying a family/link function argument, the function already understands we are fitting a Negative Binomial model, so the input argument for <code>glm.nb()</code> is more compact.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>fit_nb_1<span class="ot">&lt;-</span> <span class="fu">glm.nb</span>(</span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> affairs <span class="sc">~</span>  gender <span class="sc">+</span> age, </span>
-<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> affairs</span>
-<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>fit_nb_1<span class="ot">&lt;-</span> <span class="fu">glm.nb</span>(</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> affairs <span class="sc">~</span>  gender <span class="sc">+</span> age, </span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> affairs</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Therefore, for the same combination of predictor variables and count outcome variable, we will use the Negative Binomial model. This takes overdispersion into account and also takes advantage of the fact that we can interpret the estimates interchangeably between both models.</p>
 </section>
@@ -1144,7 +1148,7 @@ Takeaway: Link Functions
 <h4 data-number="5.5.4.4" class="anchored" data-anchor-id="paramter-table-interpretation-log-mean-negative-binomial"><span class="header-section-number">5.5.4.4</span> Paramter Table Interpretation: Log-Mean (Negative Binomial)</h4>
 <p>Using the Negative Binomial model, let’s interpret use the <code>model_parameters</code> function and interpret the estimates.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit_nb_1) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit_nb_1) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
 <thead>
@@ -1200,7 +1204,7 @@ Takeaway: Link Functions
 </blockquote>
 <p>Note that we used the <code>exp()</code> a lot in order to make our log-mean estamates make more sense. We could have immediately printed the parameter table of <code>model_parameters()</code> with the argument “exponentiate = TRUE”:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit_nb_1, <span class="at">exponentiate =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit_nb_1, <span class="at">exponentiate =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
 <thead>
@@ -1253,8 +1257,8 @@ Takeaway: Link Functions
 <h4 data-number="5.5.4.5" class="anchored" data-anchor-id="estimate-means"><span class="header-section-number">5.5.4.5</span> Estimate means</h4>
 <p>Because we have a dummy-coded predictor, <code>gender</code>, we can estimate the mean number of <code>affairs</code> for females and males averaged over age with <code>estimate_means()</code>:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>gmeans1 <span class="ot">&lt;-</span> <span class="fu">estimate_means</span>(fit_nb_1, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"gender"</span>)) </span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>gmeans1 <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>gmeans1 <span class="ot">&lt;-</span> <span class="fu">estimate_means</span>(fit_nb_1, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"gender"</span>)) </span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>gmeans1 <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
 <caption>Estimated Marginal Means</caption>
@@ -1288,7 +1292,7 @@ Takeaway: Link Functions
 <section id="checking-assumptions-5" class="level5" data-number="5.5.4.5.1">
 <h5 data-number="5.5.4.5.1" class="anchored" data-anchor-id="checking-assumptions-5"><span class="header-section-number">5.5.4.5.1</span> Checking Assumptions</h5>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_residuals</span>(fit_nb_1) <span class="sc">|&gt;</span> <span class="fu">plot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_residuals</span>(fit_nb_1) <span class="sc">|&gt;</span> <span class="fu">plot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="unbounded-count-regression_files/figure-html/unnamed-chunk-32-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -1302,13 +1306,13 @@ Takeaway: Link Functions
 <h4 data-number="5.5.5.1" class="anchored" data-anchor-id="less-correct-the-general-linear-model-3"><span class="header-section-number">5.5.5.1</span> Less Correct: The General Linear Model</h4>
 <p>Let’s again consider a regular general linear model with an interaction term. We’ll use <code>lm()</code> to assess the relationship between the outcome variable <code>affairs</code> with the predictor variables <code>gender</code>, <code>satisfaction</code>, and <code>religousnes</code> with a two-way interaction between <code>gender</code> and <code>religiousness</code>. Again, for more information on general linear modeling, we covered these topics in our <b>Regression Recap</b> chapter.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>fitlm4 <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> affairs <span class="sc">~</span> gender <span class="sc">+</span> satisfaction <span class="sc">+</span> religiousness<span class="sc">+</span></span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>    gender<span class="sc">:</span>religiousness,</span>
-<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> affairs</span>
-<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fitlm4) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>fitlm4 <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> affairs <span class="sc">~</span> gender <span class="sc">+</span> satisfaction <span class="sc">+</span> religiousness<span class="sc">+</span></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>    gender<span class="sc">:</span>religiousness,</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> affairs</span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fitlm4) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
 <colgroup>
@@ -1379,7 +1383,7 @@ Takeaway: Link Functions
 <h5 data-number="5.5.5.1.1" class="anchored" data-anchor-id="checking-assumptions-6"><span class="header-section-number">5.5.5.1.1</span> Checking Assumptions</h5>
 <p>As seen using the <code>check_model</code> function, the most concerning violations of assumptions appears to be the homogeneity of variance and the normality of residuals. Updating our model to a generalized linear model that takes into account our discrete outcome variable should help fix these problems.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_model</span>(fitlm4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_model</span>(fitlm4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="unbounded-count-regression_files/figure-html/unnamed-chunk-34-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -1397,16 +1401,16 @@ Takeaway: Link Functions
 <h4 data-number="5.5.5.3" class="anchored" data-anchor-id="choosing-between-poisson-or-negative-binomial-1"><span class="header-section-number">5.5.5.3</span> Choosing Between Poisson or Negative Binomial</h4>
 <p>For Poisson regression, we supply the <b>Poisson</b> distribution and the <b>log</b> link function to the <code>glm()</code> function.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>fit_poisson_4 <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> affairs <span class="sc">~</span> gender <span class="sc">+</span> satisfaction <span class="sc">+</span> religiousness <span class="sc">+</span> </span>
-<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>    gender<span class="sc">:</span>religiousness, </span>
-<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">poisson</span>(<span class="at">link =</span> <span class="st">"log"</span>),</span>
-<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> affairs</span>
-<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>fit_poisson_4 <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> affairs <span class="sc">~</span> gender <span class="sc">+</span> satisfaction <span class="sc">+</span> religiousness <span class="sc">+</span> </span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>    gender<span class="sc">:</span>religiousness, </span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">poisson</span>(<span class="at">link =</span> <span class="st">"log"</span>),</span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> affairs</span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Now let’s check if there is overdispersion in the Poisson model:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_overdispersion</span>(fit_poisson_4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_overdispersion</span>(fit_poisson_4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># Overdispersion test
 
@@ -1421,13 +1425,13 @@ Takeaway: Link Functions
 <p>Since overdispersion was detected in the Poisson model, we will now use the the Negative Binomial model to account for the overdispersion. Remember, overdispersion in the Poisson model means that our model does not fit our data well.</p>
 <p>For Negative Binomial regression, again we will use a slightly differnt glm function called <code>glm.nb()</code> from the <code>MASS</code> package. Instead of supplying a family/link function argument, the function already understands we are fitting a Negative Binomial model, so the input argument for <code>glm.nb()</code> is more compact.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>fit_nb_2 <span class="ot">&lt;-</span> <span class="fu">glm.nb</span>(</span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> affairs <span class="sc">~</span> gender <span class="sc">+</span> satisfaction <span class="sc">+</span> religiousness <span class="sc">+</span></span>
-<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>    religiousness<span class="sc">:</span>gender,</span>
-<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> affairs</span>
-<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit_nb_2) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>fit_nb_2 <span class="ot">&lt;-</span> <span class="fu">glm.nb</span>(</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> affairs <span class="sc">~</span> gender <span class="sc">+</span> satisfaction <span class="sc">+</span> religiousness <span class="sc">+</span></span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>    religiousness<span class="sc">:</span>gender,</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> affairs</span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit_nb_2) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
 <colgroup>
@@ -1499,7 +1503,7 @@ Takeaway: Link Functions
 <h4 data-number="5.5.5.4" class="anchored" data-anchor-id="paramter-table-interpretation-log-mean-negative-binomial-1"><span class="header-section-number">5.5.5.4</span> Paramter Table Interpretation: Log-Mean (Negative Binomial)</h4>
 <p>Using the Negative Binomial model, let’s interpret use the <code>model_parameters</code> function and interpret the estimates.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit_nb_2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit_nb_2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Parameter                     | Log-Mean |   SE |         95% CI |     z |      p
 ---------------------------------------------------------------------------------
@@ -1538,7 +1542,7 @@ The model has a log- or logit-link. Consider using `exponentiate =
 </blockquote>
 <p>Note that once more we used the <code>exp()</code> a lot in order to make our log-mean estamates make more sense. We could have immediately printed the parameter table of <code>model_parameters()</code> with the argument “exponentiate = TRUE”:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit_nb_2, <span class="at">exponentiate =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(fit_nb_2, <span class="at">exponentiate =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
 <colgroup>
@@ -1609,7 +1613,7 @@ The model has a log- or logit-link. Consider using `exponentiate =
 <h5 data-number="5.5.5.4.1" class="anchored" data-anchor-id="checking-assumptions-7"><span class="header-section-number">5.5.5.4.1</span> Checking Assumptions</h5>
 <p>We benefit from using the Negative Binomial model over the general model and the Poisson model by accounting for both model assumptions (including overdispersion):</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_model</span>(fit_nb_2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_model</span>(fit_nb_2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="unbounded-count-regression_files/figure-html/unnamed-chunk-40-1.png" class="img-fluid" width="672"></p>
 </div>

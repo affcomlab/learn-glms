@@ -159,6 +159,7 @@ When we fit a model, we always want to see if there were any violations in the a
 
 ```{r}
 check_model(fitlm1, check = "normality")
+check_model(fitlm1)
 ```
 
 #### More Correct: Poisson Regression 
