@@ -34,5 +34,8 @@
   },
   "unbounded-count-regression.qmd": {
     "unbounded-count-regression.html": "5f1fd391"
+  },
+  "ordinal-regression.qmd": {
+    "ordinal-regression.html": "b54d71f2"
   }
 }
