@@ -1,0 +1,611 @@
+---
+title: "Binary Regression"
+---
+
+We start our first look at GLMs with binary regression. Here, we consider when binary regression, specifically <i>logistic regression</i>, is more appropriate than a regular (general linear) regression. We will also fit toy data and interpret the results.
+
+## Why Binary Regression? 
+
+When the outcome is a binary variable, or when there are only <b>two</b> possible outcomes, there are two essential problems with using the general linear model (e.g., the regular `lm()` function) . The first essential problem is due to the non-normal shape of the residuals. The second essential problem is that the outcome variable is not continuous and normally distributed. Both problems contribute to general linear models being biased and making impossible predictions. 
+
+Binary regression is a general term that encompasses specific models such as <i>logistic regression</i> and <i>probit regression</i>. It is a way to analyze binary data and hold the assumptions of linear models more true. We will focus on logistic regression in this module.  
+
+::: {.column-margin}
+<b>Terms</b>
+:::
+
+::: {.column-margin}
+Binary Regression: A general term for models for when the outcome variable has only two possible outcomes. <br>
+:::
+
+::: {.column-margin}
+Logistic Regression: A specific binary regression model which uses the logistic function as the link function. <br>
+:::
+
+::: {.column-margin}
+Probit Regression: A specific binary regression model which uses the probit function as the link function. <br>
+:::
+
+::: {.column-margin}
+Link Function: A function that transforms the outcome variable into a continuous and unbounded variable. It is a key aspect of generalized linear models.  
+:::
+
+### Shape of Residuals
+
+The general linear model assumes that residuals, or the differences between the observed and predicted values of data, are <b>normally distributed</b>. If the residuals are not normally distributed, the model is likely to make invalid inferences or predictions. 
+
+### Continuous and Normally Distributed Outcome
+
+Since the outcome variable is binary, a quick histogram plot will show that it is not continuous (i.e., it is discrete). This is a scourge for the general linear model since it assumes continuous and normally distributed outcomes, and it will predict both intermediate states/values between the two possible outcomes <b>and</b> states/values above and below the two possible outcomes. 
+
+For example, if 0 = Alive, and 1 = Dead, then the general linear model may predict a value between 0 and 1 (somewhere between alive and dead), or values below 0 and above 1 (so less alive and more dead?).Therefore, to model a binary outcome using the machinery of linear modeling, we need to <b>transform</b> the outcome variable to a continuous and normally distributed outcome.
+
+
+## Binary Events with a Binomial Distribution
+
+As mentioned earlier, in logistic regression we are modeling a binary events. When we can assume that 1) Binary events are independent of one another (i.e., one binary trial doesn't affect another trial), and 2) The probability of the binary event happening versus not happening is fixed, then it turns out that binary events are best described by what's called a <i>binomial distribution</i>. In theory, it is the optimal distribution for a binary event based on a principle called <i>Maximum Entropy</i>, but we will skip that theoretical explanation for now. 
+
+A binomial distribution is described by only two parameters: <i>n</i> and <i>p</i>. The "n" parameter is the total number of trials/events, and "p" is the probability of a "success" (or the probability of the event happening versus not happening). Due to this feature of binomial distribution, we can expect the <i>mean</i> of a binary event to simply be the number of trials multiplied by the probability of the event occurring, or $n * p$. For example, if we flip a coin 100 times and count the number of Heads, we can expect the average number of Heads after 100 flips to be $n*p = 100 * 0.5 = 50\, Heads$. 
+
+The important thing to know is that logistic regression's goal is to model the "p" parameter, or the <b>probability of success</b>, of a binary distribution with a linear and additive combination of an intercept and slope of a predictor variable(s). But there's an inherent problem with modeling probability with a linear model because probability is bounded from [0,1], and we already know that a linear model works best when the outcome is unbounded (and continuous). 
+
+:::{.callout-important title="Binary Outcomes vs Probability?"}
+At this point, we need to make a distinction between the outcome of a binary event and the probability of a binary event. Because logistic regression's goal is to model the probability of a binary event rather than the outcome of a binary event.
+
+The outcome of a binary event is the result of the trial -- whether the event was a success or not. The way we define which one of two outcomes of a binary event is a "success" is arbitrary and depends on our goals. For example, if 0 = Dead, and 1 = Alive, the "success" or outcome we are concerned with is being alive. 
+
+The probability of a binary event is <i>not</i> the result of the trial. It is the model's estimation of the chance or likelihood of the "success" of the trial, i.e., the probability of one of the two events occurring. As a review, if the probability of one event = p, then 1-p is the probability of the other event. 
+:::
+
+
+## Defining the Logistic Regression Model and the Logit Link Function
+
+As mentioned in the previous section, the logistic regression model takes into account that the outcome we are modeling is a binary outcome, and its goal is to model the probability of a binary event (since this is the parameter of the binomial distribution we are concerned with).  Since a probability is a value that is bounded between [0,1], we need a way to modify the linear model to work with probability. We are motivated to do this because the linear model works best when the outcome it is modeling is a unbounded (and continuous), but probability is clearly bounded between [0,1].   
+
+Let's summarize the details of this model in a more compact way: 
+
+$$ y_i \sim Binomial(n,p)$$
+Here we are saying that our outcome variable is binomially distributed. This is not the part of the model that logistic regression is specifically concerned with -- this is an assumption we are placing on the model knowing that the data is a binary outcome.
+
+$$ g(p) = \beta_0 + \beta_1 x_1$$
+Here we are now defining how we use the simple logistic regression model. We call it simple because there is only one predictor variable ($x_1$). The right side of the equation should be very familiar to us: it is a linear model where we have $\beta_0$ (the intercept), and $\beta_1$ (the slope of the predictor variable). 
+
+But the left side of this equation is unique to <b>generalized linear models</b>. First, we see that we are assigning $\beta_0$ and $\beta_1$ to estimate $p$, which is the probability parameter of the binomial distribution. However, we also see that $p$ is inside a function called $g$, which we now define as our <i>link function</i>. 
+
+The link function will allow us to use the linear model (the right side of the equation that is usually assumed with a continuous and unbounded outcome) to estimate probability, $p$, which is continuous and bounded. 
+
+In logistic regression, our $g$ is the "logit function", which is defined as: 
+
+$$ g = log(p/(1-p)) $$
+or, equivalently, 
+
+$$ p = e^g/ (1 + e^g) $$
+
+When we use the logit link function with a linear predictor, we now can call this <i>"logistic regression"</i>. 
+
+:::{.callout-tip title="Takeaway: Link Functions"}
+When we use GLMs, we will be using many different link functions depending on the data. In the case of binary/logistic regression, all this function is trying to do is relate our linear predictors to a response outcome that is continuous and between some bounds (like 0 and 1). More generally, we need link functions because if we <b>did not</b> do this, we are using the linear predictors to predictor some value that is continuous when it may <b>not</b> continuous (like discrete values for binary variables), and the predictions can be out of bounds (like when an event "yes" = 1, then the model can spit out a value like 1.53, even though this event is unreasonable). 
+We also find that when using the appropriate link function, other problems, like the shape of residuals, gets fixed! 
+:::
+
+Before we fit our first logistic regression, let's take a look at what is actually happening and why the <b>generalized</b> linear model is similar, but different, to the general linear model. 
+
+## Comparing Simple Regression to Simple Binary Regression (MAY DELETE)
+
+In simple regression, we are predicting the outcome ($y_{{i}}$) with a linear (additive) combination of an intercept ($\beta_0$) and one predictor variable ($x$).
+
+$$ \hat{y}_{{i}} = \beta_0 + \beta_1 x $$
+In simple logistic regression, we are <b>still</b> predicting an outcome with a linear (additive) combination of intercept and one predictor variable. We use the term "simple" only because we have one predictor variable in this case. 
+
+$$ \hat{g}_{i} = \beta_0 + \beta_1 x $$ 
+
+Note that the linearly additive feature that both simple linear regression and simple logistic regression share is what makes these models related and interpretable. 
+
+The main difference is why, in simple logistic regression, did the outcome variable change from $y_{{i}}$ to $g_{i}$? Because in binary regression, we are no longer predicting the binary outcome event (e.g., "yes/no"). Usually (but not always) we are predicting the <b> probability </b> of the binary event occurring. This means that $\eta_{i}$ is a probability that is bounded between 0 ("no" event) and 1 ("yes" event). 
+
+Now, we will relate $y_{\hat{i}}$ to $g_{i}$.
+
+We need to make a connection between the probability of an event ($g_{i}$) to an event outcome ($y_{{i}}$). This is possible in this way: 
+
+  - The outcome $y_{{i}}$ for i = 1,...,$n$ events takes values zero or one with the probability of a 1 = $p_i$ 
+  
+  - In other words, $P(Y_i = 1)$ = $p_i$, or P is the probability of a 1 (e.g., "yes" happening).
+
+That is all just setup to define $g_{i}$.
+
+  - $\eta_{i}= g(p_i)$
+  
+The variable $g$ is our "link function".  In this case, it is a function that transforms a probability ($p_i$) into our $\eta_{i}$.  Therefore, we are trying to find the probability of an event occurring. 
+
+### Probability, Odds, and Log Odds ###
+
+When working with logistic regression, we have to be familiar with the model's units, or frame of reference for its parameter estimates. When logistic regression models estimated, they are usually presented in log-odds, but, as we will see now, it is fairly straightforward to transform our units from log-odds to odds to probability.
+
+Note that we are doing these calculations here by hand solely as an exercise to familiarize ourselves with these units. This is not actually required when running logistic regressions. Indeed, like with `lm()`, we will be given results tables which calculate all of these for us. 
+
+As an example, imagine flipping a coin 100 times.  As an arbitrary decision, let's consider the results of this binary event that when a coin lands on Heads, it is a Success. And when it lands on Tails, it is a failure. In this example, it lands Heads 60 times out of 100. 
+
+<u>Probability</u>
+The probability of landing a head is:
+```{r}
+p_heads <- 60/(60+40)
+p_heads
+```
+
+Notice that the probability is a proportion/ratio of Heads out of the total number of coin flips.
+
+<u>Odds</u> 
+```{r}
+o_heads <- p_heads/(1 - p_heads)
+o_heads
+```
+
+Odds is simply another way of describing probability. It is also a ratio, like probability, but essentially with odds you can have some way to describe the relative likelihood of the event occurring versus not occurring. For example, if the probability of an event occurring is 0.75 or 75% likely, its odds of happening is "3 to 1", or it is 3 times more likely that the event will occur relative to it not occurring. 
+```{r}
+0.75/(1-0.75)
+```
+
+In the case of the data, the odds for flipping a Heads is 1.50. 
+
+Working with odds can be challenging at first but there is a rule of thumb to follow. Imagine if $p=.50$, then it is 50% chance of an event occurring or not occurring. Then, when we convert this to odds, then $odds= .50/.50 =1$. So, <b> if you get an odds value that equals 1 </b>, then both events are equally likely, and if it less than 1, then it is less likely for an event to occur, and if it is more than one, it is more likely for an event to occur. 
+
+It seems like flipping Heads 60 times out of 100 is more likely with a value of 1.50
+
+<u>Log-Odds</u>
+
+```{r}
+log_heads <- log(o_heads)
+log_heads
+```
+
+You might wonder why we make an effort to convert odds to log-odds.  Well, again, it is because it our logistic link function that takes our outcome variable and transforms it into a continuous and bounded outcome variable so that it can work well with linearly additive predictors variables. 
+
+Just like with odds, there we can consider a rule of thumb where if $odds=1$ then the $log odds=ln(1)=0 $. So, if we obtain a log-odds value of 0, then the event is equally likely to occur or not occur. 
+
+Our data shows a log-odds of $0.41$, which means it is more than 0, so we can see that it is more likely (in terms of log-odds) for someone to flip a Head than a Tail. 
+
+
+## Data Demonstration 
+The data for this chapter consists of some records of passengers on the Titanic. The question we will ask and answer with binary regression is if the amount of fare contributed in some way to the survival of passengers. Since `survived` is a binary outcome (yes or no), this relationship is best assessed with binary regression. 
+
+-   Data: <a href="./titanic.csv" download> titanic.csv </a>
+
+## Loading the Packages and Reading in Data
+
+In addition to our usual packages (`tidyverse`, `easystats`, and `ggeffects`), we will also need to load `DHARMa` and `qqplotr` in order to make our plots for our binary regression models. 
+
+```{r, warning = FALSE, message=FALSE}
+## Load packages
+library(tidyverse)
+library(easystats)
+library(ggeffects)
+library(DHARMa)
+library(qqplotr)
+
+## Read in data from file
+titanic_data <- read_csv("titanic.csv")
+titanic_data
+
+```
+
+```{r, warning=FALSE,echo=FALSE}
+mytheme <- theme_bw(
+  base_size = 12
+)
+```
+
+This data shows records for 877 passengers on the Titanic.
+
+Here's a table of our variables in this dataset: 
+
+| Variable    | Description                     |     Values | Measurement |
+|-------------|:--------------------------------|-----------:|:-----------:|
+| `sex`       | Male or Female                  | Characters |   Nominal   |
+| `age`    | Age of Passenger |    Double |    Scale    |
+| `class`    | Category of Passenger Accommodation         |   Characters |   Nominal   |
+| `fare`   | Cost of fare    |    Double |    Scale    |
+| `survived` | "Yes" or "No" if survived   |    Characters |    Nominal    |
+
+## Prepare Data / Exploratory Data Analysis
+
+In order to use the `survived` variable in our analyses, we need to re-code the outcomes as integer numbers. Here, we will use the `mutate()` function from the `dplyr` package (which is a package that automatically loaded with `tidyverse`) to add a new column to our data which re-codes "Yes" = 1 and "No" = 0.
+
+Note that our choice of "Yes" = 1 and "No" = 0 is completely arbitrary. We could have just easily switched the coding scheme. However, it is important to understand that when "Yes"  = 1 and "No" = 0, our model is predicting the likelihood of survival, and if it was the other way around (when Yes = 0 and No = 1), our model would be predicting the likelihood of not-surviving. 
+
+```{r}
+## Prepare the data for analysis
+titanic2 <- 
+  titanic_data |> 
+  mutate(
+    survived_b = case_match(
+      survived, 
+      "no" ~ 0,
+      "yes" ~ 1
+    )
+  )
+titanic2 #print
+```
+
+Re-coding these strings/characters into discrete numbers is important for the model's mathematics to work. 
+
+In addition, we will turn `sex` into a factor with the reference group as being females. 
+
+```{r}
+titanic2$sex <- factor(titanic2$sex, levels =  c("female","male"))
+```
+
+
+::: {.callout-tip title="mutate() and data-wrangling"}
+`mutate()` is a function from `dplyr` that adds a column to the dataframe (the object that holds the data). This isn't the only way to accomplish our goal of re-coding `survived`, but it is a fairly elegant, easy, and straightforward way to do so. The trick is to remember that `mutate()` adds a column to the existing dataframe with the same number of rows as the existing dataframe. 
+
+Our choice of data-wrangling functions are open to reprisal because there are many ways in data analysis and programming to do the same thing. 
+:::
+
+### Plotting a binary outcome 
+
+Like always, it is important to plot the data prior to fitting any model. Here, we consider if there is some sort of bivariate relationship between `survived_b` and `fare`, and `survived_b` and `sex`. 
+
+Here, we first try a scatter plots to assess a relationship between `surived_b` and `fare`. Since there are only two outcome values though, it's hard to see any clear effect of survival based on `fare`.   
+
+```{r}
+ggplot(titanic2, aes(x = fare, y = survived_b)) +
+  geom_point() + mytheme
+
+```
+Next, we try a box plot using the original `survived` variable (so it is discrete again). The box plot helps clarify what the scatter plot can't easily show: there seems to be some effect of fare on survival, such that the higher the fare, the more mass/points are in having survived the titanic. We will explore this relationship in our regression models.  
+
+```{r}
+ggplot(titanic2, aes(x = fare, y = survived)) +
+  geom_boxplot() + mytheme
+```
+Now, let's do a barplot for `sex` and `survived`. It seems that there is an effect on survival due to sex such that females were more likely to survive than males. 
+
+```{r}
+ggplot(titanic2, aes(fill= sex, x = survived)) +
+  geom_bar() + mytheme
+```
+
+# Models Without Interaction Terms
+
+First, let's take a look at the case for models with one dummy coded categorical predictor variable and one continuous predictor without any interaction term.  
+
+## Less Correct: the General Linear Model  
+Before we fit the binary regression, it would be worthwhile to try fitting the less appropriate regular general linear model. We'll use our old friend `lm()` to assess the relationship between the outcome variable `survived_b` with the predictor variables `fare` and `sex`. For more information on general linear modeling, we covered these topics in our <b>Regression Recap</b> chapter. 
+
+```{r}
+fitlm1 <- lm(
+  formula = survived_b ~ sex + fare,
+  data = titanic2
+)
+
+model_parameters(fitlm1) |> print_md()
+```
+
+As the results show, we have a significant partial effect of `fare`, such that a 1 unit increase in `fare` increases the chance of survival by a small amount (0.00251 units of "survival") while controlling for `sex`. In addition, we see significant effects of our dummy coded `sex` variable both as the intercept difference from 0 being significant (i.e., the reference group being females with an average survival of 0.67 units), and a significant difference between males and females (i.e, a decrease of 0.52 survival units for males). Despite the challenge of interpreting what units of survival are, it is worth nothing that the regular `lm()` "worked" in that it was able to produce an estimate. 
+
+However, it doesn't mean that the model is the best model to use and this is evident when we plot the predictions using the `predict_response()` function for `fare`. 
+
+```{r}
+predict_response(fitlm1, terms = "fare") |> plot(show_data = TRUE)
+```
+Notice that although the data points are only either 0 or 1 (binary), the regression line takes intermediate values between 0 and 1, and extreme values above 1! For example, if a passenger paid \$100, then the outcome value would be ~0.25, which is somewhere between alive and dead! We can't have passengers somewhat between alive/dead, or more or less alive/dead! 
+
+### Checking Assumptions
+
+When we fit a model, we always want to see if there were any violations in the assumptions. When using the general linear model via the `lm()` function for binary responses, taking a look at a plot of the residuals, using `check_residuals()` [^1], should be concerning.  
+
+[^1]: `check_residuals()` requires the package `qqplotr` to be installed. 
+
+```{r}
+## Check residuals
+check_residuals(fitlm1) |> plot() # looks bad
+```
+Yikes! As you can see, the dots <b>do not</b> fall along the line. Once this or any other assumption of the general linear model are not met, this is a clear sign that parts of the model may not be trustworthy. Specifically, in this case of the non-uniformity of residuals, there is terrible violation to the model's uncertainty estimates; therefore, while the predictions may be okay, we can (and should) do better.
+
+So now, finally, we fit our first GLM.
+
+## More Correct: the Generalized Linear Model
+
+Now let's compare our modeling of the same variables using binary/logistic regression on the interpretation of estimates and adherence to model assumptions.
+
+"Is there a relationship between the amount of fare, sex, and the log-odds of survival?"
+
+Again, because we have multiple predictors, multiple regression allows us to control for the effects of multiple predictors on the outcome, and we are left with the unique effect of a predictor when controlling for other predictors. In this case, the outcome variable will be `survived_b`, and the predictor variables will be `sex` (categorical variable) and `fare` (continuous variable). 
+
+We did a lot of work already with the `lm()` in the "Regression Recap". The `glm()` function is in many ways the same as the `lm()` function. Even the syntax for how we write the equation is the same. In addition, we can use the same `model_parameters()` function to get our table of parameter estimates. Indeed, we will use the `glm()` function for the remainder of the rest of the online modules. 
+
+But notice that the `glm()` function has one more input argument. This input argument is the "family" input argument, which requires which "family of distributions" to use and which "link function" choice.  For binary regression, we supply the <b>binomial</b> distribution and the <b>logit</b> link function. 
+
+```{r}
+
+fit1 <- glm(
+  formula = survived_b ~ sex + fare, 
+  family = binomial(link = "logit"), 
+  data = titanic2
+)
+
+model_parameters(fit1) |> print_md()
+```
+### Paramter Table Interpretation (Log-odds)
+
+Again, the parameter table output from a model fit with `glm()` looks very similar to parameter table outputs from models fit with `lm()`. But there is a <b>big</b> difference -- in `glm()` models, we are no longer working in the same raw units! 
+
+This difference is apparent in the second column of the output table: "Log-Odds". Because we fit a logistic regression with a logit function, the parameter values are in "log-odds" unit. 
+
+Due to the nature of the dummy coded categorical variable `sex`, we will assess the parameters from each level of that variable first. 
+
+> The intercept is the average log-odds of surviving for female passengers while accounting for the effect of `fare`. In this case, female passengers who paid no fare have an average log odds of 0.65 indiciating that female passengers are more likely to survive than not survive.
+
+-   Remember, with log-odds, a value of 0 means it is equally likely for an event to occur or not occur.  Here, since the log-odds is greater than 0, it is more likely for the event that is labeled a "success" (in this case, more likely to survive) to happen than the event that is labeled a "failure". 
+
+> Male passengers have a 2.42 decrease in the log-odds of suriving relative to the female passengers while accounting for the effect of `fare` (i.e., they have a worse chance of surviving). 
+
+-   Notice how these comparisons are all in reference to the females. Again, this is due to the nature of the dummy coded categorical variable. 
+
+> Because the intercept was significant, there was a significant difference between the estimate of female passengers and 0, $p<0.001$. Because "sex[male]" was significant, the difference between female and male passengers was significant, $p<0.001$. 
+
+> Lastly, while controlling for the effect of `sex`, a one unit increase in `fare` was significantly related to a 0.01 increase in the log-odds of survival. 
+
+-   We now turn our attention to the continuous variable `fare`. If log-odds of `fare` is $ = 0.01$, then it is the case that we can say it is more likely for someone to survive the Titanic with an increase in fare paid. 
+
+-   This effect (fare) is also statistically significant from 0 ($p<0.001$). 
+
+### Parameter Table Interpretation (Odds)
+
+We can easily convert log-odds to odds. In order to convert from a log-odds to odds, we just need to take the exponentiate the parameter value.
+
+-   Recall that when odds $=1$, that means both events are equally likely to happen. So when the odds read a value like $1.02$, then we only consider the differences from 1 as meaningful. In this case, that increase is 0.02, or 2%, from our baseline value of 1. 
+
+Fortunately, we can actually transform the entire log-odds parameter table results into odds using the same `model_parameters()` function with the added input argument of "exponentiate", like so: 
+
+```{r}
+model_parameters(fit1, exponentiate = TRUE) |> print_md()
+```
+Due to the nature of the dummy coded categorical variable `sex`, we will assess the parameters from each level of that variable first. 
+
+> The intercept is the average odds of surviving for female passengers category while accounting for the effect of `fare`. In this case, female passengers have a average odd ratio of 1.91 indiciating that female passengers are more likely to survive.
+
+-   Here, since the odds is greater than 1, it is more likely for the event that is labeled a "success" (in this case, more likely to survive) to happen than the event that is labeled a "failure". 
+
+> Male passengers have a 0.91, or 91% decrease, in the odds of suriving relative female passenger while accounting for the effect of `fare` (i.e., they have a worse chance of surviving). It is a decrease because we are talking in odds and the value is less than 1. And we interpret that value as 0.91 because 1 - 0.09 = 0.91.
+
+-   Notice how these comparisons are all in reference to female passengers. Again, this is due to the nature of the dummy coded categorical variable. 
+
+> There was a significant difference between the estimate of female passengers and 1, $p<0.001$. The difference between the odds of female and male passengers was also significant, $p<0.001$.
+
+-   When the parameter table is in odds, the significance test is applied to see differences from an odds value of 1. This is because, again, an odds value of 1 means that an event occurring versus not occurring is equally likely. 
+
+> Lastly, while accounting for the effect of `sex`, a one unit increase in `fare` was significantly related to a 0.01 increase, or 1% increase, in the odds of survival.  It is an increase because we are talking in odds and the value is more than 1. And we interpret that value as 0.01 because 1 - 1.01 = 0.01. 
+
+### Predicted Probabilities 
+
+A convenient transformation is taking the log-odds and converting into probability. Then, our question becomes "Is there a relationship between the sex, fare, and the probability of survival?".
+
+We can assess this relationship with the `predict_response()` function. It outputs a plot with the Y-axis as "the probability of `survival_b`" and the X-axis as the predictor (in this case `fare`) in raw units. 
+
+With predicted probabilities, while accounting for `sex`, we can see the probability of surviving is increasing with fare amount. 
+
+```{r, warning=FALSE,message=FALSE}
+predict_response(fit1, terms = "fare") |> plot(show_data = TRUE)
+```
+
+We can also plot the predicted probabilities of `sex` while accounting for the effect of `fare`. 
+
+```{r, warning=FALSE,message=FALSE}
+predict_response(fit1, terms = "sex") |> plot(show_data = TRUE)
+```
+When the predicted probabilities are plotted, we can visualize the differences in probabilities of surviving between sexes. 
+
+Additionally, we can see the exact probability value for each class with the `estimate_means()` function. 
+
+```{r}
+gmeans1 <- estimate_means(fit1, by = c("sex")) 
+gmeans1 |> print_md()
+```
+
+::: {.callout-tip title="Why not always use probability?"}
+Although working with probabilities seems to be more easily understandable, we cannot have parameter estimates in probabilities. Therefore, results are often communicated in logits or odds since we can have estimates, uncertainty values (like standard deviations), and significance tests applied to them. 
+:::
+
+### Checking Assumptions 
+
+When we use logistic regression over regular linear regression, we benefit in terms of adhering to the assumptions of the linear model. First, let's see if our residuals are better when we used the GLM.
+
+As we can see, compared to our residuals plot using `lm()`, our `glm()` logistic model conforms to the uniformity of residuals assumptions way better. 
+
+```{r}
+## Check residuals
+check_residuals(fit1) |> plot() # looks way better
+```
+
+Overall, we can see the benefit of the `glm()` against the `lm()` when we compare between the two models that have the same outcome and predictors. 
+
+```{r}
+check_model(fitlm1)
+check_model(fit1)
+```
+
+COMPARE THE PPP CHECKS BETWEEN THE MODELS? 
+
+
+# Models With Interaction Terms 
+Now, let's take a look at the case for more complex models with one dummy coded categorical predictor variable and two continuous predictors with an interaction term.
+
+## Less Correct: The General Linear Model
+Again, before we fit the binary regression, it would be worthwhile to try fitting the less appropriate regular general linear model. We'll use our old friend `lm()` to assess the relationship between the outcome variable `survived_b` with the predictor variables `sex`, `fare`, and `age`. For more information on general linear modeling, we covered these topics in our <b>Regression Recap</b> chapter. 
+
+Here, we will focus our example with an interaction between `sex` and `age`. 
+
+```{r}
+fitlm2 <- lm(
+  formula = survived_b ~ sex + fare + age + sex:age,
+  data = titanic2
+)
+
+model_parameters(fitlm2) |> print_md()
+```
+
+
+As the results show, we have a significant effect of `fare`, such that a 1 unit increase in `fare` increases the chance of survival by a small amount (0.00158 units of "survival") while controlling for `sex` and `age`. In addition, we see significant effects of our dummy coded `sex` variable both as the intercept difference from 0 being significant (i.e., the reference group being females with an average survival of 0.58 units), and a significant difference between males and females (i.e, a decrease of 0.33 survival units for males). There is also a significant partial effect of `age` while controlling `fare` and `sex`, and a significant `sex`x`age` interaction term.
+
+Despite the challenge of interpreting what units of survival are, it is worth nothing that the regular `lm()` "worked" in that it was able to produce an estimate. 
+
+However, it doesn't mean that the model is the best model to use and this is evident when we plot the predictions using the `predict_response()` function for `fare`. 
+
+```{r}
+predict_response(fitlm2, terms = "fare") |> plot(show_data = TRUE)
+```
+
+Notice that although the data points are only either 0 or 1 (binary), the regression line takes intermediate values between 0 and 1, and extreme values above 1! For example, if a passenger paid \$100, then the outcome value would be ~0.80, which is somewhere between alive and dead! We can't have passengers somewhat between alive/dead, or more or less alive/dead! 
+
+
+### Checking Assumptions
+
+When we fit a model, we always want to see if there were any violations in the assumptions. When using the general linear model via the `lm()` function for binary responses, taking a look at a plot of the residuals, using `check_residuals()` [^1], should be concerning.  
+
+[^1]: `check_residuals()` requires the package `qqplotr` to be installed. 
+
+```{r}
+## Check residuals
+check_residuals(fitlm2) |> plot() # looks bad
+```
+Yikes! As you can see, the dots <b>do not</b> fall along the line. Once this or any other assumption of the general linear model are not met, this is a clear sign that parts of the model may not be trustworthy. Specifically, in this case of the non-uniformity of residuals, there is terrible violation to the model's uncertainty estimates; therefore, while the predictions may be okay, we can (and should) do better.
+
+## More Correct: the Generalized Linear Model 
+
+Now let's compare our modeling of the same variables using binary/logistic regression on the interpretation of estimates and adherence to model assumptions.
+
+"Is there a relationship between the amount of fare, sex, and the log-odds of survival?"
+
+Again, because we have multiple predictors, multiple regression allows us to control for the effects of multiple predictors on the outcome, and we are left with the unique effect of a predictor when controlling for other predictors. In this case, the outcome variable will be `survived_b`, and the predictor variables will be `sex` (categorical variable), `fare` (continuous variable), and `age` (continuous variable).
+
+We did a lot of work already with the `lm()` in the "Regression Recap". The `glm()` function is in many ways the same as the `lm()` function. Even the syntax for how we write the equation is the same. In addition, we can use the same `model_parameters()` function to get our table of parameter estimates. Indeed, we will use the `glm()` function for the remainder of the rest of the online modules. 
+
+But notice that the `glm()` function has one more input argument. This input argument is the "family" input argument, which requires which "family of distributions" to use and which "link function" choice.  For binary regression, we supply the <b>binomial</b> distribution and the <b>logit</b> link function. 
+
+
+```{r}
+fit2 <- glm(
+  formula = survived_b ~ sex + fare + age + sex:age, 
+  family = binomial(link = "logit"), 
+  data = titanic2
+)
+
+model_parameters(fit2) |> print_md()
+```
+### Paramter Table Interpretation (Log-odds)
+
+Again, the parameter table output from a model fit with `glm()` looks very similar to parameter table outputs from models fit with `lm()`. But there is a <b>big</b> difference -- in `glm()` models, we are no longer working in the same raw units! 
+
+This difference is apparent in the second column of the output table: "Log-Odds". Because we fit a logistic regression with a logit function, the parameter values are in "log-odds" unit. 
+
+Due to the nature of the dummy coded categorical variable `sex`, we will assess the parameters from each level of that variable first. 
+
+> The intercept is the average log-odds of surviving for female passengers while accounting for the simple effects of `fare` and `age`. In this case, female passengers at 0 years old and no fare have an average log odds of 0.18 indiciating that female passengers are more likely to survive than not survive.
+
+-   Remember, with log-odds, a value of 0 means it is equally likely for an event to occur or not occur.  Here, since the log-odds is greater than 0, it is more likely for the event that is labeled a "success" (in this case, more likely to survive) to happen than the event that is labeled a "failure". 
+
+> Male passengers have a 1.26 decrease in the log-odds of suriving relative to the female passengers while accounting for the simple effects of `fare` (at $0) and `age` at 0 years old (i.e., they have a worse chance of surviving). 
+
+-   Notice how these comparisons are all in reference to the females. Again, this is due to the nature of the dummy coded categorical variable. 
+
+> Because the intercept was not significant, there was no significant difference between the estimate of female passengers and 0. Because "sex[male]" was significant, the difference between female and male passengers was significant, $p<0.001$. 
+
+> While controlling for the simple effects of `sex` (for females) and `age` (at 0 years old), a one unit increase in `fare` was significantly related to a 0.01 increase in the log-odds of survival. 
+
+> While controlling for the simple effects of `sex` (for females) and `fare` (at $0), a one unit increase in `age` was significantly related to a 0.02 increase in the log-odds of survival. 
+
+-   We now turn our attention to the continuous variable `fare` and `age`. Both estimates are positive (greater than 0), so it is the case that we can say it is more likely for someone to survive the Titanic with an increase in fare paid and age. 
+
+-   This simple effect (fare) is also statistically significant from 0 ($p<0.001$). 
+
+-   This simple effect (age) is not statistically significant from 0 ($p=0.08$).
+
+> The `sex`x`age` interaction term was statistically significant ($p<0.001$). So, the slope of age will decrease in log odds by 0.04 for male passengers, and the male-female difference will decrease in log odds by 0.04 for every unit increase in age. 
+
+### Parameter Table Interpretation (Odds)
+
+We can easily convert log-odds to odds. In order to convert from a log-odds to odds, we just need to take the exponentiate the parameter value.
+
+-   Recall that when odds $=1$, that means both events are equally likely to happen. So when the odds read a value like $1.02$, then we only consider the differences from 1 as meaningful. In this case, that increase is 0.02, or 2%, from our baseline value of 1. 
+
+Fortunately, we can actually transform the entire log-odds parameter table results into odds using the same `model_parameters()` function with the added input argument of "exponentiate", like so: 
+
+```{r}
+model_parameters(fit2, exponentiate = TRUE) |> print_md()
+```
+> The intercept is the average odds ratio of surviving for female passengers while accounting for the simple effects of `fare` and `age`. In this case, female passengers at 0 years old and no fare have an average odds of 1.19 indiciating that female passengers are more likely to survive than not survive.
+
+-   Here, since the odds is greater than 1, it is more likely for the event that is labeled a "success" (in this case, more likely to survive) to happen than the event that is labeled a "failure". 
+
+> Male passengers have a 0.72 decrease, or 72% decrease, in the odds of suriving relative to the female passengers while accounting for the simple effects of `fare` and `age` (i.e., they have a worse chance of surviving). It is a decrease because we are talking in odds and the value is less than 1. And we interpret that value as 0.72 because 1 - 0.28 = 0.72.
+
+-   Notice how these comparisons are all in reference to the females. Again, this is due to the nature of the dummy coded categorical variable. 
+
+> Because the intercept was not significant, there was no significant difference between the estimate of female passengers and 0. Because "sex[male]" was significant, the difference in odds between female and male passengers was significant, $p<0.001$. 
+
+> While controlling for the simple effects of `sex` and `age`, a one unit increase in `fare` was significantly related to a 0.01 increase, or 1% increase, in the odds of survival. It is an increase because we are talking in odds and the value is greater than 1. And we interpret that value as 0.01 because 1.01 - 1 = 0.01.
+
+> While controlling for the simple effects of `sex` and `fare`, a one unit increase in `age` was significantly related to a 0.02 increase, or 2% increase, in the odds of survival. It is an increase because we are talking in odds and the value is greater than 1. And we interpret that value as 0.02 because 1.02 - 1 = 0.02.
+
+-   We now turn our attention to the continuous variable `fare` and `age`. Both estimates are positive (greater than 0), so it is the case that we can say it is more likely for someone to survive the Titanic with an increase in fare paid and age. 
+
+-   This simple effect (fare) is also statistically significant from 0 ($p<0.001$). 
+
+-   This simple effect (age) is not statistically significant from 0 ($p=0.08$).
+
+> The `sex`x`age` interaction term was statistically significant ($p<0.001$). So, the slope of age will decrease in odds by 0.04, or 4% decrease, for male passengers, and the male-female difference will decrease in odds by 0.04, or 4% decrease, for every unit increase in age. 
+
+### Predicted Probabilities 
+
+A convenient transformation is taking the log-odds and converting into probability. Then, our question becomes "Is there a relationship between the sex, fare, age, and the probability of survival?".
+
+For models with an interaction term, we can assess the interaction term with the `ggpredict()` function. It can be used to visualize the interaction term with a marginal effects, or "spotlight", plot. Here, we can see the differing probabilities of survival for each sex by age while accounting for the effect of `fare`. 
+
+```{r}
+plot (ggpredict(
+  model = fit2, 
+  terms = c("age", "sex")
+))
+```
+
+We can also assess this probabilities with the `predict_response()` function. It outputs a plot with the Y-axis as "the probability of `survival_b`" and the X-axis as the predictor (in this case `fare`) in raw units. 
+
+With predicted probabilities, while accounting for `sex` and `age`, we can see the probability of surviving is increasing with fare amount. 
+
+```{r, warning=FALSE,message=FALSE}
+predict_response(fit2, terms = "fare") |> plot(show_data = TRUE)
+```
+
+We can also plot the predicted probabilities of `sex` while accounting for the effect of `fare` and `age`. 
+
+```{r, warning=FALSE,message=FALSE}
+predict_response(fit2, terms = "sex") |> plot(show_data = TRUE)
+```
+When the predicted probabilities are plotted, we can visualize the differences in probabilities of surviving between each sexes. 
+
+Additionally, we can see the exact probability value for each class with the `estimate_means()` function. 
+
+```{r}
+gmeans1 <- estimate_means(fit2, by = c("sex")) 
+gmeans1 |> print_md()
+```
+
+### Checking Assumptions
+
+When we use logistic regression over regular linear regression, we benefit in terms of adhering to the assumptions of the linear model. First, let's see if our residuals are better when we used the GLM.
+
+As we can see, compared to our residuals plot using `lm()`, our `glm()` logistic model conforms to the uniformity of residuals assumptions way better. 
+
+```{r}
+## Check residuals
+check_residuals(fit2) |> plot() # looks way better
+```
+
+
+Overall, we can see the benefit of the `glm()` against the `lm()` when we compare between the two models that have the same outcome and predictors. 
+
+```{r}
+check_model(fitlm2)
+check_model(fit2)
+```

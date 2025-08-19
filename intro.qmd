@@ -1,11 +1,72 @@
 # Introduction
 
-This is a book created from markdown and executable code.
+## Overview
 
-See @knuth84 for additional discussion of literate programming.
+These materials focus on conceptual foundations of generalized linear modeling (GLMs), specifying them, and interpreting the results. Topics include __________.
 
-TEST TEST TEST
+## Goals
+
+## Prequisites 
+
+Readers should be comfortable with multiple linear regression, including building regression models, interpreting regression output, and testing for and interpreting regression coefficients including interactions. The first module can be used to test for preparedness. We recommend UCLA’s Statistical Methods and Data Analytics resources and online seminars for a more in-depth review: https://stats.oarc.ucla.edu/other/mult-pkg/seminars/
+
+In addition, readers should also be comfortable with foundational concepts in statistics like sampling distributions, Null Hypothesis Significance Testing (NHST), and p-values. 
+
+## <i> R </i>  Packages
+
+These modules will use a variety of <i> R </i> packages which can be installed through the <i> R </i> CRAN network. We encourage readers to become familiar with the syntax of these packages through documentations pages, which we also supply here. We appreciate these packages because they help to visualization and provide clarity to model outputs.
+
+  - `easystats`: An R framework for easy statistical modeling, visualization, and reporting. [`easystats` package documentation](https://cran.r-project.org/web/packages/easystats/easystats.pdf)
+  
+  - `tidyverse`: A collection of <i> R </i> packages designed for data science. [`tidyverse` package documentation](https://cran.r-project.org/web/packages/tidyverse/tidyverse.pdf)
+  
+  - `ggeffects`: Estimated Marginal Means and Adjusted Predictions from Regression Models. [`ggeffects` package documentation](https://cran.r-project.org/web/packages/ggeffects/ggeffects.pdf)
+  
+For GLM model fitting, modules will utilize the <i> glm </i> function in the `stats` base R package, or the `glmmTMB` package, for fitting GLMs. We refer readers to the [`glmmTMB` package documentation](https://cran.r-project.org/web/packages/glmmTMB/glmmTMB.pdf) for further information. 
+
+## Piping
+
+As of <i>R</i> 4.1.0, a native pipe operator `|>` has been introduced, and we will use this pipe operator throughout our modules. We appreciate pipes as a way to declutter our code, and we find that they are not that much difficult to follow. 
+
+For example, if you wanted to use the `sum()` function, you would input a vector of numbers into the function as so: 
 
 ```{r}
-1 + 1
+sum(4,5)
 ```
+
+Instead, with pipes, you can declare the vector and pipe it (i.e., feed it) to the same function and get the same result:
+
+```{r}
+c(4,5) |> sum() 
+```
+
+This example is kind of contrived, but it is true that pipes allow for passing results/objects to the next function in an elegant way. 
+
+## Plot theme
+
+For our visualizations, we have set our plots with a template to show a specific layout for aesthetic purposes. We embedded this template in a variable called `mytheme` and it is in the code with every plot. The settings of this layout is hidden from view for every module, but we display the custome settings here.
+
+```{r, warning=FALSE, message=FALSE}
+library(tidyverse)
+mytheme <- theme_bw(
+  base_size = 12
+)
+```
+
+
+## Textbook and Website Resources
+
+We recommend the following textbooks and websites for more in-depth readings of GLMs. We also extend our thanks for these resources as they have helped us create our modules.
+
+  - Faraway, J.J., (2016). <i> Extending the linear model with R: Generalized linear, mixed effects and nonparametric regression models </i> (2nd ed.). CRC Press. 
+  
+
+## Materials
+
+All materials are available for download in the appendix. The following are available for download:
+
+  - Data: the data used in each chapter
+  - R Script: an R script of the code used in each chapter
+  - Worksheet: a worksheet with questions that follows a similar structure to each chapter, but without answers provided
+
+We recommend that people self-studying download the data and R script and following along with the code and output interpretations in each chapter. Instructors can benefit from downloading the data, code, and worksheets for use in a lab portion in their classes.

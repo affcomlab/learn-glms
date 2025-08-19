@@ -25,6 +25,10 @@ book:
     - index.qmd
     - intro.qmd
     - regression-review.qmd
+    - binary-regression.qmd
+    - count-regression.qmd
+    - unbounded-count-regression.qmd
+    - ordinal-regression.qmd
     - linear-models.qmd
     - summary.qmd
     - references.qmd
