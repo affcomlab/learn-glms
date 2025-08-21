@@ -1,5 +1,9 @@
 # Welcome {.unnumbered}
 
+:::{.callout-important title="Disclaimer"}
+This website is currently in beta and under active development. Content may be incomplete, subject to change, or contain inaccuracies.
+:::
+
 This goal of this website is to create a set of open-source online modules to broaden the range of statistical models taught in graduate psychology programs beyond ANOVA and multiple regression. These modules provide a foundation for students to learn about the flexibility of Generalized Linear Models (GLMs) across many common situations in applied research. We address the inherent issue facing the adoption of GLMs in psychology in that traditional teaching of GLMs does not stress the importance of selecting the approriate link functions. 
 
 # About the Authors {.unnumbered}
@@ -11,8 +15,4 @@ This goal of this website is to create a set of open-source online modules to br
 # Funding {.unnumbered} 
 
 These materials were made possible by funding from the APS Fund for Teaching and Public Understanding of Psychological Science. You can read more about the fund [here] (https://www.psychologicalscience.org/members/teaching/fund)
-
-# This is a Quarto book.
-
-To learn more about Quarto books visit <https://quarto.org/docs/books>.
 
