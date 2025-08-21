@@ -29,7 +29,6 @@ book:
     - count-regression.qmd
     - unbounded-count-regression.qmd
     - ordinal-regression.qmd
-    - linear-models.qmd
     - summary.qmd
     - references.qmd
   appendices:
