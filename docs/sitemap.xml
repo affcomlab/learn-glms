@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://affcomlab.github.io/learn-glms/index.html</loc>
-    <lastmod>2026-06-22T14:48:08.588Z</lastmod>
+    <lastmod>2026-06-22T15:40:14.784Z</lastmod>
   </url>
   <url>
     <loc>https://affcomlab.github.io/learn-glms/intro.html</loc>
@@ -27,17 +27,5 @@
   <url>
     <loc>https://affcomlab.github.io/learn-glms/ordinal-regression.html</loc>
     <lastmod>2026-06-22T14:48:08.588Z</lastmod>
-  </url>
-  <url>
-    <loc>https://affcomlab.github.io/learn-glms/summary.html</loc>
-    <lastmod>2026-06-22T14:48:08.588Z</lastmod>
-  </url>
-  <url>
-    <loc>https://affcomlab.github.io/learn-glms/references.html</loc>
-    <lastmod>2026-06-22T15:06:04.845Z</lastmod>
-  </url>
-  <url>
-    <loc>https://affcomlab.github.io/learn-glms/appendix.html</loc>
-    <lastmod>2026-06-22T14:48:08.449Z</lastmod>
   </url>
 </urlset>
