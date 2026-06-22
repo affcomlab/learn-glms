@@ -29,10 +29,10 @@ book:
     - count-regression.qmd
     - unbounded-count-regression.qmd
     - ordinal-regression.qmd
-    - summary.qmd
-    - references.qmd
-  appendices:
-    - appendix.qmd
+#    - summary.qmd
+#    - references.qmd
+#  appendices:
+#    - appendix.qmd
     
 
 bibliography: references.bib
